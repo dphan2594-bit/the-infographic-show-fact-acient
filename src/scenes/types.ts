@@ -11,14 +11,35 @@ export type Background =
   | { type: "video"; src: string }
   | { type: "color"; color: string };
 
+/**
+ * Motion graphics entrance style — matches the "làm bằng CapCut" replacements
+ * in Mục 8 of docs/SKILL-FLAT-EXPLAINER.md (scale-in pop, slide-in, stagger
+ * reveal, crossfade), implemented natively in Remotion instead.
+ */
+export type Entrance =
+  | "pop"
+  | "slideLeft"
+  | "slideRight"
+  | "slideUp"
+  | "slideDown"
+  | "fade"
+  | "none";
+
+type EntranceProps = {
+  /** entrance animation style, defaults to "fade" */
+  entrance?: Entrance;
+  /** frames to wait (within the scene) before this overlay starts entering */
+  delayFrames?: number;
+};
+
 export type Overlay =
-  | {
+  | ({
       type: "chapterTitle";
       title: string;
       subtitle?: string;
       accentColor: string;
-    }
-  | {
+    } & EntranceProps)
+  | ({
       type: "dataBadge";
       value: string;
       label?: string;
@@ -28,13 +49,13 @@ export type Overlay =
       accentColor: string;
       /** point the callout line points to, in percent */
       calloutTo?: { x: number; y: number };
-    }
-  | {
+    } & EntranceProps)
+  | ({
       type: "iconLabel";
       label: string;
       x: number;
       y: number;
-    }
+    } & EntranceProps)
   | {
       type: "dateHud";
       date: string;
@@ -42,7 +63,41 @@ export type Overlay =
   | {
       type: "caption";
       text: string;
+    }
+  | ({
+      /** checklist / comparison grid — each item pops or slides in with a stagger delay */
+      type: "staggerBadges";
+      items: { icon: string; label: string; x: number; y: number }[];
+      accentColor: string;
+      /** frames between each item's entrance, default 8 */
+      staggerFrames?: number;
+      entrance?: Extract<Entrance, "pop" | "slideUp" | "fade">;
+    })
+  | {
+      /** animated line chart — draws progressively, for depletion curves / growth charts */
+      type: "chartLine";
+      /** points in percent of frame, drawn left to right */
+      points: { x: number; y: number }[];
+      color: string;
+      /** frame (within the scene) the draw-in finishes by */
+      drawEndFrame: number;
+      showDot?: boolean;
+    }
+  | {
+      /** horizontal process-flow diagram (E8): boxes + connecting arrows, staggered reveal */
+      type: "processFlow";
+      steps: { label: string }[];
+      accentColor: string;
+      y: number;
+      /** frames between each step's entrance, default 12 */
+      staggerFrames?: number;
     };
+
+export type SceneTransition =
+  | { type: "fade"; durationInFrames?: number }
+  | { type: "slide"; direction?: "from-left" | "from-right" | "from-top" | "from-bottom"; durationInFrames?: number }
+  | { type: "wipe"; direction?: "from-left" | "from-right" | "from-top" | "from-bottom"; durationInFrames?: number }
+  | { type: "none" };
 
 export type Scene = {
   id: string;
@@ -54,4 +109,9 @@ export type Scene = {
   overlays?: Overlay[];
   /** optional per-scene voiceover/sfx, plays from the start of the scene */
   audioSrc?: string;
+  /**
+   * transition used when cutting INTO this scene from the previous one.
+   * First scene ignores this. Defaults to a quick fade.
+   */
+  transitionIn?: SceneTransition;
 };

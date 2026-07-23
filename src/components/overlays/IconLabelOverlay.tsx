@@ -1,13 +1,15 @@
-import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
+import { AbsoluteFill } from "remotion";
+import { useEntranceStyle } from "../../animation/useEntranceStyle";
+import type { Entrance } from "../../scenes/types";
 
 export const IconLabelOverlay: React.FC<{
   label: string;
   x: number;
   y: number;
-}> = ({ label, x, y }) => {
-  const frame = useCurrentFrame();
-  const opacity = interpolate(frame, [0, 10], [0, 1], { extrapolateRight: "clamp" });
-  const translateY = interpolate(frame, [0, 10], [12, 0], { extrapolateRight: "clamp" });
+  entrance?: Entrance;
+  delayFrames?: number;
+}> = ({ label, x, y, entrance = "slideUp", delayFrames = 0 }) => {
+  const { opacity, transform } = useEntranceStyle(entrance, delayFrames);
 
   return (
     <AbsoluteFill>
@@ -16,7 +18,7 @@ export const IconLabelOverlay: React.FC<{
           position: "absolute",
           left: `${x}%`,
           top: `${y}%`,
-          transform: `translate(-50%, -50%) translateY(${translateY}px)`,
+          transform: `translate(-50%, -50%) ${transform}`,
           opacity,
         }}
       >
