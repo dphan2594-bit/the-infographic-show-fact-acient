@@ -1,0 +1,14 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1920" height="1080" fill="#E8DFC8"/>
+  <rect x="0" y="820" width="1920" height="260" fill="#C79A55"/>
+  <!-- stone block -->
+  <rect x="1150" y="680" width="260" height="180" rx="8" fill="#8C6A3F"/>
+  <!-- simple flat character -->
+  <circle cx="820" cy="420" r="90" fill="#D9A066"/>
+  <rect x="740" y="500" width="160" height="260" rx="40" fill="#6B5CE0"/>
+  <rect x="700" y="540" width="60" height="180" rx="24" fill="#6B5CE0"/>
+  <rect x="900" y="540" width="60" height="180" rx="24" fill="#6B5CE0"/>
+  <circle cx="790" cy="410" r="8" fill="#2A2A2A"/>
+  <circle cx="850" cy="410" r="8" fill="#2A2A2A"/>
+  <path d="M795,455 Q820,470 845,455" stroke="#2A2A2A" stroke-width="6" fill="none" stroke-linecap="round"/>
+</svg>

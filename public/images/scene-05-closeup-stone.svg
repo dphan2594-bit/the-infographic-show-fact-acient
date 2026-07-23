@@ -1,0 +1,8 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1920" height="1080" fill="#E85D5D"/>
+  <rect x="500" y="300" width="900" height="480" rx="16" fill="#C4443F"/>
+  <rect x="560" y="360" width="780" height="360" rx="10" fill="#D9635E"/>
+  <!-- hand -->
+  <ellipse cx="1500" cy="760" rx="220" ry="140" fill="#D9A066"/>
+  <rect x="1400" y="600" width="60" height="220" rx="28" fill="#D9A066"/>
+</svg>
