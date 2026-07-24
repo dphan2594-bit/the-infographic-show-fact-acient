@@ -6,6 +6,7 @@ import { wipe } from "@remotion/transitions/wipe";
 import type { TransitionPresentation } from "@remotion/transitions";
 import type { Scene as SceneType, SceneTransition } from "./scenes/types";
 import { Scene } from "./components/Scene";
+import { PostFx } from "./components/PostFx";
 
 const DEFAULT_TRANSITION_FRAMES = 12;
 
@@ -38,27 +39,29 @@ const resolveTransition = (
 export const InfographicVideo: React.FC<{ scenes: SceneType[] }> = ({ scenes }) => {
   return (
     <AbsoluteFill style={{ backgroundColor: "black" }}>
-      <TransitionSeries>
-        {scenes.flatMap((scene, i) => {
-          const transition = i === 0 ? null : resolveTransition(scene.transitionIn);
-          const items = [];
-          if (transition) {
+      <PostFx>
+        <TransitionSeries>
+          {scenes.flatMap((scene, i) => {
+            const transition = i === 0 ? null : resolveTransition(scene.transitionIn);
+            const items = [];
+            if (transition) {
+              items.push(
+                <TransitionSeries.Transition
+                  key={`${scene.id}-transition`}
+                  presentation={transition.presentation}
+                  timing={linearTiming({ durationInFrames: transition.durationInFrames })}
+                />,
+              );
+            }
             items.push(
-              <TransitionSeries.Transition
-                key={`${scene.id}-transition`}
-                presentation={transition.presentation}
-                timing={linearTiming({ durationInFrames: transition.durationInFrames })}
-              />,
+              <TransitionSeries.Sequence key={scene.id} durationInFrames={scene.durationInFrames}>
+                <Scene scene={scene} />
+              </TransitionSeries.Sequence>,
             );
-          }
-          items.push(
-            <TransitionSeries.Sequence key={scene.id} durationInFrames={scene.durationInFrames}>
-              <Scene scene={scene} />
-            </TransitionSeries.Sequence>,
-          );
-          return items;
-        })}
-      </TransitionSeries>
+            return items;
+          })}
+        </TransitionSeries>
+      </PostFx>
     </AbsoluteFill>
   );
 };

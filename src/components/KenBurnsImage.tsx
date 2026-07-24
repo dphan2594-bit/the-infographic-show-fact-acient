@@ -5,8 +5,10 @@ const TRANSFORMS: Record<
   KenBurnsDirection,
   { from: { scale: number; x: number; y: number }; to: { scale: number; x: number; y: number } }
 > = {
-  "zoom-in": { from: { scale: 1, x: 0, y: 0 }, to: { scale: 1.15, x: 0, y: 0 } },
-  "zoom-out": { from: { scale: 1.15, x: 0, y: 0 }, to: { scale: 1, x: 0, y: 0 } },
+  // "flat" endpoints keep a small 1.04 margin (instead of exactly 1) so
+  // camera shake/punch-zoom on "animate" scenes never reveals an edge gap.
+  "zoom-in": { from: { scale: 1.04, x: 0, y: 0 }, to: { scale: 1.15, x: 0, y: 0 } },
+  "zoom-out": { from: { scale: 1.15, x: 0, y: 0 }, to: { scale: 1.04, x: 0, y: 0 } },
   "pan-left": { from: { scale: 1.1, x: 2, y: 0 }, to: { scale: 1.1, x: -2, y: 0 } },
   "pan-right": { from: { scale: 1.1, x: -2, y: 0 }, to: { scale: 1.1, x: 2, y: 0 } },
   "pan-up": { from: { scale: 1.1, x: 0, y: 2 }, to: { scale: 1.1, x: 0, y: -2 } },

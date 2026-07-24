@@ -15,8 +15,13 @@ export const Background: React.FC<{
 
   if (background.type === "video") {
     return (
-      <AbsoluteFill>
-        <OffthreadVideo src={resolveSrc(background.src)} style={{ objectFit: "cover" }} />
+      // Slight 1.03 overscale gives camera-shake scenes a safety margin so
+      // the clip edge is never revealed (see KenBurnsImage for the same trick).
+      <AbsoluteFill style={{ overflow: "hidden" }}>
+        <OffthreadVideo
+          src={resolveSrc(background.src)}
+          style={{ width: "100%", height: "100%", objectFit: "cover", transform: "scale(1.03)" }}
+        />
       </AbsoluteFill>
     );
   }
