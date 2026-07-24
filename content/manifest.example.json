@@ -1,0 +1,32 @@
+[
+  {
+    "id": "hook",
+    "motion": "animate",
+    "archetype": "E6 Wide Shot (hook)",
+    "image": "images/scene-01-hook.png",
+    "audio": "audio/scene-01-hook.mp3",
+    "caption": "Làm sao người Ai Cập cổ đại xây kim tự tháp mà không có máy móc?",
+    "kenBurns": "zoom-in",
+    "transitionIn": { "type": "none" }
+  },
+  {
+    "id": "chapter-1",
+    "motion": "static",
+    "archetype": "E3 Chapter Card",
+    "chapterTitle": "Bí Ẩn Kim Tự Tháp",
+    "chapterSubtitle": "Kỳ quan cổ đại cuối cùng còn tồn tại",
+    "backgroundColor": "#6B5CE0",
+    "audio": "audio/scene-02-chapter.mp3",
+    "transitionIn": { "type": "wipe", "direction": "from-left" }
+  },
+  {
+    "id": "builder-intro",
+    "motion": "static",
+    "archetype": "E1 Character Scene",
+    "image": "images/scene-03-builder.png",
+    "audio": "audio/scene-03-builder.mp3",
+    "caption": "Hơn 100.000 công nhân đã tham gia xây dựng công trình này.",
+    "kenBurns": "zoom-in",
+    "transitionIn": { "type": "fade" }
+  }
+]

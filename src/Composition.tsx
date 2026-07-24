@@ -1,6 +1,6 @@
 import { CalculateMetadataFunction, Composition } from "remotion";
 import { InfographicVideo, getTotalDurationInFrames } from "./InfographicVideo";
-import { sampleScenes } from "./scenes/sample";
+import { activeScenes } from "./scenes/active";
 import type { Scene } from "./scenes/types";
 
 type Props = {
@@ -22,11 +22,11 @@ export const InfographicComposition = () => {
     <Composition
       id="Infographic"
       component={InfographicVideo}
-      durationInFrames={getTotalDurationInFrames(sampleScenes)}
+      durationInFrames={getTotalDurationInFrames(activeScenes)}
       fps={FPS}
       width={WIDTH}
       height={HEIGHT}
-      defaultProps={{ scenes: sampleScenes }}
+      defaultProps={{ scenes: activeScenes }}
       calculateMetadata={calculateMetadata}
     />
   );

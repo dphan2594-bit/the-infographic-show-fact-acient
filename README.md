@@ -16,10 +16,17 @@ slide-in, stagger reveal, line-draw chart, chuyển cảnh wipe/slide) được 
 bằng code thay vì CapCut.
 
 ```
+content/
+  manifest.example.json  # định dạng manifest — xem "Khớp audio/ảnh/phụ đề tự động"
+  manifest.json           # manifest thật của bạn (không commit sẵn, tự tạo)
+scripts/
+  build-scenes.mjs         # manifest + audio thật → src/scenes/generated.ts
 src/
   scenes/
     types.ts     # định nghĩa Scene, Background, Overlay, SceneTransition
     sample.ts     # kịch bản mẫu (Kim Tự Tháp Giza) minh hoạ các archetype
+    active.ts     # switch điểm duy nhất: sample.ts hay generated.ts đang render
+    generated.ts  # sinh tự động bởi build-scenes.mjs, đừng sửa tay
   animation/
     useEntranceStyle.ts   # hook entrance dùng chung: pop / slideX / fade / none
   components/
@@ -39,10 +46,52 @@ src/
   Composition.tsx          # đăng ký composition "Infographic" (1920x1080, 30fps)
 ```
 
-## Thêm scene mới
+## Khớp audio/ảnh/phụ đề tự động
 
-Chỉnh `src/scenes/sample.ts` (hoặc tạo file scene mới và đổi `defaultProps` trong
-`Composition.tsx`). Mỗi scene gồm:
+Khi bạn có sẵn ảnh (AI-generated), audio TTS từng scene và kịch bản chữ, không cần
+tự đếm frame để khớp thời lượng — script `build-scenes.mjs` đo **độ dài thật của
+từng file audio** rồi tự tính `durationInFrames`, gắn phụ đề đúng thời lượng đó.
+
+**Quy trình:**
+
+1. Thả ảnh vào `public/images/`, audio TTS vào `public/audio/` (mỗi scene 1 file)
+2. Tạo `content/manifest.json` (copy từ `content/manifest.example.json`), mỗi phần tử là 1 scene:
+   ```json
+   {
+     "id": "hook",
+     "motion": "animate",
+     "image": "images/scene-01.png",
+     "audio": "audio/scene-01.mp3",
+     "caption": "Câu phụ đề khớp với voiceover của scene này.",
+     "kenBurns": "zoom-in",
+     "transitionIn": { "type": "none" }
+   }
+   ```
+   Scene dạng chapter card thì dùng `chapterTitle`/`chapterSubtitle`/`backgroundColor`
+   thay cho `image`. Cần dữ liệu overlay nâng cao (`dataBadge`, `chartLine`,
+   `processFlow`, `staggerBadges`...) thì thêm mảng `overlays` (đúng format trong
+   `src/scenes/types.ts`) — script sẽ giữ nguyên, ghép thêm vào sau `caption`/`chapterTitle`.
+3. Chạy:
+   ```console
+   npm run build:scenes
+   ```
+   Script đọc `content/manifest.json`, đo thời lượng từng audio (dùng
+   `@remotion/media-parser`, không cần ffmpeg hệ thống), rồi ghi ra
+   `src/scenes/generated.ts`.
+4. Sửa `src/scenes/active.ts`, đổi dòng export sang:
+   ```ts
+   export { generatedScenes as activeScenes } from "./generated";
+   ```
+5. `npm run dev` để xem preview, hoặc render như bình thường — audio giờ phát đúng
+   khớp với scene chứa nó (`<Audio>` tự giới hạn trong `durationInFrames` của scene).
+
+Mỗi lần sửa manifest hoặc thay audio, chạy lại `npm run build:scenes` là đủ, không cần
+sửa tay `generated.ts`.
+
+## Thêm scene mới thủ công
+
+Chỉnh `src/scenes/sample.ts` (hoặc tạo file scene mới và trỏ `src/scenes/active.ts`
+sang đó). Mỗi scene gồm:
 
 - `background`: `{ type: "image" | "video" | "color", ... }` — ảnh đặt trong
   `public/images/...`, video đặt trong `public/videos/...`
