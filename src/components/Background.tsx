@@ -31,6 +31,8 @@ export const Background: React.FC<{
       src={resolveSrc(background.src)}
       direction={background.kenBurns}
       durationInFrames={durationInFrames}
+      fit={background.fit}
+      letterboxColor={background.letterboxColor}
     />
   );
 };

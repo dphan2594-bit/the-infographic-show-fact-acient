@@ -57,7 +57,12 @@ function buildBackground(entry, kenBurnsIndex) {
   if (entry.image) {
     const kenBurns =
       entry.kenBurns ?? KEN_BURNS_ROTATION[kenBurnsIndex % KEN_BURNS_ROTATION.length];
-    return { type: "image", src: entry.image, kenBurns };
+    const background = { type: "image", src: entry.image, kenBurns };
+    // "contain" for finished graphics (charts/maps) with baked-in text
+    // reaching the edges — "cover" (default) would crop it.
+    if (entry.fit) background.fit = entry.fit;
+    if (entry.letterboxColor) background.letterboxColor = entry.letterboxColor;
+    return background;
   }
   if (entry.video) {
     return { type: "video", src: entry.video };
@@ -80,7 +85,10 @@ function buildOverlays(entry) {
     overlays.push({ type: "dateHud", date: entry.dateHud });
   }
   if (entry.caption) {
-    overlays.push({ type: "caption", text: entry.caption });
+    const captionOverlay = { type: "caption", text: entry.caption };
+    // dodge baked-in text in the image (see "captionPosition" in the manifest)
+    if (entry.captionPosition) captionOverlay.position = entry.captionPosition;
+    overlays.push(captionOverlay);
   }
 
   return overlays;
@@ -135,6 +143,7 @@ async function main() {
       durationInFrames,
       background,
       overlays: buildOverlays(entry),
+      captionBar: entry.captionBar,
       audioSrc: entry.audio,
       transitionIn: entry.transitionIn ?? { type: "fade" },
     });

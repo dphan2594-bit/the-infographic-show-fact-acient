@@ -46,7 +46,7 @@ export const OverlayRenderer: React.FC<{ overlay: Overlay }> = ({ overlay }) => 
     case "dateHud":
       return <DateHudOverlay date={overlay.date} />;
     case "caption":
-      return <CaptionOverlay text={overlay.text} />;
+      return <CaptionOverlay text={overlay.text} position={overlay.position} />;
     case "staggerBadges":
       return (
         <StaggerBadgesOverlay

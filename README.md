@@ -88,6 +88,24 @@ từng file audio** rồi tự tính `durationInFrames`, gắn phụ đề đún
 Mỗi lần sửa manifest hoặc thay audio, chạy lại `npm run build:scenes` là đủ, không cần
 sửa tay `generated.ts`.
 
+### Ảnh đã có chữ/số liệu in sẵn (chart, bản đồ hoàn chỉnh...)
+
+Nhiều ảnh AI-generated (đặc biệt chart/bản đồ số liệu) đã có tiêu đề, chú thích, số
+liệu in sẵn ngay trong ảnh — không "sạch chữ" như style guide khuyến nghị cho nhân vật.
+Với loại ảnh này, KHÔNG dùng `chapterTitle` (sẽ chồng chữ), chỉ dùng `caption` làm phụ đề
+lồng tiếng, và thêm các field sau trong manifest để tránh cắt/đè nội dung ảnh:
+
+- `"kenBurns": "none"` — giữ tĩnh, không zoom/pan làm crop mất số liệu ở rìa ảnh
+- `"fit": "contain"` — hiển thị trọn vẹn ảnh, không crop theo kiểu "cover" mặc định
+- `"letterboxColor": "#..."` — màu nền lấp khoảng trống khi contain (nên lấy đúng màu nền của ảnh gốc)
+- `"captionBar": { "color": "#...", "heightPercent": 14, "position": "bottom" }` — dành
+  riêng 1 dải màu đặc (không đè lên ảnh) để đặt phụ đề, ảnh tự thu nhỏ nhường chỗ
+
+Xem ví dụ đầy đủ trong `content/manifest.example.json` (entry `finished-chart-example`).
+Nếu tiêu đề ảnh nằm ở rìa còn lại (vd ảnh có chữ sát đáy nhưng đỉnh trống), có thể bỏ
+`captionBar` và chỉ set `"caption": {"position": "top"}`-style bằng field `captionPosition`
+trên chính entry manifest thay vì dùng dải màu riêng.
+
 ## Thêm scene mới thủ công
 
 Chỉnh `src/scenes/sample.ts` (hoặc tạo file scene mới và trỏ `src/scenes/active.ts`

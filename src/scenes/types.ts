@@ -4,10 +4,24 @@ export type KenBurnsDirection =
   | "pan-left"
   | "pan-right"
   | "pan-up"
-  | "pan-down";
+  | "pan-down"
+  | "none";
 
 export type Background =
-  | { type: "image"; src: string; kenBurns?: KenBurnsDirection }
+  | {
+      type: "image";
+      src: string;
+      kenBurns?: KenBurnsDirection;
+      /**
+       * "cover" (default) fills the frame and crops overflow — fine for
+       * clean scene art. Use "contain" for finished graphics that already
+       * have their own baked-in text/data reaching the edges (charts, maps)
+       * so nothing gets cropped off.
+       */
+      fit?: "cover" | "contain";
+      /** background shown behind a "contain"-fit image, matches the source graphic's own bg by default */
+      letterboxColor?: string;
+    }
   | { type: "video"; src: string }
   | { type: "color"; color: string };
 
@@ -63,6 +77,8 @@ export type Overlay =
   | {
       type: "caption";
       text: string;
+      /** anchor the caption bar to the top instead of the bottom, to dodge baked-in text in the image */
+      position?: "top" | "bottom";
     }
   | ({
       /** checklist / comparison grid — each item pops or slides in with a stagger delay */
@@ -107,6 +123,12 @@ export type Scene = {
   durationInFrames: number;
   background: Background;
   overlays?: Overlay[];
+  /**
+   * Reserve a solid-color strip (default bottom, 16% of height) that the
+   * background image is shrunk to avoid, so a caption overlay never has to
+   * fight the image's own baked-in text for the same pixels.
+   */
+  captionBar?: { color: string; heightPercent?: number; position?: "top" | "bottom" };
   /** optional per-scene voiceover/sfx, plays from the start of the scene */
   audioSrc?: string;
   /**

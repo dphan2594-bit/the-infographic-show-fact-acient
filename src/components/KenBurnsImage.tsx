@@ -1,4 +1,4 @@
-import { Img, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
+import { Img, interpolate, useCurrentFrame } from "remotion";
 import type { KenBurnsDirection } from "../scenes/types";
 
 const TRANSFORMS: Record<
@@ -13,15 +13,18 @@ const TRANSFORMS: Record<
   "pan-right": { from: { scale: 1.1, x: -2, y: 0 }, to: { scale: 1.1, x: 2, y: 0 } },
   "pan-up": { from: { scale: 1.1, x: 0, y: 2 }, to: { scale: 1.1, x: 0, y: -2 } },
   "pan-down": { from: { scale: 1.1, x: 0, y: -2 }, to: { scale: 1.1, x: 0, y: 2 } },
+  // fully static — for finished graphics (charts/maps) where any crop loses data
+  none: { from: { scale: 1, x: 0, y: 0 }, to: { scale: 1, x: 0, y: 0 } },
 };
 
 export const KenBurnsImage: React.FC<{
   src: string;
   direction?: KenBurnsDirection;
   durationInFrames: number;
-}> = ({ src, direction = "zoom-in", durationInFrames }) => {
+  fit?: "cover" | "contain";
+  letterboxColor?: string;
+}> = ({ src, direction = "zoom-in", durationInFrames, fit = "cover", letterboxColor }) => {
   const frame = useCurrentFrame();
-  const { width, height } = useVideoConfig();
   const { from, to } = TRANSFORMS[direction];
 
   const scale = interpolate(frame, [0, durationInFrames], [from.scale, to.scale], {
@@ -38,13 +41,22 @@ export const KenBurnsImage: React.FC<{
   });
 
   return (
-    <div style={{ width, height, overflow: "hidden", position: "absolute", inset: 0 }}>
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        overflow: "hidden",
+        position: "absolute",
+        inset: 0,
+        backgroundColor: fit === "contain" ? (letterboxColor ?? "#000000") : undefined,
+      }}
+    >
       <Img
         src={src}
         style={{
           width: "100%",
           height: "100%",
-          objectFit: "cover",
+          objectFit: fit,
           transform: `scale(${scale}) translate(${x}%, ${y}%)`,
           transformOrigin: "center center",
         }}

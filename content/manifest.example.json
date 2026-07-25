@@ -28,5 +28,18 @@
     "caption": "Hơn 100.000 công nhân đã tham gia xây dựng công trình này.",
     "kenBurns": "zoom-in",
     "transitionIn": { "type": "fade" }
+  },
+  {
+    "id": "finished-chart-example",
+    "motion": "static",
+    "archetype": "Ảnh đã có chữ/số liệu in sẵn (chart, bản đồ...)",
+    "image": "images/scene-04-chart.png",
+    "audio": "audio/scene-04-chart.mp3",
+    "caption": "Phụ đề lồng tiếng, không đè lên chữ có sẵn trong ảnh.",
+    "kenBurns": "none",
+    "fit": "contain",
+    "letterboxColor": "#F3EEE1",
+    "captionBar": { "color": "#F3EEE1", "heightPercent": 14, "position": "bottom" },
+    "transitionIn": { "type": "fade" }
   }
 ]

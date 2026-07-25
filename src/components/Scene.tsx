@@ -12,9 +12,32 @@ export const Scene: React.FC<{ scene: SceneType }> = ({ scene }) => {
     .filter((t) => t !== "none")
     .join(" ");
 
+  const bar = scene.captionBar;
+  const barHeightPercent = bar?.heightPercent ?? 16;
+  const barPosition = bar?.position ?? "bottom";
+
   return (
     <AbsoluteFill style={{ transform: combinedTransform || "none" }}>
-      <Background background={scene.background} durationInFrames={scene.durationInFrames} />
+      <AbsoluteFill
+        style={
+          bar
+            ? barPosition === "bottom"
+              ? { top: 0, bottom: "auto", height: `${100 - barHeightPercent}%` }
+              : { bottom: 0, top: "auto", height: `${100 - barHeightPercent}%` }
+            : undefined
+        }
+      >
+        <Background background={scene.background} durationInFrames={scene.durationInFrames} />
+      </AbsoluteFill>
+      {bar ? (
+        <AbsoluteFill
+          style={
+            barPosition === "bottom"
+              ? { bottom: 0, top: "auto", height: `${barHeightPercent}%`, backgroundColor: bar.color }
+              : { top: 0, bottom: "auto", height: `${barHeightPercent}%`, backgroundColor: bar.color }
+          }
+        />
+      ) : null}
       {scene.overlays?.map((overlay, i) => (
         <OverlayRenderer key={i} overlay={overlay} />
       ))}

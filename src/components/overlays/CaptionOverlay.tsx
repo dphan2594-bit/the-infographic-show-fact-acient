@@ -1,14 +1,19 @@
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 
-export const CaptionOverlay: React.FC<{ text: string }> = ({ text }) => {
+export const CaptionOverlay: React.FC<{ text: string; position?: "top" | "bottom" }> = ({
+  text,
+  position = "bottom",
+}) => {
   const frame = useCurrentFrame();
   const opacity = interpolate(frame, [0, 10], [0, 1], { extrapolateRight: "clamp" });
 
   return (
-    <AbsoluteFill style={{ justifyContent: "flex-end" }}>
+    <AbsoluteFill
+      style={{ justifyContent: position === "bottom" ? "flex-end" : "flex-start" }}
+    >
       <div
         style={{
-          margin: "0 auto 64px",
+          margin: position === "bottom" ? "0 auto 64px" : "64px auto 0",
           maxWidth: "80%",
           opacity,
           backgroundColor: "rgba(0,0,0,0.7)",

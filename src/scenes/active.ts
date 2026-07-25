@@ -4,4 +4,4 @@
 // images/audio and writes src/scenes/generated.ts. Once that file exists,
 // flip the export below to `generatedScenes` (from "./generated") to render
 // your real video instead of the Kim Tự Tháp Giza demo.
-export { sampleScenes as activeScenes } from "./sample";
+export { generatedScenes as activeScenes } from "./generated";
