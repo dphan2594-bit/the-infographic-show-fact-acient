@@ -7,7 +7,7 @@ export const generatedScenes: Scene[] = [
     "id": "scene-01-hook",
     "motion": "animate",
     "archetype": "Hook — Survival Resource",
-    "durationInFrames": 150,
+    "durationInFrames": 551,
     "background": {
       "type": "image",
       "src": "images/scene-01-survival-seeds.jpg",
@@ -22,6 +22,7 @@ export const generatedScenes: Scene[] = [
         "position": "top"
       }
     ],
+    "audioSrc": "audio/scene-01-survival-seeds.mp3",
     "transitionIn": {
       "type": "none"
     }
@@ -30,7 +31,7 @@ export const generatedScenes: Scene[] = [
     "id": "scene-02-growth-chart",
     "motion": "static",
     "archetype": "Data Chart — Growth Comparison",
-    "durationInFrames": 180,
+    "durationInFrames": 405,
     "background": {
       "type": "image",
       "src": "images/scene-02-growth-chart.jpg",
@@ -49,6 +50,7 @@ export const generatedScenes: Scene[] = [
       "heightPercent": 14,
       "position": "bottom"
     },
+    "audioSrc": "audio/scene-02-growth-chart.mp3",
     "transitionIn": {
       "type": "fade"
     }
@@ -57,7 +59,7 @@ export const generatedScenes: Scene[] = [
     "id": "scene-03-farming-migration",
     "motion": "static",
     "archetype": "E1/E6 — Farming + Migration",
-    "durationInFrames": 180,
+    "durationInFrames": 359,
     "background": {
       "type": "image",
       "src": "images/scene-03-farming-migration.jpg",
@@ -69,6 +71,7 @@ export const generatedScenes: Scene[] = [
         "text": "Người du mục vừa gieo hạt, vừa tiếp tục di chuyển không ngừng qua các thảo nguyên."
       }
     ],
+    "audioSrc": "audio/scene-03-farming-migration.mp3",
     "transitionIn": {
       "type": "slide",
       "direction": "from-right"
@@ -78,7 +81,7 @@ export const generatedScenes: Scene[] = [
     "id": "scene-04-corridor-map",
     "motion": "static",
     "archetype": "Data Map — Migration Corridor",
-    "durationInFrames": 210,
+    "durationInFrames": 412,
     "background": {
       "type": "image",
       "src": "images/scene-04-corridor-map.jpg",
@@ -97,6 +100,7 @@ export const generatedScenes: Scene[] = [
       "heightPercent": 14,
       "position": "bottom"
     },
+    "audioSrc": "audio/scene-04-corridor-map.mp3",
     "transitionIn": {
       "type": "wipe",
       "direction": "from-left"
@@ -106,7 +110,7 @@ export const generatedScenes: Scene[] = [
     "id": "scene-05-scale-value",
     "motion": "animate",
     "archetype": "Closing — Value Comparison",
-    "durationInFrames": 150,
+    "durationInFrames": 308,
     "background": {
       "type": "image",
       "src": "images/scene-05-scale-value.jpg",
@@ -118,6 +122,7 @@ export const generatedScenes: Scene[] = [
         "text": "Với họ, một nắm hạt giống đôi khi còn quý hơn cả thanh kiếm."
       }
     ],
+    "audioSrc": "audio/scene-05-scale-value.mp3",
     "transitionIn": {
       "type": "fade"
     }

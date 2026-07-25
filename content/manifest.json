@@ -4,10 +4,10 @@
     "motion": "animate",
     "archetype": "Hook — Survival Resource",
     "image": "images/scene-01-survival-seeds.jpg",
+    "audio": "audio/scene-01-survival-seeds.mp3",
     "kenBurns": "zoom-in",
     "fit": "contain",
     "letterboxColor": "#0f2418",
-    "durationInFrames": 150,
     "caption": "Một nắm hạt nhỏ bé này từng là ranh giới giữa sự sống và cái chết giữa sa mạc.",
     "captionPosition": "top",
     "transitionIn": { "type": "none" }
@@ -17,10 +17,10 @@
     "motion": "static",
     "archetype": "Data Chart — Growth Comparison",
     "image": "images/scene-02-growth-chart.jpg",
+    "audio": "audio/scene-02-growth-chart.mp3",
     "kenBurns": "none",
     "fit": "contain",
     "letterboxColor": "#F3EEE1",
-    "durationInFrames": 180,
     "caption": "Lúa nước cần tới 150 ngày để thu hoạch — trong khi giống lúa nhanh nhất chỉ mất 45 ngày.",
     "captionBar": { "color": "#F3EEE1", "heightPercent": 14, "position": "bottom" },
     "transitionIn": { "type": "fade" }
@@ -30,8 +30,8 @@
     "motion": "static",
     "archetype": "E1/E6 — Farming + Migration",
     "image": "images/scene-03-farming-migration.jpg",
+    "audio": "audio/scene-03-farming-migration.mp3",
     "kenBurns": "pan-right",
-    "durationInFrames": 180,
     "caption": "Người du mục vừa gieo hạt, vừa tiếp tục di chuyển không ngừng qua các thảo nguyên.",
     "transitionIn": { "type": "slide", "direction": "from-right" }
   },
@@ -40,10 +40,10 @@
     "motion": "static",
     "archetype": "Data Map — Migration Corridor",
     "image": "images/scene-04-corridor-map.jpg",
+    "audio": "audio/scene-04-corridor-map.mp3",
     "kenBurns": "none",
     "fit": "contain",
     "letterboxColor": "#F5F2E0",
-    "durationInFrames": 210,
     "caption": "Từ Trung Á, hạt kê theo chân họ lan tới tận Lưỡng Hà — hàng ngàn cây số xa xôi.",
     "captionBar": { "color": "#F5F2E0", "heightPercent": 14, "position": "bottom" },
     "transitionIn": { "type": "wipe", "direction": "from-left" }
@@ -53,8 +53,8 @@
     "motion": "animate",
     "archetype": "Closing — Value Comparison",
     "image": "images/scene-05-scale-value.jpg",
+    "audio": "audio/scene-05-scale-value.mp3",
     "kenBurns": "zoom-out",
-    "durationInFrames": 150,
     "caption": "Với họ, một nắm hạt giống đôi khi còn quý hơn cả thanh kiếm.",
     "transitionIn": { "type": "fade" }
   }
