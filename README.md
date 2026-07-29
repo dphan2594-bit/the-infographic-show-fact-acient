@@ -184,4 +184,5 @@ Chrome bình thường thì bỏ qua bước này.
 ## Docs
 
 - Style guide ảnh AI: [`docs/SKILL-FLAT-EXPLAINER.md`](docs/SKILL-FLAT-EXPLAINER.md)
+- Sinh ảnh/video AI qua Higgsfield MCP: [`docs/MCP-HIGGSFIELD.md`](docs/MCP-HIGGSFIELD.md)
 - Remotion fundamentals: https://www.remotion.dev/docs/the-fundamentals
