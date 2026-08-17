@@ -70,25 +70,49 @@ function buildBackground(entry, kenBurnsIndex) {
   return { type: "color", color: entry.backgroundColor ?? "#E8DFC8" };
 }
 
+/**
+ * Copies the animation preset fields ("entrance", "delayFrames", "idle" — see
+ * src/animation/presets.ts) from a manifest entry onto a generated overlay,
+ * under an optional prefix so one scene can drive several overlays
+ * (`entrance` for the chapter title, `captionEntrance` for the caption...).
+ */
+function applyPreset(overlay, entry, prefix = "") {
+  const key = (name) => (prefix ? prefix + name[0].toUpperCase() + name.slice(1) : name);
+  const entrance = entry[key("entrance")];
+  const delayFrames = entry[key("delayFrames")];
+  const idle = entry[key("idle")];
+
+  if (entrance) overlay.entrance = entrance;
+  if (typeof delayFrames === "number") overlay.delayFrames = delayFrames;
+  if (idle) overlay.idle = idle;
+
+  return overlay;
+}
+
 function buildOverlays(entry) {
   const overlays = [...(entry.overlays ?? [])];
 
   if (entry.chapterTitle) {
-    overlays.push({
-      type: "chapterTitle",
-      title: entry.chapterTitle,
-      subtitle: entry.chapterSubtitle,
-      accentColor: entry.accentColor ?? "#6B5CE0",
-    });
+    overlays.push(
+      applyPreset(
+        {
+          type: "chapterTitle",
+          title: entry.chapterTitle,
+          subtitle: entry.chapterSubtitle,
+          accentColor: entry.accentColor ?? "#6B5CE0",
+        },
+        entry,
+      ),
+    );
   }
   if (entry.dateHud) {
-    overlays.push({ type: "dateHud", date: entry.dateHud });
+    overlays.push(applyPreset({ type: "dateHud", date: entry.dateHud }, entry, "dateHud"));
   }
   if (entry.caption) {
     const captionOverlay = { type: "caption", text: entry.caption };
     // dodge baked-in text in the image (see "captionPosition" in the manifest)
     if (entry.captionPosition) captionOverlay.position = entry.captionPosition;
-    overlays.push(captionOverlay);
+    overlays.push(applyPreset(captionOverlay, entry, "caption"));
   }
 
   return overlays;

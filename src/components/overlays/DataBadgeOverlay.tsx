@@ -1,6 +1,6 @@
 import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { useEntranceStyle } from "../../animation/useEntranceStyle";
-import type { Entrance } from "../../scenes/types";
+import type { Entrance, Idle } from "../../scenes/types";
 
 export const DataBadgeOverlay: React.FC<{
   value: string;
@@ -11,10 +11,21 @@ export const DataBadgeOverlay: React.FC<{
   calloutTo?: { x: number; y: number };
   entrance?: Entrance;
   delayFrames?: number;
-}> = ({ value, label, x, y, accentColor, calloutTo, entrance = "pop", delayFrames = 0 }) => {
+  idle?: Idle;
+}> = ({
+  value,
+  label,
+  x,
+  y,
+  accentColor,
+  calloutTo,
+  entrance = "pop",
+  delayFrames = 0,
+  idle = "none",
+}) => {
   const frame = useCurrentFrame();
   const { width, height } = useVideoConfig();
-  const badge = useEntranceStyle(entrance, delayFrames);
+  const badge = useEntranceStyle(entrance, delayFrames, idle);
   const lineProgress = interpolate(frame - delayFrames, [4, 16], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
@@ -48,6 +59,8 @@ export const DataBadgeOverlay: React.FC<{
           top: `${y}%`,
           transform: `translate(-50%, -50%) ${badge.transform}`,
           opacity: badge.opacity,
+          filter: badge.filter,
+          clipPath: badge.clipPath,
         }}
       >
         <div

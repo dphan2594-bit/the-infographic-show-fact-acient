@@ -1,6 +1,6 @@
 import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { useEntranceStyle } from "../../animation/useEntranceStyle";
-import type { Entrance } from "../../scenes/types";
+import type { Entrance, Idle } from "../../scenes/types";
 
 export const ChapterTitleOverlay: React.FC<{
   title: string;
@@ -8,11 +8,12 @@ export const ChapterTitleOverlay: React.FC<{
   accentColor: string;
   entrance?: Entrance;
   delayFrames?: number;
-}> = ({ title, subtitle, accentColor, entrance = "pop", delayFrames = 0 }) => {
+  idle?: Idle;
+}> = ({ title, subtitle, accentColor, entrance = "pop", delayFrames = 0, idle = "none" }) => {
   const frame = useCurrentFrame();
   const badge = useEntranceStyle("slideDown", delayFrames);
-  const titleStyle = useEntranceStyle(entrance, delayFrames + 4);
-  const subtitleStyle = useEntranceStyle("slideUp", delayFrames + 10);
+  const titleStyle = useEntranceStyle(entrance, delayFrames + 4, idle);
+  const subtitleStyle = useEntranceStyle("fade-up", delayFrames + 10);
   const patternShift = (frame * 0.6) % 80;
 
   return (
@@ -20,8 +21,7 @@ export const ChapterTitleOverlay: React.FC<{
       style={{
         alignItems: "center",
         justifyContent: "center",
-        background:
-          "radial-gradient(circle at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.45) 100%)",
+        background: "radial-gradient(circle at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.45) 100%)",
         overflow: "hidden",
       }}
     >
@@ -50,6 +50,8 @@ export const ChapterTitleOverlay: React.FC<{
             textTransform: "uppercase",
             opacity: badge.opacity,
             transform: badge.transform,
+            filter: badge.filter,
+            clipPath: badge.clipPath,
           }}
         >
           Chapter
@@ -65,6 +67,8 @@ export const ChapterTitleOverlay: React.FC<{
             lineHeight: 1.1,
             opacity: titleStyle.opacity,
             transform: titleStyle.transform,
+            filter: titleStyle.filter,
+            clipPath: titleStyle.clipPath,
           }}
         >
           {title}
@@ -79,6 +83,8 @@ export const ChapterTitleOverlay: React.FC<{
               color: "rgba(255,255,255,0.9)",
               opacity: subtitleStyle.opacity,
               transform: subtitleStyle.transform,
+              filter: subtitleStyle.filter,
+              clipPath: subtitleStyle.clipPath,
             }}
           >
             {subtitle}

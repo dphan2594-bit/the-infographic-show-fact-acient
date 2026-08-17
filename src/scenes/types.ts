@@ -1,3 +1,5 @@
+import type { EntranceName, IdleName } from "../animation/presets";
+
 export type KenBurnsDirection =
   | "zoom-in"
   | "zoom-out"
@@ -28,22 +30,22 @@ export type Background =
 /**
  * Motion graphics entrance style — matches the "làm bằng CapCut" replacements
  * in Mục 8 of docs/SKILL-FLAT-EXPLAINER.md (scale-in pop, slide-in, stagger
- * reveal, crossfade), implemented natively in Remotion instead.
+ * reveal, crossfade) plus the After Effects style preset library, all
+ * implemented natively in Remotion. The full catalogue with descriptions lives
+ * in src/animation/presets.ts; preview them in the "PresetGallery" composition.
  */
-export type Entrance =
-  | "pop"
-  | "slideLeft"
-  | "slideRight"
-  | "slideUp"
-  | "slideDown"
-  | "fade"
-  | "none";
+export type Entrance = EntranceName;
+
+/** Looping motion applied after the entrance settles (AE `wiggle()` & friends). */
+export type Idle = IdleName;
 
 type EntranceProps = {
   /** entrance animation style, defaults to "fade" */
   entrance?: Entrance;
   /** frames to wait (within the scene) before this overlay starts entering */
   delayFrames?: number;
+  /** looping idle motion once the entrance has settled, defaults to "none" */
+  idle?: Idle;
 };
 
 export type Overlay =
@@ -70,16 +72,16 @@ export type Overlay =
       x: number;
       y: number;
     } & EntranceProps)
-  | {
+  | ({
       type: "dateHud";
       date: string;
-    }
-  | {
+    } & EntranceProps)
+  | ({
       type: "caption";
       text: string;
       /** anchor the caption bar to the top instead of the bottom, to dodge baked-in text in the image */
       position?: "top" | "bottom";
-    }
+    } & EntranceProps)
   | ({
       /** checklist / comparison grid — each item pops or slides in with a stagger delay */
       type: "staggerBadges";
@@ -87,8 +89,7 @@ export type Overlay =
       accentColor: string;
       /** frames between each item's entrance, default 8 */
       staggerFrames?: number;
-      entrance?: Extract<Entrance, "pop" | "slideUp" | "fade">;
-    })
+    } & EntranceProps)
   | {
       /** animated line chart — draws progressively, for depletion curves / growth charts */
       type: "chartLine";
@@ -99,7 +100,7 @@ export type Overlay =
       drawEndFrame: number;
       showDot?: boolean;
     }
-  | {
+  | ({
       /** horizontal process-flow diagram (E8): boxes + connecting arrows, staggered reveal */
       type: "processFlow";
       steps: { label: string }[];
@@ -107,7 +108,7 @@ export type Overlay =
       y: number;
       /** frames between each step's entrance, default 12 */
       staggerFrames?: number;
-    };
+    } & EntranceProps);
 
 export type SceneTransition =
   | { type: "fade"; durationInFrames?: number }

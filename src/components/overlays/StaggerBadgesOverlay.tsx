@@ -1,6 +1,6 @@
 import { AbsoluteFill } from "remotion";
 import { useEntranceStyle } from "../../animation/useEntranceStyle";
-import type { Entrance } from "../../scenes/types";
+import type { Entrance, Idle } from "../../scenes/types";
 
 const StaggerItem: React.FC<{
   icon: string;
@@ -8,10 +8,11 @@ const StaggerItem: React.FC<{
   x: number;
   y: number;
   accentColor: string;
-  entrance: Extract<Entrance, "pop" | "slideUp" | "fade">;
+  entrance: Entrance;
   delayFrames: number;
-}> = ({ icon, label, x, y, accentColor, entrance, delayFrames }) => {
-  const { opacity, transform } = useEntranceStyle(entrance, delayFrames);
+  idle: Idle;
+}> = ({ icon, label, x, y, accentColor, entrance, delayFrames, idle }) => {
+  const { opacity, transform, filter, clipPath } = useEntranceStyle(entrance, delayFrames, idle);
 
   return (
     <div
@@ -21,6 +22,8 @@ const StaggerItem: React.FC<{
         top: `${y}%`,
         transform: `translate(-50%, -50%) ${transform}`,
         opacity,
+        filter,
+        clipPath,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -71,8 +74,17 @@ export const StaggerBadgesOverlay: React.FC<{
   items: { icon: string; label: string; x: number; y: number }[];
   accentColor: string;
   staggerFrames?: number;
-  entrance?: Extract<Entrance, "pop" | "slideUp" | "fade">;
-}> = ({ items, accentColor, staggerFrames = 8, entrance = "pop" }) => {
+  entrance?: Entrance;
+  delayFrames?: number;
+  idle?: Idle;
+}> = ({
+  items,
+  accentColor,
+  staggerFrames = 8,
+  entrance = "pop",
+  delayFrames = 0,
+  idle = "none",
+}) => {
   return (
     <AbsoluteFill>
       {items.map((item, i) => (
@@ -81,7 +93,8 @@ export const StaggerBadgesOverlay: React.FC<{
           {...item}
           accentColor={accentColor}
           entrance={entrance}
-          delayFrames={i * staggerFrames}
+          delayFrames={delayFrames + i * staggerFrames}
+          idle={idle}
         />
       ))}
     </AbsoluteFill>

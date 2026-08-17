@@ -136,10 +136,73 @@ không cần sửa logic overlay.
 | `processFlow` | các ô process pop-in lần lượt, mũi tên nối tự vẽ ngay sau | E8 Process Flow |
 | `dateHud` / `caption` | trượt vào / fade | — |
 
-Hầu hết overlay nhận thêm `entrance` (`"pop" \| "slideLeft" \| "slideRight" \|
-"slideUp" \| "slideDown" \| "fade" \| "none"`) và `delayFrames` để tự phối
-stagger nhiều overlay trong cùng 1 scene (vd 2 `dataBadge` với
-`entrance: "slideLeft"` / `"slideRight"` cùng lúc = so sánh đối xứng).
+Mọi overlay đều nhận `entrance`, `delayFrames` và `idle` (xem "Animation presets"
+bên dưới) để tự phối stagger nhiều overlay trong cùng 1 scene (vd 2 `dataBadge`
+với `entrance: "slideLeft"` / `"slideRight"` cùng lúc = so sánh đối xứng).
+
+## Animation presets (kiểu After Effects)
+
+Thay cho việc kéo-thả preset trong panel *Effects & Presets* của After Effects,
+toàn bộ preset ở đây là hàm thuần trong [`src/animation/presets.ts`](src/animation/presets.ts),
+gọi bằng tên trong manifest. Hai nhóm:
+
+**`entrance` — chạy 1 lần khi overlay xuất hiện**
+
+| Preset | AE tương ứng | Dùng khi |
+|---|---|---|
+| `fade` | Fade In | mờ dần đơn giản |
+| `fade-up` | Fade Up | chữ/phụ đề — an toàn nhất |
+| `pop` | Scale In | badge, callout (mặc định) |
+| `overshoot` | Scale In (overshoot) | title nảy, năng lượng cao hơn `pop` |
+| `elastic-drop` | Drop In | số liệu rơi xuống, nảy + squash khi chạm |
+| `blur-in` | Blur Dissolve | chuyển mềm trên nền ảnh nhiều chi tiết |
+| `whip-left` / `whip-right` | Whip Pan | vụt ngang kèm motion blur |
+| `flip-in-x` / `flip-in-y` | Flip In | lật thẻ 3D |
+| `roll-in` | Roll In | icon badge lăn vào |
+| `zoom-punch` | Zoom In | cú nhấn cho hook / số lớn |
+| `stamp` | Stamp | đóng dấu, reveal mạnh |
+| `wipe-up` / `wipe-right` | Linear Wipe | lộ dần bằng clip-path, không di chuyển |
+| `swing-in` | Swing In | đung đưa như biển treo |
+| `slideLeft` / `slideRight` / `slideUp` / `slideDown` / `none` | — | bộ cũ, vẫn dùng được |
+
+**`idle` — lặp vô hạn sau khi entrance đã ổn định**
+
+`wiggle` (như biểu thức `wiggle()` của AE), `float`, `pulse`, `sway`, `breathe`,
+`none` (mặc định). Idle chỉ bắt đầu sau khi entrance chạy xong và ramp vào trong
+8 frame nên không giật.
+
+**Xem thử trước khi chọn:** `npm run dev` rồi mở composition **PresetGallery** —
+mỗi preset chạy song song trên 1 ô, lặp mỗi 60 frame.
+
+**Dùng trong manifest:**
+
+```json
+{
+  "id": "workers",
+  "image": "images/scene-03.png",
+  "audio": "audio/scene-03.mp3",
+  "caption": "Hơn 100.000 công nhân đã tham gia xây dựng.",
+  "captionEntrance": "fade-up",
+  "overlays": [
+    {
+      "type": "dataBadge",
+      "value": "100K+",
+      "x": 72,
+      "y": 30,
+      "accentColor": "#F2A93B",
+      "entrance": "elastic-drop",
+      "idle": "float",
+      "delayFrames": 18
+    }
+  ]
+}
+```
+
+Trên chính entry manifest: `entrance` / `delayFrames` / `idle` áp cho
+`chapterTitle`, `captionEntrance` / `captionDelayFrames` / `captionIdle` cho phụ
+đề, `dateHudEntrance`... cho widget ngày. Overlay khai báo thẳng trong mảng
+`overlays` thì đặt field ngay trên overlay đó. Gõ sai tên preset sẽ bị
+`npm run lint` (tsc) báo lỗi trên `src/scenes/generated.ts`.
 
 ## Commands
 

@@ -18,6 +18,7 @@ export const OverlayRenderer: React.FC<{ overlay: Overlay }> = ({ overlay }) => 
           accentColor={overlay.accentColor}
           entrance={overlay.entrance}
           delayFrames={overlay.delayFrames}
+          idle={overlay.idle}
         />
       );
     case "dataBadge":
@@ -31,6 +32,7 @@ export const OverlayRenderer: React.FC<{ overlay: Overlay }> = ({ overlay }) => 
           calloutTo={overlay.calloutTo}
           entrance={overlay.entrance}
           delayFrames={overlay.delayFrames}
+          idle={overlay.idle}
         />
       );
     case "iconLabel":
@@ -41,12 +43,28 @@ export const OverlayRenderer: React.FC<{ overlay: Overlay }> = ({ overlay }) => 
           y={overlay.y}
           entrance={overlay.entrance}
           delayFrames={overlay.delayFrames}
+          idle={overlay.idle}
         />
       );
     case "dateHud":
-      return <DateHudOverlay date={overlay.date} />;
+      return (
+        <DateHudOverlay
+          date={overlay.date}
+          entrance={overlay.entrance}
+          delayFrames={overlay.delayFrames}
+          idle={overlay.idle}
+        />
+      );
     case "caption":
-      return <CaptionOverlay text={overlay.text} position={overlay.position} />;
+      return (
+        <CaptionOverlay
+          text={overlay.text}
+          position={overlay.position}
+          entrance={overlay.entrance}
+          delayFrames={overlay.delayFrames}
+          idle={overlay.idle}
+        />
+      );
     case "staggerBadges":
       return (
         <StaggerBadgesOverlay
@@ -54,6 +72,8 @@ export const OverlayRenderer: React.FC<{ overlay: Overlay }> = ({ overlay }) => 
           accentColor={overlay.accentColor}
           staggerFrames={overlay.staggerFrames}
           entrance={overlay.entrance}
+          delayFrames={overlay.delayFrames}
+          idle={overlay.idle}
         />
       );
     case "chartLine":
@@ -72,6 +92,9 @@ export const OverlayRenderer: React.FC<{ overlay: Overlay }> = ({ overlay }) => 
           accentColor={overlay.accentColor}
           y={overlay.y}
           staggerFrames={overlay.staggerFrames}
+          entrance={overlay.entrance}
+          delayFrames={overlay.delayFrames}
+          idle={overlay.idle}
         />
       );
     default:

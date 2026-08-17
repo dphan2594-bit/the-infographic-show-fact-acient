@@ -17,6 +17,8 @@
     "chapterSubtitle": "Kỳ quan cổ đại cuối cùng còn tồn tại",
     "backgroundColor": "#6B5CE0",
     "audio": "audio/scene-02-chapter.mp3",
+    "entrance": "stamp",
+    "captionEntrance": "fade-up",
     "transitionIn": { "type": "wipe", "direction": "from-left" }
   },
   {
@@ -26,7 +28,21 @@
     "image": "images/scene-03-builder.png",
     "audio": "audio/scene-03-builder.mp3",
     "caption": "Hơn 100.000 công nhân đã tham gia xây dựng công trình này.",
+    "captionEntrance": "fade-up",
     "kenBurns": "zoom-in",
+    "overlays": [
+      {
+        "type": "dataBadge",
+        "value": "100K+",
+        "label": "Công nhân",
+        "x": 72,
+        "y": 30,
+        "accentColor": "#F2A93B",
+        "entrance": "elastic-drop",
+        "idle": "float",
+        "delayFrames": 18
+      }
+    ],
     "transitionIn": { "type": "fade" }
   },
   {

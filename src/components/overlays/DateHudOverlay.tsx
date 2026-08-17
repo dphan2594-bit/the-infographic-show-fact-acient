@@ -1,9 +1,14 @@
-import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
+import { AbsoluteFill } from "remotion";
+import { useEntranceStyle } from "../../animation/useEntranceStyle";
+import type { Entrance, Idle } from "../../scenes/types";
 
-export const DateHudOverlay: React.FC<{ date: string }> = ({ date }) => {
-  const frame = useCurrentFrame();
-  const translateX = interpolate(frame, [0, 12], [-40, 0], { extrapolateRight: "clamp" });
-  const opacity = interpolate(frame, [0, 12], [0, 1], { extrapolateRight: "clamp" });
+export const DateHudOverlay: React.FC<{
+  date: string;
+  entrance?: Entrance;
+  delayFrames?: number;
+  idle?: Idle;
+}> = ({ date, entrance = "slideRight", delayFrames = 0, idle = "none" }) => {
+  const { opacity, transform, filter, clipPath } = useEntranceStyle(entrance, delayFrames, idle);
 
   return (
     <AbsoluteFill>
@@ -12,7 +17,9 @@ export const DateHudOverlay: React.FC<{ date: string }> = ({ date }) => {
           position: "absolute",
           top: 32,
           left: 32,
-          transform: `translateX(${translateX}px)`,
+          transform,
+          filter,
+          clipPath,
           opacity,
           display: "flex",
           alignItems: "center",

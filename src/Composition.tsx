@@ -1,5 +1,6 @@
 import { CalculateMetadataFunction, Composition } from "remotion";
 import { InfographicVideo, getTotalDurationInFrames } from "./InfographicVideo";
+import { PRESET_GALLERY_DURATION, PresetGallery } from "./PresetGallery";
 import { activeScenes } from "./scenes/active";
 import type { Scene } from "./scenes/types";
 
@@ -29,6 +30,23 @@ export const InfographicComposition = () => {
       height={HEIGHT}
       defaultProps={{ scenes: activeScenes }}
       calculateMetadata={calculateMetadata}
+    />
+  );
+};
+
+/**
+ * Preview-only composition: every animation preset playing side by side, so
+ * you can pick one by eye before writing it into content/manifest.json.
+ */
+export const PresetGalleryComposition = () => {
+  return (
+    <Composition
+      id="PresetGallery"
+      component={PresetGallery}
+      durationInFrames={PRESET_GALLERY_DURATION}
+      fps={FPS}
+      width={WIDTH}
+      height={HEIGHT}
     />
   );
 };

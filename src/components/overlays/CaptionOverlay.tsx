@@ -1,21 +1,30 @@
-import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
+import { AbsoluteFill } from "remotion";
+import { useEntranceStyle } from "../../animation/useEntranceStyle";
+import type { Entrance, Idle } from "../../scenes/types";
 
-export const CaptionOverlay: React.FC<{ text: string; position?: "top" | "bottom" }> = ({
-  text,
-  position = "bottom",
-}) => {
-  const frame = useCurrentFrame();
-  const opacity = interpolate(frame, [0, 10], [0, 1], { extrapolateRight: "clamp" });
+export const CaptionOverlay: React.FC<{
+  text: string;
+  position?: "top" | "bottom";
+  entrance?: Entrance;
+  delayFrames?: number;
+  idle?: Idle;
+}> = ({ text, position = "bottom", entrance = "fade", delayFrames = 0, idle = "none" }) => {
+  const { opacity, transform, filter, clipPath } = useEntranceStyle(entrance, delayFrames, idle);
 
   return (
     <AbsoluteFill
-      style={{ justifyContent: position === "bottom" ? "flex-end" : "flex-start" }}
+      style={{
+        justifyContent: position === "bottom" ? "flex-end" : "flex-start",
+      }}
     >
       <div
         style={{
           margin: position === "bottom" ? "0 auto 64px" : "64px auto 0",
           maxWidth: "80%",
           opacity,
+          transform,
+          filter,
+          clipPath,
           backgroundColor: "rgba(0,0,0,0.7)",
           padding: "14px 28px",
           borderRadius: 12,
