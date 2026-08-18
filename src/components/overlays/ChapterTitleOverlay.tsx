@@ -6,10 +6,24 @@ export const ChapterTitleOverlay: React.FC<{
   title: string;
   subtitle?: string;
   accentColor: string;
+  /**
+   * Dark scrim + diagonal pattern behind the text. On by default (it is what
+   * makes a solid-colour chapter card look like a card); turn it off over
+   * artwork or an animated backdrop that should stay visible.
+   */
+  plate?: boolean;
   entrance?: Entrance;
   delayFrames?: number;
   idle?: Idle;
-}> = ({ title, subtitle, accentColor, entrance = "pop", delayFrames = 0, idle = "none" }) => {
+}> = ({
+  title,
+  subtitle,
+  accentColor,
+  plate = true,
+  entrance = "pop",
+  delayFrames = 0,
+  idle = "none",
+}) => {
   const frame = useCurrentFrame();
   const badge = useEntranceStyle("slideDown", delayFrames);
   const titleStyle = useEntranceStyle(entrance, delayFrames + 4, idle);
@@ -21,19 +35,23 @@ export const ChapterTitleOverlay: React.FC<{
       style={{
         alignItems: "center",
         justifyContent: "center",
-        background: "radial-gradient(circle at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.45) 100%)",
+        background: plate
+          ? "radial-gradient(circle at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.45) 100%)"
+          : undefined,
         overflow: "hidden",
       }}
     >
-      <div
-        style={{
-          position: "absolute",
-          inset: -80,
-          backgroundImage:
-            "repeating-linear-gradient(45deg, rgba(255,255,255,0.07) 0, rgba(255,255,255,0.07) 2px, transparent 2px, transparent 40px)",
-          transform: `translate(${patternShift}px, ${patternShift}px)`,
-        }}
-      />
+      {plate ? (
+        <div
+          style={{
+            position: "absolute",
+            inset: -80,
+            backgroundImage:
+              "repeating-linear-gradient(45deg, rgba(255,255,255,0.07) 0, rgba(255,255,255,0.07) 2px, transparent 2px, transparent 40px)",
+            transform: `translate(${patternShift}px, ${patternShift}px)`,
+          }}
+        />
+      ) : null}
       <div style={{ textAlign: "center", padding: "0 8%", position: "relative" }}>
         <div
           style={{

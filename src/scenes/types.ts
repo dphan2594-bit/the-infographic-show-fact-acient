@@ -1,4 +1,7 @@
 import type { EntranceName, IdleName } from "../animation/presets";
+import type { SpaceBackground } from "../components/space/SpaceBackdrop";
+
+export type { SpaceVariant } from "../components/space/SpaceBackdrop";
 
 export type KenBurnsDirection =
   | "zoom-in"
@@ -25,7 +28,13 @@ export type Background =
       letterboxColor?: string;
     }
   | { type: "video"; src: string }
-  | { type: "color"; color: string };
+  | { type: "color"; color: string }
+  /**
+   * Animated Kurzgesagt-style space backdrop rendered entirely in code —
+   * starfield, nebula, curved grid horizon or warp streaks. No image asset
+   * needed, and it never holds a static frame.
+   */
+  | SpaceBackground;
 
 /**
  * Motion graphics entrance style — matches the "làm bằng CapCut" replacements
@@ -48,12 +57,33 @@ type EntranceProps = {
   idle?: Idle;
 };
 
+/** one elliptical orbit in an `orbitSystem` overlay */
+export type OrbitRing = {
+  /** ring radius in pixels at 1080 wide, scaled with the frame */
+  radius: number;
+  /** ry/rx — how flat the ellipse looks, default 0.42 (a tilted circle) */
+  flatten?: number;
+  /** rotation of the whole ellipse in degrees, default -22 */
+  tiltDeg?: number;
+  color?: string;
+  opacity?: number;
+  satelliteColor?: string;
+  satelliteSize?: number;
+  /** seconds for the satellite to go all the way round, default 6 */
+  secondsPerRevolution?: number;
+  direction?: "cw" | "ccw";
+  /** starting angle in radians, so two satellites do not sit on top of each other */
+  phase?: number;
+};
+
 export type Overlay =
   | ({
       type: "chapterTitle";
       title: string;
       subtitle?: string;
       accentColor: string;
+      /** dark scrim + diagonal pattern behind the text, default true — set false over animated backdrops */
+      plate?: boolean;
     } & EntranceProps)
   | ({
       type: "dataBadge";
@@ -101,6 +131,29 @@ export type Overlay =
       showDot?: boolean;
     }
   | ({
+      /** glowing core + satellites on tilted orbit rings (Kurzgesagt "system" shot) */
+      type: "orbitSystem";
+      x: number;
+      y: number;
+      coreRadius?: number;
+      coreColor?: string;
+      glowColor?: string;
+      rings?: OrbitRing[];
+    } & EntranceProps)
+  | {
+      /** one-shot particle burst to punctuate a reveal */
+      type: "sparkleBurst";
+      x: number;
+      y: number;
+      /** frame within the scene the burst fires on, default 0 */
+      atFrame?: number;
+      count?: number;
+      colors?: string[];
+      spread?: number;
+      durationInFrames?: number;
+      seed?: string;
+    }
+  | ({
       /** horizontal process-flow diagram (E8): boxes + connecting arrows, staggered reveal */
       type: "processFlow";
       steps: { label: string }[];
@@ -112,8 +165,16 @@ export type Overlay =
 
 export type SceneTransition =
   | { type: "fade"; durationInFrames?: number }
-  | { type: "slide"; direction?: "from-left" | "from-right" | "from-top" | "from-bottom"; durationInFrames?: number }
-  | { type: "wipe"; direction?: "from-left" | "from-right" | "from-top" | "from-bottom"; durationInFrames?: number }
+  | {
+      type: "slide";
+      direction?: "from-left" | "from-right" | "from-top" | "from-bottom";
+      durationInFrames?: number;
+    }
+  | {
+      type: "wipe";
+      direction?: "from-left" | "from-right" | "from-top" | "from-bottom";
+      durationInFrames?: number;
+    }
   | { type: "none" };
 
 export type Scene = {

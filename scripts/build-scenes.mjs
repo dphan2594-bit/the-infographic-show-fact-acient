@@ -54,6 +54,12 @@ async function getAudioDurationInFrames(audioRelativePath) {
 }
 
 function buildBackground(entry, kenBurnsIndex) {
+  // Kurzgesagt-style animated backdrop, drawn in code — no image asset needed.
+  // "space": "starfield" is shorthand for { "variant": "starfield" }.
+  if (entry.space) {
+    const space = typeof entry.space === "string" ? { variant: entry.space } : entry.space;
+    return { type: "space", ...space };
+  }
   if (entry.image) {
     const kenBurns =
       entry.kenBurns ?? KEN_BURNS_ROTATION[kenBurnsIndex % KEN_BURNS_ROTATION.length];

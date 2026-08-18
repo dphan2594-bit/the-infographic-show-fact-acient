@@ -28,9 +28,19 @@ src/
     active.ts     # switch điểm duy nhất: sample.ts hay generated.ts đang render
     generated.ts  # sinh tự động bởi build-scenes.mjs, đừng sửa tay
   animation/
-    useEntranceStyle.ts   # hook entrance dùng chung: pop / slideX / fade / none
+    presets.ts            # thư viện preset entrance/idle (AE + Kurzgesagt)
+    useEntranceStyle.ts   # hook entrance dùng chung, đọc từ presets.ts
+    random.ts             # PRNG có seed — sao/hạt phải cố định qua từng frame
+  theme/
+    kurzgesagt.ts         # bảng màu vũ trụ (navy, tím, cyan, hồng, vàng)
   components/
-    Background.tsx        # ảnh tĩnh + Ken Burns / video / màu nền
+    Background.tsx        # ảnh tĩnh + Ken Burns / video / màu nền / backdrop vũ trụ
+    space/                # backdrop Kurzgesagt vẽ bằng code
+      SpaceBackdrop.tsx     # gom 4 variant: starfield / nebula / grid-horizon / warp
+      Starfield.tsx         # sao nhấp nháy + parallax theo độ sâu
+      NebulaGlow.tsx        # mây màu trôi chậm
+      GridHorizon.tsx       # chân trời hành tinh cong + lưới phối cảnh chạy
+      WarpStreaks.tsx       # vệt sáng du hành siêu tốc
     KenBurnsImage.tsx      # pan/zoom cho ảnh tĩnh
     Scene.tsx              # ghép background + overlays + audio 1 scene
     overlays/
@@ -42,8 +52,12 @@ src/
       StaggerBadgesOverlay.tsx  # checklist/so sánh — stagger reveal
       ChartLineOverlay.tsx      # biểu đồ đường tự vẽ (depletion/growth curve)
       ProcessFlowOverlay.tsx    # E8 process flow — box pop-in + mũi tên tự vẽ
+      OrbitSystemOverlay.tsx    # lõi phát sáng + vệ tinh chạy trên vòng elip
+      SparkleBurstOverlay.tsx   # chùm hạt + vòng xung kích nhấn 1 khoảnh khắc
   InfographicVideo.tsx    # nối scene bằng <TransitionSeries> (fade/slide/wipe)
-  Composition.tsx          # đăng ký composition "Infographic" (1920x1080, 30fps)
+  PresetGallery.tsx        # composition xem trước toàn bộ preset
+  scenes/kurzgesagt.ts     # kịch bản demo cho gói animation Kurzgesagt
+  Composition.tsx          # đăng ký composition: Infographic / PresetGallery / KurzgesagtDemo
 ```
 
 ## Khớp audio/ảnh/phụ đề tự động
@@ -203,6 +217,73 @@ Trên chính entry manifest: `entrance` / `delayFrames` / `idle` áp cho
 đề, `dateHudEntrance`... cho widget ngày. Overlay khai báo thẳng trong mảng
 `overlays` thì đặt field ngay trên overlay đó. Gõ sai tên preset sẽ bị
 `npm run lint` (tsc) báo lỗi trên `src/scenes/generated.ts`.
+
+## Gói animation kiểu Kurzgesagt
+
+Toàn bộ backdrop vũ trụ được **vẽ bằng code**, không cần ảnh AI: sao nhấp nháy,
+tinh vân trôi, chân trời hành tinh cong có lưới phối cảnh chạy, và vệt warp.
+Mọi thứ chuyển động liên tục — nguyên tắc số một của Kurzgesagt là không bao giờ
+để khung hình đứng yên.
+
+**Backdrop (`space` trong manifest, `background.type === "space"` trong code)**
+
+| variant | Trông như thế nào |
+|---|---|
+| `starfield` | sao nhấp nháy + trôi parallax theo độ sâu, thêm chút tinh vân mờ |
+| `nebula` | như trên nhưng mây màu tím/lam/hồng đậm hơn, trôi chậm |
+| `grid-horizon` | mặt đất xanh cong như bề mặt hành tinh + lưới phối cảnh chạy về phía người xem |
+| `warp` | vệt sáng lao ngang màn hình, cảnh "du hành siêu tốc" |
+
+Tuỳ chọn: `baseColor`, `accentColor` (màu đất / màu vệt), `density` (mật độ sao,
+mặc định 1), `seed` (đổi cách rải sao mà không đổi phong cách).
+
+```json
+{
+  "id": "hook",
+  "space": { "variant": "starfield", "density": 1.1 },
+  "audio": "audio/scene-01.mp3",
+  "caption": "Vũ trụ rộng cỡ nào?"
+}
+```
+
+**Overlay mới**
+
+- `orbitSystem` — lõi phát sáng + vệ tinh chạy trên các vòng elip nghiêng. Mỗi
+  vòng có `radius`, `flatten` (độ dẹt), `tiltDeg`, `secondsPerRevolution`,
+  `direction` (`cw`/`ccw`), `phase`, màu riêng. Lõi tự "thở" bằng idle `breathe`.
+- `sparkleBurst` — chùm hạt bắn ra + vòng xung kích, bắn đúng `atFrame` để nhấn
+  một con số/kết luận. Mỗi scene chỉ nên dùng 1 lần.
+
+**Preset chuyển động kiểu Kurzgesagt** (dùng chung với bảng preset ở trên)
+
+| Preset | Cảm giác |
+|---|---|
+| `squash-pop` | vật thể kéo dãn khi hiện ra, bẹp xuống khi "chạm đất" — có khối lượng |
+| `orbit-in` | bay vào theo cung tròn, vừa bay vừa xoay thẳng lại |
+| `rise-float` | nổi lên đúng chỗ như có lực đẩy, rất hợp cho chữ trên nền vũ trụ |
+| `unfold` | mở ra từ một vạch ngang, hợp cho thẻ/biểu đồ |
+
+Idle mới: `orbit` (trôi vòng tròn nhỏ), `twinkle` (nhấp nháy như sao).
+
+**Xem thử:** `npm run dev` → composition **KurzgesagtDemo** (4 cảnh, ~16 giây,
+không dùng một file ảnh nào). Kịch bản của nó nằm ở
+[`src/scenes/kurzgesagt.ts`](src/scenes/kurzgesagt.ts) — copy thẳng sang
+`content/manifest.json` là dùng được.
+
+```console
+npx remotion render KurzgesagtDemo out/kurzgesagt.mp4
+```
+
+**Mẹo giữ đúng phong cách:**
+
+- Chữ đè lên backdrop động thì đặt `"plate": false` cho `chapterTitle` để bỏ lớp
+  scrim tối + hoa văn chéo (lớp đó chỉ dành cho chapter card nền màu đặc).
+- Luôn gắn thêm `idle` (`float`, `breathe`, `orbit`) cho vật thể tĩnh — Kurzgesagt
+  không bao giờ để một vật đứng chết trên màn hình.
+- Bảng màu chuẩn nằm ở [`src/theme/kurzgesagt.ts`](src/theme/kurzgesagt.ts).
+- Mọi thứ ngẫu nhiên (vị trí sao, hạt) đều đi qua bộ sinh có seed trong
+  `src/animation/random.ts` — dùng `Math.random()` sẽ khiến mỗi frame một khác và
+  hình bị "sôi".
 
 ## Commands
 

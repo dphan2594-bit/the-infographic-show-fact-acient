@@ -7,6 +7,8 @@ import { CaptionOverlay } from "./overlays/CaptionOverlay";
 import { StaggerBadgesOverlay } from "./overlays/StaggerBadgesOverlay";
 import { ChartLineOverlay } from "./overlays/ChartLineOverlay";
 import { ProcessFlowOverlay } from "./overlays/ProcessFlowOverlay";
+import { OrbitSystemOverlay } from "./overlays/OrbitSystemOverlay";
+import { SparkleBurstOverlay } from "./overlays/SparkleBurstOverlay";
 
 export const OverlayRenderer: React.FC<{ overlay: Overlay }> = ({ overlay }) => {
   switch (overlay.type) {
@@ -16,6 +18,7 @@ export const OverlayRenderer: React.FC<{ overlay: Overlay }> = ({ overlay }) => 
           title={overlay.title}
           subtitle={overlay.subtitle}
           accentColor={overlay.accentColor}
+          plate={overlay.plate}
           entrance={overlay.entrance}
           delayFrames={overlay.delayFrames}
           idle={overlay.idle}
@@ -83,6 +86,33 @@ export const OverlayRenderer: React.FC<{ overlay: Overlay }> = ({ overlay }) => 
           color={overlay.color}
           drawEndFrame={overlay.drawEndFrame}
           showDot={overlay.showDot}
+        />
+      );
+    case "orbitSystem":
+      return (
+        <OrbitSystemOverlay
+          x={overlay.x}
+          y={overlay.y}
+          coreRadius={overlay.coreRadius}
+          coreColor={overlay.coreColor}
+          glowColor={overlay.glowColor}
+          rings={overlay.rings}
+          entrance={overlay.entrance}
+          delayFrames={overlay.delayFrames}
+          idle={overlay.idle}
+        />
+      );
+    case "sparkleBurst":
+      return (
+        <SparkleBurstOverlay
+          x={overlay.x}
+          y={overlay.y}
+          atFrame={overlay.atFrame}
+          count={overlay.count}
+          colors={overlay.colors}
+          spread={overlay.spread}
+          durationInFrames={overlay.durationInFrames}
+          seed={overlay.seed}
         />
       );
     case "processFlow":

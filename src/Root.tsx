@@ -1,11 +1,16 @@
 import "./index.css";
-import { InfographicComposition, PresetGalleryComposition } from "./Composition";
+import {
+  InfographicComposition,
+  KurzgesagtDemoComposition,
+  PresetGalleryComposition,
+} from "./Composition";
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
       <InfographicComposition />
       <PresetGalleryComposition />
+      <KurzgesagtDemoComposition />
     </>
   );
 };

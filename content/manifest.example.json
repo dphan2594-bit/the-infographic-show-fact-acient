@@ -57,5 +57,30 @@
     "letterboxColor": "#F3EEE1",
     "captionBar": { "color": "#F3EEE1", "heightPercent": 14, "position": "bottom" },
     "transitionIn": { "type": "fade" }
+  },
+  {
+    "id": "space-example",
+    "motion": "animate",
+    "archetype": "Kurzgesagt space shot — không cần ảnh",
+    "space": { "variant": "starfield", "density": 1.1 },
+    "audio": "audio/scene-06-space.mp3",
+    "caption": "Backdrop vũ trụ vẽ hoàn toàn bằng code — sao nhấp nháy, tinh vân trôi.",
+    "captionEntrance": "rise-float",
+    "overlays": [
+      {
+        "type": "orbitSystem",
+        "x": 50,
+        "y": 34,
+        "coreRadius": 88,
+        "entrance": "squash-pop",
+        "idle": "breathe",
+        "rings": [
+          { "radius": 300, "secondsPerRevolution": 7 },
+          { "radius": 420, "flatten": 0.3, "tiltDeg": 14, "direction": "ccw", "phase": 1.9 }
+        ]
+      },
+      { "type": "sparkleBurst", "x": 50, "y": 34, "atFrame": 30 }
+    ],
+    "transitionIn": { "type": "fade" }
   }
 ]

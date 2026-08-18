@@ -56,9 +56,24 @@ export type AeEntranceName =
   | "wipe-right"
   | "swing-in";
 
-export type EntranceName = LegacyEntranceName | AeEntranceName;
+/**
+ * Kurzgesagt-flavoured presets: soft, weighty, always overshooting a little,
+ * as if every object had mass and air resistance. Pair them with an idle loop
+ * so nothing ever comes to a dead stop.
+ */
+export type KurzgesagtEntranceName = "squash-pop" | "orbit-in" | "rise-float" | "unfold";
 
-export type IdleName = "none" | "wiggle" | "float" | "pulse" | "sway" | "breathe";
+export type EntranceName = LegacyEntranceName | AeEntranceName | KurzgesagtEntranceName;
+
+export type IdleName =
+  | "none"
+  | "wiggle"
+  | "float"
+  | "pulse"
+  | "sway"
+  | "breathe"
+  | "orbit"
+  | "twinkle";
 
 export type EntrancePreset = {
   name: EntranceName;
@@ -369,6 +384,67 @@ const ENTRANCE_PRESETS: EntrancePreset[] = [
       };
     },
   },
+  {
+    name: "squash-pop",
+    label: "Squash & Stretch Pop",
+    description:
+      "Kurzgesagt's house entrance: the object stretches tall as it appears, squashes wide as it lands, then settles. Reads as physical weight rather than a keyframe.",
+    durationInFrames: 24,
+    apply: ({ frame, fps }) => {
+      const progress = spring({ frame, fps, config: { damping: 10, mass: 0.6, stiffness: 150 } });
+      const scale = 0.4 + 0.6 * progress;
+      // overshoot drives the squash: >1 means it is compressing on landing
+      const squash = (progress - 1) * 0.35;
+      return {
+        opacity: fadeIn(frame, 6),
+        transform: `scale(${round(scale * (1 + squash))}, ${round(scale * (1 - squash))})`,
+      };
+    },
+  },
+  {
+    name: "orbit-in",
+    label: "Orbit In",
+    description:
+      "Swings in along a quarter-circle arc while rotating upright — for moons, icons and anything that should feel like it flew here.",
+    durationInFrames: 30,
+    apply: ({ frame, fps }) => {
+      const progress = spring({ frame, fps, config: { damping: 13, mass: 0.9, stiffness: 110 } });
+      const angle = (1 - progress) * (Math.PI / 2);
+      const radius = 220 * (1 - progress);
+      return {
+        opacity: fadeIn(frame, 8),
+        transform: `translate(${round(Math.cos(angle) * radius, 2)}px, ${round(-Math.sin(angle) * radius, 2)}px) rotate(${round((1 - progress) * 35, 2)}deg)`,
+      };
+    },
+  },
+  {
+    name: "rise-float",
+    label: "Rise & Float",
+    description:
+      "Drifts up into place as if buoyant, overshooting slightly and easing back down — the calmest way to introduce text over a space backdrop.",
+    durationInFrames: 34,
+    apply: ({ frame, fps }) => {
+      const progress = spring({ frame, fps, config: { damping: 11, mass: 1.1, stiffness: 90 } });
+      return {
+        opacity: fadeIn(frame, 14),
+        transform: `translateY(${round((1 - progress) * 90, 2)}px)`,
+      };
+    },
+  },
+  {
+    name: "unfold",
+    label: "Unfold",
+    description:
+      "Opens from a flat horizontal line, like a panel folding out — good for cards, charts and any rectangular graphic.",
+    durationInFrames: 22,
+    apply: ({ frame, fps }) => {
+      const progress = spring({ frame, fps, config: { damping: 12, mass: 0.5, stiffness: 160 } });
+      return {
+        opacity: fadeIn(frame, 5),
+        transform: `scaleY(${round(0.02 + 0.98 * Math.min(progress, 1.08))}) scaleX(${round(0.7 + 0.3 * progress)})`,
+      };
+    },
+  },
 ];
 
 function whip(frame: number, fps: number, from: number): PresetStyle {
@@ -446,6 +522,28 @@ const IDLE_PRESETS: IdlePreset[] = [
       opacity: 1,
       transform: `rotate(${round(Math.sin(frame * 0.05) * 1.5, 2)}deg)`,
     }),
+  },
+  {
+    name: "orbit",
+    label: "Orbit",
+    description:
+      "Small circular drift — a body slowly going round a point just off screen. The default 'nothing is ever still' loop for space scenes.",
+    apply: ({ frame }) => ({
+      opacity: 1,
+      transform: `translate(${round(Math.cos(frame * 0.035) * 9, 2)}px, ${round(Math.sin(frame * 0.035) * 9, 2)}px)`,
+    }),
+  },
+  {
+    name: "twinkle",
+    label: "Twinkle",
+    description: "Opacity and scale flicker on an irregular period, for stars and highlights.",
+    apply: ({ frame }) => {
+      const pulse = Math.sin(frame * 0.19) * 0.5 + Math.sin(frame * 0.31) * 0.5;
+      return {
+        opacity: 0.78 + 0.22 * pulse,
+        transform: `scale(${round(1 + pulse * 0.05)})`,
+      };
+    },
   },
   {
     name: "breathe",

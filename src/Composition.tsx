@@ -2,6 +2,7 @@ import { CalculateMetadataFunction, Composition } from "remotion";
 import { InfographicVideo, getTotalDurationInFrames } from "./InfographicVideo";
 import { PRESET_GALLERY_DURATION, PresetGallery } from "./PresetGallery";
 import { activeScenes } from "./scenes/active";
+import { kurzgesagtScenes } from "./scenes/kurzgesagt";
 import type { Scene } from "./scenes/types";
 
 type Props = {
@@ -47,6 +48,25 @@ export const PresetGalleryComposition = () => {
       fps={FPS}
       width={WIDTH}
       height={HEIGHT}
+    />
+  );
+};
+
+/**
+ * Showcase reel for the Kurzgesagt-style motion pack (src/scenes/kurzgesagt.ts):
+ * animated space backdrops, orbit systems and particle bursts, no image assets.
+ */
+export const KurzgesagtDemoComposition = () => {
+  return (
+    <Composition
+      id="KurzgesagtDemo"
+      component={InfographicVideo}
+      durationInFrames={getTotalDurationInFrames(kurzgesagtScenes)}
+      fps={FPS}
+      width={WIDTH}
+      height={HEIGHT}
+      defaultProps={{ scenes: kurzgesagtScenes }}
+      calculateMetadata={calculateMetadata}
     />
   );
 };

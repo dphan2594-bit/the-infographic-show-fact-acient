@@ -1,14 +1,18 @@
 import { AbsoluteFill, OffthreadVideo, staticFile } from "remotion";
 import { KenBurnsImage } from "./KenBurnsImage";
+import { SpaceBackdrop } from "./space/SpaceBackdrop";
 import type { Background as BackgroundType } from "../scenes/types";
 
-const resolveSrc = (src: string) =>
-  src.startsWith("http") ? src : staticFile(src);
+const resolveSrc = (src: string) => (src.startsWith("http") ? src : staticFile(src));
 
 export const Background: React.FC<{
   background: BackgroundType;
   durationInFrames: number;
 }> = ({ background, durationInFrames }) => {
+  if (background.type === "space") {
+    return <SpaceBackdrop background={background} />;
+  }
+
   if (background.type === "color") {
     return <AbsoluteFill style={{ backgroundColor: background.color }} />;
   }
