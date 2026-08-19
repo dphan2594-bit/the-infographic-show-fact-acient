@@ -1,0 +1,1150 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Flow Batch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Be+Vietnam+Pro:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" />
+<style>
+:root {
+  --paper: #F3EEE1;
+  --card: #FFFDF7;
+  --ink: #1B1813;
+  --ink-soft: #6A6154;
+  --line: #1B1813;
+  --rule: #DCD3BF;
+  --violet: #6B5CE0;
+  --red: #E85D5D;
+  --green: #2F9E5E;
+  --blue: #4A90D9;
+  --amber: #E0A32E;
+  --on-accent: #FFFDF7;
+  --shadow: 3px 3px 0 var(--line);
+  --radius: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #16140F;
+    --card: #211E17;
+    --ink: #F3EEE1;
+    --ink-soft: #A79C88;
+    --line: #000000;
+    --rule: #3A3529;
+    --violet: #9A8DFF;
+    --red: #FF8080;
+    --green: #58C98A;
+    --blue: #79B4F2;
+    --amber: #F0BC58;
+    --on-accent: #16140F;
+    --shadow: 3px 3px 0 #000000;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #16140F;
+  --card: #211E17;
+  --ink: #F3EEE1;
+  --ink-soft: #A79C88;
+  --line: #000000;
+  --rule: #3A3529;
+  --violet: #9A8DFF;
+  --red: #FF8080;
+  --green: #58C98A;
+  --blue: #79B4F2;
+  --amber: #F0BC58;
+  --on-accent: #16140F;
+  --shadow: 3px 3px 0 #000000;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+}
+.wrap {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 16px 14px calc(96px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+h1, h2, h3 { font-family: Archivo, "Be Vietnam Pro", sans-serif; font-weight: 800; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+h1 { font-size: 26px; line-height: 1.1; }
+h2 { font-size: 17px; }
+h3 { font-size: 14px; }
+p { margin: 0; }
+a { color: var(--violet); }
+
+.masthead { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.masthead .sub { color: var(--ink-soft); font-size: 13px; margin-top: 4px; }
+.chip-count {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 12px;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  padding: 4px 10px;
+  background: var(--card);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.tab {
+  font-family: Archivo, sans-serif;
+  font-weight: 600;
+  font-size: 12.5px;
+  padding: 9px 4px;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--ink);
+  cursor: pointer;
+}
+.tab[aria-selected="true"] { background: var(--violet); color: var(--on-accent); box-shadow: var(--shadow); }
+
+.card {
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.card.flat { box-shadow: none; }
+.card.raised { box-shadow: var(--shadow); }
+
+label.field { display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 600; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.06em; }
+input, select, textarea {
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 2px solid var(--rule);
+  border-radius: 10px;
+  padding: 10px 11px;
+  width: 100%;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+textarea { min-height: 108px; resize: vertical; font-family: "IBM Plex Mono", monospace; font-size: 13px; line-height: 1.45; }
+input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 2px;
+}
+
+button {
+  font-family: Archivo, sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  padding: 11px 14px;
+  background: var(--card);
+  color: var(--ink);
+  cursor: pointer;
+}
+button.primary { background: var(--violet); color: var(--on-accent); box-shadow: var(--shadow); }
+button.go { background: var(--green); color: var(--on-accent); box-shadow: var(--shadow); }
+button.ghost { background: transparent; border-color: var(--rule); color: var(--ink-soft); }
+button.tiny { font-size: 12px; padding: 7px 11px; }
+button:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; }
+.row > * { flex: 1 1 auto; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.pill {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  border-radius: 999px;
+  padding: 3px 8px;
+  border: 2px solid var(--line);
+  background: var(--paper);
+  white-space: nowrap;
+}
+.pill.todo { background: var(--amber); color: #1B1813; }
+.pill.done { background: var(--green); color: var(--on-accent); }
+.pill.skip { background: var(--rule); color: var(--ink); }
+.pill.arch { background: var(--blue); color: var(--on-accent); }
+
+.progress { height: 12px; border: 2px solid var(--line); border-radius: 999px; background: var(--paper); overflow: hidden; }
+.progress > i { display: block; height: 100%; background: var(--green); width: 0%; transition: width 0.25s ease; }
+
+.prompt {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  background: var(--paper);
+  border: 2px dashed var(--rule);
+  border-radius: 10px;
+  padding: 11px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.filename { font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--ink-soft); word-break: break-all; }
+
+.qitem {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border: 2px solid var(--rule);
+  border-radius: 10px;
+  background: var(--card);
+  text-align: left;
+  width: 100%;
+  font-family: inherit;
+  font-weight: 400;
+  font-size: 13px;
+}
+.qitem[data-active="true"] { border-color: var(--violet); box-shadow: var(--shadow); }
+.qitem .name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.qlist { display: flex; flex-direction: column; gap: 8px; }
+
+.hint { font-size: 12.5px; color: var(--ink-soft); }
+.hint strong { color: var(--ink); }
+.note {
+  border-left: 4px solid var(--amber);
+  padding: 2px 0 2px 10px;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+}
+.rule { height: 2px; background: var(--rule); border: 0; margin: 0; }
+
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chips button { font-size: 12px; padding: 6px 10px; border-color: var(--rule); font-weight: 500; font-family: inherit; }
+
+.thumbs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.thumb { border: 2px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--paper); display: flex; flex-direction: column; }
+.thumb img { width: 100%; display: block; aspect-ratio: 9 / 16; object-fit: cover; }
+.thumb .cap { font-family: "IBM Plex Mono", monospace; font-size: 10.5px; padding: 6px; border-top: 2px solid var(--line); word-break: break-all; }
+
+.bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  background: var(--card);
+  border-top: 2px solid var(--line);
+  padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+  display: flex;
+  gap: 8px;
+  z-index: 20;
+}
+.bar > * { flex: 1; }
+.bar .stack { max-width: 640px; margin: 0 auto; display: flex; gap: 8px; width: 100%; }
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(84px + env(safe-area-inset-bottom));
+  transform: translateX(-50%) translateY(8px);
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 16px;
+  border-radius: 999px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  z-index: 40;
+  max-width: 88vw;
+  text-align: center;
+}
+.toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+[hidden] { display: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div>
+      <h1>Flow Batch</h1>
+      <p class="sub">Xưởng prompt hàng loạt cho pipeline Flat Vector Explainer — dùng trực tiếp trên điện thoại.</p>
+    </div>
+    <span class="chip-count" id="headCount">0/0</span>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Khu vực làm việc">
+    <button class="tab" role="tab" id="tab-build" aria-selected="true" aria-controls="panel-build">Tạo prompt</button>
+    <button class="tab" role="tab" id="tab-queue" aria-selected="false" aria-controls="panel-queue">Hàng loạt</button>
+    <button class="tab" role="tab" id="tab-auto" aria-selected="false" aria-controls="panel-auto">Tự động</button>
+    <button class="tab" role="tab" id="tab-out" aria-selected="false" aria-controls="panel-out">Xuất</button>
+  </nav>
+
+  <!-- ============ TẠO PROMPT ============ -->
+  <section id="panel-build" role="tabpanel" aria-labelledby="tab-build" style="display:flex;flex-direction:column;gap:16px">
+
+    <div class="card raised">
+      <h2>Thêm một cảnh</h2>
+      <label class="field">Mã cảnh (id)
+        <input id="f-id" placeholder="hook" autocapitalize="off" autocomplete="off" />
+      </label>
+      <label class="field">Archetype
+        <select id="f-arch"></select>
+      </label>
+      <p class="hint" id="archHint"></p>
+      <label class="field">Mô tả cảnh (viết tiếng Anh)
+        <textarea id="f-desc" placeholder="a tired factory worker sitting at a desk with a laptop"></textarea>
+      </label>
+      <div class="chips" id="phraseChips"></div>
+      <label class="field">Tông màu (theo Mục 5 style guide)
+        <select id="f-pal"></select>
+      </label>
+      <div class="row">
+        <button class="primary" id="btnAdd">Thêm vào hàng đợi</button>
+        <button class="ghost" id="btnPreview">Xem prompt</button>
+      </div>
+      <div class="prompt" id="previewBox" hidden></div>
+    </div>
+
+    <div class="card">
+      <h2>Nạp cả kịch bản một lần</h2>
+      <p class="hint">Dán <strong>content/manifest.json</strong> của repo (lấy <code>id</code>, <code>archetype</code>, <code>image</code>, <code>caption</code>), hoặc danh sách nhanh mỗi dòng một cảnh:</p>
+      <div class="prompt">id | archetype | mô tả tiếng Anh | tông màu
+hook | E6 | wide shot of the Giza pyramid plateau at dawn | Trung tính
+chapter-1 | E3 | chapter card | Tiêu đề chương</div>
+      <label class="field">Dữ liệu
+        <textarea id="bulkInput" placeholder="Dán manifest.json hoặc danh sách nhanh vào đây"></textarea>
+      </label>
+      <div class="row">
+        <button class="primary" id="btnBulk">Nạp vào hàng đợi</button>
+        <button class="ghost" id="btnBulkReplace">Nạp &amp; thay toàn bộ</button>
+      </div>
+      <p class="hint" id="bulkHint"></p>
+    </div>
+
+    <div class="card">
+      <h2>Thiết lập</h2>
+      <div class="grid2">
+        <label class="field">Tỷ lệ khung
+          <select id="s-ratio">
+            <option value="9:16">9:16 — dọc (repo: 1080×1920)</option>
+            <option value="16:9">16:9 — ngang</option>
+            <option value="1:1">1:1 — vuông</option>
+            <option value="">Không ghi tỷ lệ</option>
+          </select>
+        </label>
+        <label class="field">Công cụ đích
+          <select id="s-target"></select>
+        </label>
+      </div>
+      <label class="field">Tiền tố tên file
+        <input id="s-prefix" placeholder="images/scene" autocapitalize="off" autocomplete="off" />
+      </label>
+      <p class="hint">Tên file đích được đánh số theo thứ tự hàng đợi: <code>images/scene-01-hook.png</code> — khớp đúng field <code>image</code> trong manifest.</p>
+    </div>
+  </section>
+
+  <!-- ============ HÀNG LOẠT ============ -->
+  <section id="panel-queue" role="tabpanel" aria-labelledby="tab-queue" hidden style="flex-direction:column;gap:16px">
+    <div class="card raised">
+      <div class="meta">
+        <h2 style="flex:1">Cảnh <span id="qPos">0</span>/<span id="qTotal">0</span></h2>
+        <span class="pill" id="qStatus">—</span>
+      </div>
+      <div class="progress"><i id="qBar"></i></div>
+      <div class="meta">
+        <span class="pill arch" id="qArch">—</span>
+        <span class="filename" id="qFile">—</span>
+      </div>
+      <div class="prompt" id="qPrompt">Chưa có cảnh nào. Sang tab “Tạo prompt” để nạp kịch bản.</div>
+      <div class="row">
+        <button class="tiny ghost" id="btnPrev">← Trước</button>
+        <button class="tiny ghost" id="btnSkip">Bỏ qua</button>
+        <button class="tiny ghost" id="btnNext">Sau →</button>
+      </div>
+      <button class="tiny ghost" id="btnEdit" style="align-self:flex-start">Sửa cảnh này</button>
+      <div id="editBox" hidden style="display:flex;flex-direction:column;gap:10px">
+        <hr class="rule" />
+        <label class="field">Mã cảnh
+          <input id="e-id" autocapitalize="off" autocomplete="off" />
+        </label>
+        <label class="field">Archetype
+          <select id="e-arch"></select>
+        </label>
+        <label class="field">Mô tả cảnh (tiếng Anh)
+          <textarea id="e-desc"></textarea>
+        </label>
+        <label class="field">Tông màu
+          <select id="e-pal"></select>
+        </label>
+        <label class="field">Ghi chú / phụ đề tiếng Việt
+          <input id="e-note" />
+        </label>
+        <div class="row">
+          <button class="primary tiny" id="btnEditSave">Cập nhật</button>
+          <button class="ghost tiny" id="btnEditDel">Xoá cảnh</button>
+        </div>
+      </div>
+      <label class="hint" style="display:flex;gap:8px;align-items:center">
+        <input type="checkbox" id="autoAdvance" checked style="width:auto" />
+        Tự nhảy sang cảnh kế sau khi bấm “Xong”
+      </label>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <h2 style="flex:1">Toàn bộ hàng đợi</h2>
+        <button class="tiny ghost" id="btnResetStatus">Đặt lại trạng thái</button>
+      </div>
+      <div class="qlist" id="qList"></div>
+    </div>
+  </section>
+
+  <!-- ============ TỰ ĐỘNG ============ -->
+  <section id="panel-auto" role="tabpanel" aria-labelledby="tab-auto" hidden style="flex-direction:column;gap:16px">
+    <div class="card raised">
+      <h2>Sinh ảnh thật sự tự động</h2>
+      <p class="note">Google Flow không có API công khai, nên không thể bấm một nút là Flow tự chạy hết prompt. Đường tự động chạy được là gọi thẳng API ảnh của Google (Gemini / Imagen) bằng khoá của bạn. Tab “Hàng loạt” vẫn là đường dành riêng cho Flow: mỗi cảnh một chạm chép–dán.</p>
+      <label class="field">API key (Google AI Studio)
+        <input id="a-key" type="password" placeholder="AIza…" autocapitalize="off" autocomplete="off" spellcheck="false" />
+      </label>
+      <label class="field">Model
+        <input id="a-model" placeholder="gemini-2.5-flash-image" autocapitalize="off" autocomplete="off" spellcheck="false" />
+      </label>
+      <p class="hint">Khoá chỉ nằm trong <strong>localStorage</strong> của máy bạn và chỉ gửi tới googleapis.com. Tên model có thể sửa tay khi Google ra bản mới (ví dụ <code>imagen-4.0-generate-001</code>).</p>
+      <div class="row">
+        <button class="go" id="btnRun">Chạy toàn bộ cảnh chưa xong</button>
+        <button class="ghost" id="btnStop" disabled>Dừng</button>
+      </div>
+      <div class="progress"><i id="aBar"></i></div>
+      <p class="hint" id="aLog">Chưa chạy.</p>
+    </div>
+    <div class="card">
+      <div class="meta">
+        <h2 style="flex:1">Ảnh đã sinh</h2>
+        <button class="tiny ghost" id="btnSaveAll" disabled>Tải tất cả</button>
+      </div>
+      <p class="hint">Chạm vào ảnh để tải về đúng tên file của cảnh. Ảnh chỉ giữ trong bộ nhớ phiên — tải về trước khi đóng tab.</p>
+      <div class="thumbs" id="thumbs"></div>
+    </div>
+  </section>
+
+  <!-- ============ XUẤT ============ -->
+  <section id="panel-out" role="tabpanel" aria-labelledby="tab-out" hidden style="flex-direction:column;gap:16px">
+    <div class="card raised">
+      <h2>Mang prompt ra ngoài</h2>
+      <div class="row">
+        <button class="primary" id="btnCopyAll">Chép toàn bộ prompt</button>
+        <button class="ghost" id="btnCopyTodo">Chép phần chưa xong</button>
+      </div>
+      <div class="row">
+        <button class="ghost" id="btnDlTxt">Tải .txt</button>
+        <button class="ghost" id="btnDlCsv">Tải .csv</button>
+        <button class="ghost" id="btnDlJson">Tải .json</button>
+      </div>
+      <p class="hint">Trên trình duyệt điện thoại, nút tải có thể bị chặn — khi đó dùng nút chép rồi dán vào Ghi chú/Drive.</p>
+    </div>
+    <div class="card">
+      <h2>Khung manifest cho Remotion</h2>
+      <p class="hint">Sinh sẵn mảng scene với <code>image</code> đã đánh số đúng, dán vào <code>content/manifest.json</code> rồi bổ sung <code>audio</code>/<code>caption</code> và chạy <code>npm run build:scenes</code>.</p>
+      <div class="row">
+        <button class="primary" id="btnCopyManifest">Chép manifest.json</button>
+      </div>
+      <div class="prompt" id="manifestBox" hidden></div>
+    </div>
+    <div class="card">
+      <h2>Dọn dẹp</h2>
+      <div class="row">
+        <button class="ghost" id="btnClear">Xoá toàn bộ hàng đợi</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="bar" id="actionBar" hidden>
+  <div class="stack">
+    <button class="primary" id="btnCopyOpen" style="flex:2">Chép + mở công cụ</button>
+    <button class="ghost" id="btnCopyOnly" style="flex:1">Chép</button>
+    <button class="go" id="btnDone" style="flex:1">Xong ✓</button>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+"use strict";
+
+/* ---------- Dữ liệu style, bám theo docs/SKILL-FLAT-EXPLAINER.md ---------- */
+
+const BASE = "flat design, bold clean outlines, no gradients, no texture, high contrast, 2D corporate explainer style";
+const TAIL = "no text, no watermark";
+
+const ARCHETYPES = [
+  {
+    key: "E1",
+    label: "E1 — Character Scene (nhân vật hành động)",
+    hint: "Nhân vật flat vector đang làm gì đó trong bối cảnh đơn giản.",
+    ph: "a tired factory worker sitting at a desk with a laptop",
+    build: (d, p, r) => `Flat vector illustration of ${d}, ${p} flat color palette, simple flat shading, minimal face detail, clean geometric background, ${BASE}${r}, ${TAIL}`,
+  },
+  {
+    key: "E2",
+    label: "E2 — Icon Badge (khái niệm → icon tròn)",
+    hint: "Một khái niệm trừu tượng gói trong huy hiệu tròn viền trắng.",
+    ph: "a house",
+    build: (d, p, r) => `Flat vector icon of ${d} inside a white-bordered circle badge, solid ${p} background, bold flat colors, minimal detail, centered composition, clean vector icon style${r}, ${TAIL}, no gradient`,
+  },
+  {
+    key: "E3",
+    label: "E3 — Chapter Card (thẻ tiêu đề chương)",
+    hint: "Nền chương + khối chữ 3D giả; chữ tiếng Việt chèn sau bằng Remotion.",
+    ph: "empty title plate in the centre",
+    build: (d, p, r) => `Bold 3D white lettering placeholder block on a solid ${p} background, ${d}, repeating geometric pattern of plus signs and diagonal lines faded in the background, ${BASE}${r}, no readable text, no watermark`,
+  },
+  {
+    key: "E4",
+    label: "E4 — Close-up Object (cận cảnh vật/tay)",
+    hint: "Vật thể phóng to chiếm 1/3–1/2 khung để tạo chiều sâu.",
+    ph: "a hand holding an open folder of documents",
+    build: (d, p, r) => `Flat vector illustration, close-up of ${d} filling a third of the frame, flat-shaded hand and object, ${p} flat color palette, simple suggested background, ${BASE}${r}, ${TAIL}`,
+  },
+  {
+    key: "E6",
+    label: "E6 — Environment Wide Shot (bối cảnh rộng)",
+    hint: "Toàn cảnh mở đầu hoặc nền cho nhân vật nhỏ.",
+    ph: "the Giza pyramid plateau at dawn",
+    build: (d, p, r) => `Flat vector wide shot of ${d}, simplified geometric architecture, ${p} flat color palette, small flat-shaded characters for scale, clean 2D explainer background art, ${BASE}${r}, ${TAIL}`,
+  },
+  {
+    key: "E8",
+    label: "E8 — Process Flow (sơ đồ luồng)",
+    hint: "3–5 ô icon nối bằng mũi tên, chỗ trống cho nhãn thời gian/chi phí.",
+    ph: "worker icon, quarry icon, ramp icon, pyramid icon",
+    build: (d, p, r) => `Flat vector illustration, horizontal process flow diagram, simple icon boxes connected by arrows showing ${d}, small empty label placeholders above each arrow, ${p} duotone palette, clean geometric icons, ${BASE}${r}, ${TAIL}`,
+  },
+  {
+    key: "E9",
+    label: "E9 — Data Callout Badge (số liệu có đường nối)",
+    hint: "Huy hiệu số liệu đè lên cảnh chính, nối bằng đường dẫn.",
+    ph: "a stone block being dragged up a ramp",
+    build: (d, p, r) => `Flat vector illustration, ${d}, with a floating circular data badge overlay in the corner showing a large empty number placeholder shape, thin callout line connecting the badge to the relevant object in the scene, ${p} accent colors, ${BASE}${r}, ${TAIL}`,
+  },
+  {
+    key: "E10",
+    label: "E10 — Psych Process Map (bản đồ cơ chế tâm lý)",
+    hint: "Nhánh blueprint kỹ thuật — chỉ dùng cho đoạn giải mã cơ chế.",
+    ph: "a shame-spiral loop of six steps inside the head outline",
+    build: (d, p, r) => `Clean technical schematic illustration, wireframe human head silhouette outline, connected circular nodes representing ${d}, thin directional arrows between nodes, neutral medical-style icons, blueprint engineering diagram aesthetic, ${p} muted duotone palette, precise thin linework, labeled callout boxes with empty placeholders${r}, ${TAIL}`,
+  },
+  {
+    key: "CURVE",
+    label: "Depletion Curve (biểu đồ cạn kiệt)",
+    hint: "Đường cong tụt dốc rồi dao động — trạng thái căng thẳng kéo dài.",
+    ph: "a declining stamina curve over a long march",
+    build: (d, p, r) => `Clean technical line chart showing ${d}, single curve declining then showing irregular oscillation, labeled axes with placeholder text areas, small square data-point markers along the curve, blueprint diagram style, thin precise linework, ${p} muted palette${r}, ${TAIL}`,
+  },
+  {
+    key: "PIE",
+    label: "Pie Chart + icon trung tâm",
+    hint: "Biến thể E2 khi cần thể hiện tỷ trọng.",
+    ph: "a two-part split of labour versus materials",
+    build: (d, p, r) => `Flat vector pie chart showing ${d}, two color segments, a simple icon centered on the dividing line, in ${p}, bold flat colors, minimal detail, clean vector style${r}, ${TAIL}, no gradient`,
+  },
+];
+
+const PALETTES = [
+  { name: "Trung tính / số liệu", phrase: "beige #E8DFC8 and warm wood brown" },
+  { name: "Căng thẳng", phrase: "muted red #E85D5D and warm grey" },
+  { name: "Hy vọng / giải pháp", phrase: "green #4CAF50 and amber orange" },
+  { name: "Tiêu đề chương", phrase: "violet #6B5CE0 and white" },
+  { name: "Công sở / dữ liệu", phrase: "blue #4A90D9 and orange" },
+  { name: "Cổ đại / sa mạc", phrase: "sand ochre and deep teal" },
+];
+
+const TARGETS = [
+  { name: "Google Flow", url: "https://labs.google/fx/tools/flow" },
+  { name: "Google ImageFX", url: "https://labs.google/fx/tools/image-fx" },
+  { name: "Google Whisk", url: "https://labs.google/fx/tools/whisk" },
+  { name: "Gemini", url: "https://gemini.google.com/app" },
+];
+
+const RATIO_PHRASE = {
+  "9:16": ", vertical 9:16 composition with clear empty space at the bottom third for caption overlay",
+  "16:9": ", horizontal 16:9 composition",
+  "1:1": ", square 1:1 composition",
+  "": "",
+};
+
+const PHRASES = [
+  "wide shot of", "close-up of", "a worker", "a scholar", "ancient stone blocks",
+  "a river valley", "a marketplace crowd", "a map with route lines", "a treasure chest",
+  "a timeline of milestones", "a comparison of two objects", "a night sky with stars",
+];
+
+/* ---------- Trạng thái ---------- */
+
+const KEY = "flowbatch.v1";
+const state = load();
+const images = new Map(); // id -> dataURL (chỉ trong phiên)
+let running = false;
+
+function blank() {
+  return {
+    items: [],
+    cursor: 0,
+    settings: { ratio: "9:16", target: 0, prefix: "images/scene", model: "gemini-2.5-flash-image", key: "" },
+  };
+}
+function load() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(KEY) || "null");
+    if (!raw || !Array.isArray(raw.items)) return blank();
+    const b = blank();
+    return { items: raw.items, cursor: raw.cursor || 0, settings: Object.assign(b.settings, raw.settings || {}) };
+  } catch {
+    return blank();
+  }
+}
+function save() {
+  try {
+    localStorage.setItem(KEY, JSON.stringify(state));
+  } catch {
+    toast("Không lưu được vào bộ nhớ trình duyệt");
+  }
+}
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+/* ---------- Prompt ---------- */
+
+function archOf(key) {
+  return ARCHETYPES.find((a) => a.key === key) || ARCHETYPES[0];
+}
+function buildPrompt(item) {
+  const a = archOf(item.arch);
+  const pal = PALETTES.find((p) => p.name === item.pal) || PALETTES[0];
+  const desc = (item.desc || "").trim() || a.ph;
+  return a.build(desc, pal.phrase, RATIO_PHRASE[state.settings.ratio] ?? "");
+}
+function pad(n) {
+  return String(n).padStart(2, "0");
+}
+function fileFor(item, index) {
+  const prefix = (state.settings.prefix || "images/scene").replace(/-+$/, "");
+  const slug = (item.id || "scene").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  return `${prefix}-${pad(index + 1)}-${slug}.png`;
+}
+function newItem(id, arch, desc, pal) {
+  return { uid: Math.random().toString(36).slice(2, 9), id: id || "scene", arch: arch || "E1", desc: desc || "", pal: pal || PALETTES[0].name, status: "todo", note: "" };
+}
+
+/* ---------- Tiện ích ---------- */
+
+let toastTimer;
+function toast(msg) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("on");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("on"), 1900);
+}
+function copyText(text) {
+  let ok = false;
+  try {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+    document.body.appendChild(ta);
+    ta.select();
+    ta.setSelectionRange(0, text.length);
+    ok = document.execCommand("copy");
+    document.body.removeChild(ta);
+  } catch { ok = false; }
+  if (!ok && navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => toast("Đã chép")).catch(() => toast("Không chép được — hãy giữ và chọn thủ công"));
+    return true;
+  }
+  toast(ok ? "Đã chép" : "Không chép được — hãy giữ và chọn thủ công");
+  return ok;
+}
+function download(name, text, mime) {
+  const blob = new Blob([text], { type: mime || "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+}
+
+/* ---------- Khởi tạo form ---------- */
+
+$("f-arch").innerHTML = ARCHETYPES.map((a) => `<option value="${a.key}">${esc(a.label)}</option>`).join("");
+$("f-pal").innerHTML = PALETTES.map((p) => `<option value="${esc(p.name)}">${esc(p.name)}</option>`).join("");
+$("s-target").innerHTML = TARGETS.map((t, i) => `<option value="${i}">${esc(t.name)}</option>`).join("");
+$("phraseChips").innerHTML = PHRASES.map((p) => `<button type="button" data-phrase="${esc(p)}">${esc(p)}</button>`).join("");
+
+$("s-ratio").value = state.settings.ratio;
+$("s-target").value = String(state.settings.target);
+$("s-prefix").value = state.settings.prefix;
+$("a-model").value = state.settings.model;
+$("a-key").value = state.settings.key;
+
+function syncArchHint() {
+  const a = archOf($("f-arch").value);
+  $("archHint").textContent = a.hint;
+  $("f-desc").placeholder = a.ph;
+}
+syncArchHint();
+$("f-arch").addEventListener("change", syncArchHint);
+
+$("phraseChips").addEventListener("click", (e) => {
+  const b = e.target.closest("button[data-phrase]");
+  if (!b) return;
+  const ta = $("f-desc");
+  ta.value = (ta.value.trim() ? ta.value.trim() + " " : "") + b.dataset.phrase + " ";
+  ta.focus();
+});
+
+for (const [id, key] of [["s-ratio", "ratio"], ["s-prefix", "prefix"], ["a-model", "model"], ["a-key", "key"]]) {
+  $(id).addEventListener("change", () => {
+    state.settings[key] = $(id).value;
+    save();
+    render();
+  });
+}
+$("s-target").addEventListener("change", () => {
+  state.settings.target = Number($("s-target").value);
+  save();
+  render();
+});
+
+/* ---------- Tab ---------- */
+
+const TABS = [["tab-build", "panel-build"], ["tab-queue", "panel-queue"], ["tab-auto", "panel-auto"], ["tab-out", "panel-out"]];
+function showTab(tabId) {
+  for (const [t, p] of TABS) {
+    const on = t === tabId;
+    $(t).setAttribute("aria-selected", String(on));
+    $(p).hidden = !on;
+    if (on) $(p).style.display = "flex";
+  }
+  $("actionBar").hidden = tabId !== "tab-queue" || state.items.length === 0;
+  window.scrollTo({ top: 0, behavior: "instant" in window ? "auto" : "auto" });
+}
+for (const [t] of TABS) $(t).addEventListener("click", () => showTab(t));
+
+/* ---------- Render ---------- */
+
+const STATUS_LABEL = { todo: "chưa", done: "xong", skip: "bỏ qua" };
+function statusPill(s) {
+  const k = STATUS_LABEL[s] ? s : "todo";
+  return `<span class="pill ${k}">${STATUS_LABEL[k]}</span>`;
+}
+
+function render() {
+  const items = state.items;
+  const done = items.filter((i) => i.status === "done").length;
+  $("headCount").textContent = `${done}/${items.length}`;
+  $("qTotal").textContent = String(items.length);
+
+  if (state.cursor >= items.length) state.cursor = Math.max(0, items.length - 1);
+  const cur = items[state.cursor];
+
+  $("qPos").textContent = String(items.length ? state.cursor + 1 : 0);
+  $("qBar").style.width = items.length ? `${Math.round((done / items.length) * 100)}%` : "0%";
+
+  if (cur) {
+    $("qArch").textContent = archOf(cur.arch).key + " · " + cur.id;
+    $("qFile").textContent = fileFor(cur, state.cursor);
+    $("qPrompt").textContent = buildPrompt(cur);
+    $("qStatus").className = "pill " + cur.status;
+    $("qStatus").textContent = STATUS_LABEL[cur.status] || "chưa";
+  } else {
+    $("qArch").textContent = "—";
+    $("qFile").textContent = "—";
+    $("qStatus").className = "pill";
+    $("qStatus").textContent = "—";
+    $("qPrompt").textContent = "Chưa có cảnh nào. Sang tab “Tạo prompt” để nạp kịch bản.";
+  }
+  syncEditBox(cur);
+
+  $("qList").innerHTML = items.length
+    ? items.map((it, i) => `<button class="qitem" data-i="${i}" data-active="${i === state.cursor}">
+        <span class="pill arch">${esc(archOf(it.arch).key)}</span>
+        <span class="name">${pad(i + 1)}. ${esc(it.id)}${it.desc ? "" : " · thiếu mô tả"}</span>
+        ${statusPill(it.status)}
+      </button>`).join("")
+    : '<p class="hint">Trống.</p>';
+
+  $("actionBar").hidden = $("tab-queue").getAttribute("aria-selected") !== "true" || items.length === 0;
+  $("btnCopyOpen").textContent = "Chép + mở " + TARGETS[state.settings.target].name;
+
+  const total = items.length || 1;
+  $("aBar").style.width = `${Math.round((images.size / total) * 100)}%`;
+  $("btnSaveAll").disabled = images.size === 0;
+  $("thumbs").innerHTML = items
+    .filter((it) => images.has(it.uid))
+    .map((it) => {
+      const i = items.indexOf(it);
+      return `<figure class="thumb" style="margin:0"><img src="${images.get(it.uid)}" alt="${esc(it.id)}" data-save="${it.uid}" /><figcaption class="cap">${esc(fileFor(it, i))}</figcaption></figure>`;
+    }).join("");
+}
+
+$("qList").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-i]");
+  if (!b) return;
+  state.cursor = Number(b.dataset.i);
+  save();
+  render();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+$("thumbs").addEventListener("click", (e) => {
+  const img = e.target.closest("img[data-save]");
+  if (!img) return;
+  const uid = img.dataset.save;
+  const i = state.items.findIndex((x) => x.uid === uid);
+  if (i < 0) return;
+  saveImage(state.items[i], i);
+});
+
+/* ---------- Tạo prompt ---------- */
+
+$("btnPreview").addEventListener("click", () => {
+  const item = newItem($("f-id").value.trim(), $("f-arch").value, $("f-desc").value, $("f-pal").value);
+  const box = $("previewBox");
+  box.hidden = false;
+  box.textContent = buildPrompt(item);
+});
+
+$("btnAdd").addEventListener("click", () => {
+  const id = $("f-id").value.trim();
+  if (!id) return toast("Đặt mã cảnh trước đã");
+  state.items.push(newItem(id, $("f-arch").value, $("f-desc").value.trim(), $("f-pal").value));
+  $("f-id").value = "";
+  $("f-desc").value = "";
+  $("previewBox").hidden = true;
+  save();
+  render();
+  toast(`Đã thêm “${id}”`);
+});
+
+function parseBulk(text) {
+  const trimmed = text.trim();
+  if (!trimmed) return [];
+  if (trimmed.startsWith("[") || trimmed.startsWith("{")) {
+    let data = JSON.parse(trimmed);
+    if (!Array.isArray(data)) data = [data];
+    return data.map((s) => {
+      const code = (String(s.archetype || "").match(/E\d+/) || ["E1"])[0];
+      const arch = ARCHETYPES.some((a) => a.key === code) ? code : "E1";
+      const it = newItem(s.id, s.chapterTitle ? "E3" : arch, "", PALETTES[0].name);
+      it.note = s.caption || s.chapterTitle || "";
+      return it;
+    });
+  }
+  return trimmed.split(/\r?\n/).map((l) => l.trim()).filter(Boolean).map((line) => {
+    const [id, archRaw, desc, palRaw] = line.split("|").map((p) => (p || "").trim());
+    const code = (String(archRaw || "").match(/E\d+|CURVE|PIE/i) || ["E1"])[0].toUpperCase();
+    const arch = ARCHETYPES.some((a) => a.key === code) ? code : "E1";
+    const pal = PALETTES.find((p) => p.name.toLowerCase().startsWith((palRaw || "").toLowerCase()) && palRaw);
+    return newItem(id, arch, desc, pal ? pal.name : PALETTES[0].name);
+  });
+}
+
+function doBulk(replace) {
+  let parsed;
+  try {
+    parsed = parseBulk($("bulkInput").value);
+  } catch (err) {
+    $("bulkHint").textContent = "Không đọc được: " + err.message;
+    return;
+  }
+  if (!parsed.length) return toast("Chưa có dữ liệu");
+  state.items = replace ? parsed : state.items.concat(parsed);
+  state.cursor = 0;
+  save();
+  render();
+  const missing = parsed.filter((p) => !p.desc).length;
+  $("bulkHint").textContent = `Đã nạp ${parsed.length} cảnh` + (missing ? ` — ${missing} cảnh chưa có mô tả tiếng Anh, sửa ở tab “Hàng loạt”.` : ".");
+  toast(`Đã nạp ${parsed.length} cảnh`);
+  showTab("tab-queue");
+}
+$("btnBulk").addEventListener("click", () => doBulk(false));
+$("btnBulkReplace").addEventListener("click", () => doBulk(true));
+
+/* ---------- Hàng loạt ---------- */
+
+function move(delta) {
+  if (!state.items.length) return;
+  state.cursor = Math.min(state.items.length - 1, Math.max(0, state.cursor + delta));
+  save();
+  render();
+}
+$("btnPrev").addEventListener("click", () => move(-1));
+$("btnNext").addEventListener("click", () => move(1));
+$("btnSkip").addEventListener("click", () => {
+  const cur = state.items[state.cursor];
+  if (!cur) return;
+  cur.status = cur.status === "skip" ? "todo" : "skip";
+  save();
+  render();
+});
+$("btnResetStatus").addEventListener("click", () => {
+  state.items.forEach((i) => (i.status = "todo"));
+  state.cursor = 0;
+  save();
+  render();
+  toast("Đã đặt lại toàn bộ trạng thái");
+});
+
+$("btnCopyOnly").addEventListener("click", () => {
+  const cur = state.items[state.cursor];
+  if (cur) copyText(buildPrompt(cur));
+});
+$("btnCopyOpen").addEventListener("click", () => {
+  const cur = state.items[state.cursor];
+  if (!cur) return;
+  copyText(buildPrompt(cur));
+  window.open(TARGETS[state.settings.target].url, "_blank", "noopener");
+});
+$("btnDone").addEventListener("click", () => {
+  const cur = state.items[state.cursor];
+  if (!cur) return;
+  cur.status = "done";
+  if ($("autoAdvance").checked) {
+    const next = state.items.findIndex((it, i) => i > state.cursor && it.status === "todo");
+    state.cursor = next >= 0 ? next : Math.min(state.items.length - 1, state.cursor + 1);
+  }
+  save();
+  render();
+  const left = state.items.filter((i) => i.status === "todo").length;
+  toast(left ? `Còn ${left} cảnh` : "Xong toàn bộ hàng đợi 🎉");
+});
+
+/* ---------- Sửa cảnh đang chọn ---------- */
+
+$("e-arch").innerHTML = ARCHETYPES.map((a) => `<option value="${a.key}">${esc(a.label)}</option>`).join("");
+$("e-pal").innerHTML = PALETTES.map((p) => `<option value="${esc(p.name)}">${esc(p.name)}</option>`).join("");
+
+function syncEditBox(cur) {
+  if (!cur) {
+    $("editBox").hidden = true;
+    return;
+  }
+  if ($("editBox").hidden) return;
+  $("e-id").value = cur.id;
+  $("e-arch").value = cur.arch;
+  $("e-desc").value = cur.desc;
+  $("e-desc").placeholder = archOf(cur.arch).ph;
+  $("e-pal").value = cur.pal;
+  $("e-note").value = cur.note || "";
+}
+$("btnEdit").addEventListener("click", () => {
+  const box = $("editBox");
+  box.hidden = !box.hidden;
+  syncEditBox(state.items[state.cursor]);
+});
+$("btnEditSave").addEventListener("click", () => {
+  const cur = state.items[state.cursor];
+  if (!cur) return;
+  cur.id = $("e-id").value.trim() || cur.id;
+  cur.arch = $("e-arch").value;
+  cur.desc = $("e-desc").value.trim();
+  cur.pal = $("e-pal").value;
+  cur.note = $("e-note").value.trim();
+  save();
+  render();
+  toast("Đã cập nhật prompt");
+});
+$("btnEditDel").addEventListener("click", () => {
+  const cur = state.items[state.cursor];
+  if (!cur) return;
+  state.items.splice(state.cursor, 1);
+  images.delete(cur.uid);
+  state.cursor = Math.max(0, state.cursor - 1);
+  $("editBox").hidden = true;
+  save();
+  render();
+  toast("Đã xoá cảnh");
+});
+
+/* ---------- Xuất ---------- */
+
+function asText(items) {
+  return items.map((it) => `# ${it.id} — ${archOf(it.arch).key} — ${fileFor(it, state.items.indexOf(it))}\n${buildPrompt(it)}`).join("\n\n");
+}
+$("btnCopyAll").addEventListener("click", () => copyText(asText(state.items)));
+$("btnCopyTodo").addEventListener("click", () => copyText(asText(state.items.filter((i) => i.status !== "done"))));
+$("btnDlTxt").addEventListener("click", () => download("prompts.txt", asText(state.items)));
+$("btnDlCsv").addEventListener("click", () => {
+  const q = (s) => `"${String(s).replace(/"/g, '""')}"`;
+  const rows = [["id", "archetype", "file", "status", "prompt"].join(",")].concat(
+    state.items.map((it, i) => [it.id, archOf(it.arch).key, fileFor(it, i), it.status, buildPrompt(it)].map(q).join(","))
+  );
+  download("prompts.csv", rows.join("\n"), "text/csv;charset=utf-8");
+});
+$("btnDlJson").addEventListener("click", () => {
+  download("prompts.json", JSON.stringify(state.items.map((it, i) => ({ id: it.id, archetype: archOf(it.arch).key, image: fileFor(it, i), prompt: buildPrompt(it), status: it.status })), null, 2), "application/json");
+});
+
+function manifestText() {
+  return JSON.stringify(
+    state.items.map((it, i) => {
+      const base = { id: it.id, motion: i === 0 ? "animate" : "static", archetype: archOf(it.arch).label };
+      if (it.arch === "E3") {
+        return Object.assign(base, { chapterTitle: it.note || "TIÊU ĐỀ CHƯƠNG", chapterSubtitle: "", backgroundColor: "#6B5CE0", audio: `audio/scene-${pad(i + 1)}-${it.id}.mp3`, transitionIn: { type: "wipe", direction: "from-left" } });
+      }
+      return Object.assign(base, {
+        image: fileFor(it, i),
+        audio: `audio/scene-${pad(i + 1)}-${it.id}.mp3`,
+        caption: it.note || "",
+        kenBurns: i % 2 ? "pan-left" : "zoom-in",
+        transitionIn: { type: i === 0 ? "none" : "fade" },
+      });
+    }),
+    null,
+    2
+  );
+}
+$("btnCopyManifest").addEventListener("click", () => {
+  const box = $("manifestBox");
+  box.hidden = false;
+  box.textContent = manifestText();
+  copyText(box.textContent);
+});
+$("btnClear").addEventListener("click", () => {
+  if (!confirm("Xoá toàn bộ hàng đợi và ảnh đã sinh?")) return;
+  state.items = [];
+  state.cursor = 0;
+  images.clear();
+  save();
+  render();
+  toast("Đã xoá");
+});
+
+/* ---------- Tự động qua API Google ---------- */
+
+const API_ROOT = "https://generativelanguage.googleapis.com/v1beta/models/";
+
+async function callApi(prompt, withImageConfig) {
+  const model = (state.settings.model || "").trim();
+  const key = (state.settings.key || "").trim();
+  if (!model) throw new Error("Chưa điền model");
+  if (!key) throw new Error("Chưa điền API key");
+  const isImagen = /imagen/i.test(model);
+  const ratio = state.settings.ratio || "9:16";
+  const body = isImagen
+    ? { instances: [{ prompt }], parameters: { sampleCount: 1, aspectRatio: ratio } }
+    : {
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+        generationConfig: withImageConfig
+          ? { responseModalities: ["IMAGE"], imageConfig: { aspectRatio: ratio } }
+          : { responseModalities: ["IMAGE"] },
+      };
+  const res = await fetch(API_ROOT + encodeURIComponent(model) + ":" + (isImagen ? "predict" : "generateContent"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-goog-api-key": key },
+    body: JSON.stringify(body),
+  });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const msg = (json && json.error && json.error.message) || res.statusText;
+    const err = new Error(`${res.status} — ${msg}`);
+    err.status = res.status;
+    err.body = msg;
+    throw err;
+  }
+  if (isImagen) {
+    const p = (json.predictions || [])[0];
+    if (!p || !p.bytesBase64Encoded) throw new Error("API không trả về ảnh");
+    return `data:${p.mimeType || "image/png"};base64,${p.bytesBase64Encoded}`;
+  }
+  const parts = ((json.candidates || [])[0]?.content?.parts) || [];
+  const inline = parts.find((p) => p.inlineData || p.inline_data);
+  if (!inline) throw new Error("API không trả về ảnh (model này có sinh ảnh không?)");
+  const d = inline.inlineData || inline.inline_data;
+  return `data:${d.mimeType || d.mime_type || "image/png"};base64,${d.data}`;
+}
+
+async function generateOne(prompt) {
+  try {
+    return await callApi(prompt, true);
+  } catch (err) {
+    // Model cũ chưa nhận imageConfig/aspectRatio — thử lại ở dạng tối giản.
+    if (err.status === 400) return await callApi(prompt, false);
+    throw err;
+  }
+}
+
+function saveImage(item, index) {
+  const data = images.get(item.uid);
+  if (!data) return;
+  const a = document.createElement("a");
+  a.href = data;
+  a.download = fileFor(item, index).split("/").pop();
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+$("btnRun").addEventListener("click", async () => {
+  const todo = state.items.filter((i) => i.status !== "done" && !images.has(i.uid));
+  if (!todo.length) return toast("Không còn cảnh nào để sinh");
+  running = true;
+  $("btnRun").disabled = true;
+  $("btnStop").disabled = false;
+  let ok = 0;
+  for (const item of todo) {
+    if (!running) break;
+    const i = state.items.indexOf(item);
+    $("aLog").textContent = `Đang sinh ${i + 1}/${state.items.length}: ${item.id}…`;
+    try {
+      const data = await generateOne(buildPrompt(item));
+      images.set(item.uid, data);
+      item.status = "done";
+      ok++;
+      save();
+      render();
+    } catch (err) {
+      $("aLog").textContent = `Dừng ở “${item.id}”: ${err.message}`;
+      running = false;
+      break;
+    }
+    await new Promise((r) => setTimeout(r, 900)); // nới nhịp để tránh chạm rate limit
+  }
+  if (running) $("aLog").textContent = `Xong ${ok} ảnh. Chạm từng ảnh để tải về.`;
+  running = false;
+  $("btnRun").disabled = false;
+  $("btnStop").disabled = true;
+  render();
+});
+$("btnStop").addEventListener("click", () => {
+  running = false;
+  $("aLog").textContent = "Đã dừng theo yêu cầu.";
+});
+$("btnSaveAll").addEventListener("click", async () => {
+  for (let i = 0; i < state.items.length; i++) {
+    const it = state.items[i];
+    if (!images.has(it.uid)) continue;
+    saveImage(it, i);
+    await new Promise((r) => setTimeout(r, 400));
+  }
+});
+
+render();
+showTab(state.items.length ? "tab-queue" : "tab-build");
+</script>
+</body>
+</html>
