@@ -106,6 +106,23 @@ Nếu tiêu đề ảnh nằm ở rìa còn lại (vd ảnh có chữ sát đáy
 `captionBar` và chỉ set `"caption": {"position": "top"}`-style bằng field `captionPosition`
 trên chính entry manifest thay vì dùng dải màu riêng.
 
+## Sinh ảnh hàng loạt trên điện thoại (Flow Batch)
+
+`tools/flow-batch/index.html` là một trang HTML đơn lẻ, mở thẳng bằng trình duyệt
+điện thoại — không cài, không build. Nó sinh prompt theo đúng công thức của
+[`docs/SKILL-FLAT-EXPLAINER.md`](docs/SKILL-FLAT-EXPLAINER.md) cho cả kịch bản một lần,
+đánh số tên file khớp field `image` của manifest, và có hai chế độ chạy:
+
+- **Hàng loạt** — mỗi cảnh một chạm: chép prompt + mở Google Flow / ImageFX / Whisk,
+  đánh dấu xong, tự nhảy cảnh kế. Flow không có API công khai nên đây là mức tự động
+  cao nhất còn đúng điều khoản sử dụng.
+- **Tự động** — dán API key Google AI Studio, tool gọi thẳng Gemini/Imagen và chạy hết
+  hàng đợi, không cần chạm từng cảnh.
+
+Nút *Chép manifest.json* ở tab Xuất trả về sẵn mảng scene để dán vào
+`content/manifest.json` trước khi chạy `npm run build:scenes`. Chi tiết cách mở trên
+điện thoại: [`tools/flow-batch/README.md`](tools/flow-batch/README.md).
+
 ## Thêm scene mới thủ công
 
 Chỉnh `src/scenes/sample.ts` (hoặc tạo file scene mới và trỏ `src/scenes/active.ts`
@@ -184,4 +201,5 @@ Chrome bình thường thì bỏ qua bước này.
 ## Docs
 
 - Style guide ảnh AI: [`docs/SKILL-FLAT-EXPLAINER.md`](docs/SKILL-FLAT-EXPLAINER.md)
+- Tool sinh prompt hàng loạt: [`tools/flow-batch/README.md`](tools/flow-batch/README.md)
 - Remotion fundamentals: https://www.remotion.dev/docs/the-fundamentals
