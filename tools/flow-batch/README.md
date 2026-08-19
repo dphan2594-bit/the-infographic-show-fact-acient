@@ -64,6 +64,18 @@ Chọn một trong ba cách:
    npm run build:scenes
    ```
 
+## Quota của chế độ Tự động
+
+Các model sinh ảnh của Gemini API (`gemini-3.1-flash-image`, `gemini-3-pro-image`,
+`gemini-2.5-flash-image`…) **không có hạn mức miễn phí**. Key free tier vẫn gọi được
+model chữ bình thường, nhưng gọi model ảnh sẽ trả về `429 RESOURCE_EXHAUSTED` với
+quota bằng 0. Muốn dùng tab Tự động thì phải bật thanh toán cho project của key tại
+[aistudio.google.com/apikey](https://aistudio.google.com/apikey).
+
+Nút **Kiểm tra key** trong tab Tự động gọi ListModels để cho biết key còn sống không
+và key thấy những model ảnh nào — chẩn đoán trước khi chạy cả loạt. Chưa bật thanh
+toán thì tab **Hàng loạt** qua Flow vẫn dùng được bình thường và không tốn gì.
+
 ## Vài điều đáng biết
 
 - **API key** chỉ nằm trong `localStorage` của máy bạn và chỉ được gửi tới

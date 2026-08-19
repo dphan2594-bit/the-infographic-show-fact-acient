@@ -416,8 +416,13 @@ chapter-1 | E3 | chapter card | Tiêu đề chương</div>
         <input id="a-key" type="password" placeholder="AIza…" autocapitalize="off" autocomplete="off" spellcheck="false" />
       </label>
       <label class="field">Model
-        <input id="a-model" placeholder="gemini-2.5-flash-image" autocapitalize="off" autocomplete="off" spellcheck="false" />
+        <input id="a-model" list="modelList" placeholder="gemini-3.1-flash-image" autocapitalize="off" autocomplete="off" spellcheck="false" />
+        <datalist id="modelList"></datalist>
       </label>
+      <div class="row">
+        <button class="ghost tiny" id="btnCheck">Kiểm tra key &amp; xem model dùng được</button>
+      </div>
+      <p class="hint" id="checkLog"></p>
       <p class="hint">Khoá chỉ nằm trong <strong>localStorage</strong> của máy bạn và chỉ gửi tới googleapis.com. Tên model có thể sửa tay khi Google ra bản mới (ví dụ <code>imagen-4.0-generate-001</code>).</p>
       <div class="row">
         <button class="go" id="btnRun">Chạy toàn bộ cảnh chưa xong</button>
@@ -598,7 +603,7 @@ function blank() {
   return {
     items: [],
     cursor: 0,
-    settings: { ratio: "9:16", target: 0, prefix: "images/scene", model: "gemini-2.5-flash-image", key: "" },
+    settings: { ratio: "9:16", target: 0, prefix: "images/scene", model: "gemini-3.1-flash-image", key: "" },
   };
 }
 function load() {
@@ -1038,6 +1043,27 @@ $("btnClear").addEventListener("click", () => {
 
 const API_ROOT = "https://generativelanguage.googleapis.com/v1beta/models/";
 
+function explain(status, msg) {
+  if (status === 429) {
+    return "hết quota. Model sinh ảnh của Gemini API không có hạn mức miễn phí — cần bật thanh toán cho project của key tại aistudio.google.com/apikey. Chưa bật thì dùng tab “Hàng loạt” qua Flow. (" + msg + ")";
+  }
+  if (status === 403) return "key bị từ chối — kiểm tra key còn sống và API đã bật cho project. (" + msg + ")";
+  if (status === 404) return "key này không thấy model đó — bấm “Kiểm tra key” để xem model nào dùng được. (" + msg + ")";
+  if (status === 400) return "yêu cầu không hợp lệ. (" + msg + ")";
+  return msg;
+}
+
+async function listImageModels() {
+  const key = (state.settings.key || "").trim();
+  if (!key) throw new Error("Chưa điền API key");
+  const res = await fetch(API_ROOT.replace(/models\/$/, "models"), { headers: { "x-goog-api-key": key } });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(explain(res.status, (json.error && json.error.message) || res.statusText));
+  return (json.models || [])
+    .map((m) => String(m.name).split("/").pop())
+    .filter((n) => /image|imagen/i.test(n));
+}
+
 async function callApi(prompt, withImageConfig) {
   const model = (state.settings.model || "").trim();
   const key = (state.settings.key || "").trim();
@@ -1061,7 +1087,7 @@ async function callApi(prompt, withImageConfig) {
   const json = await res.json().catch(() => ({}));
   if (!res.ok) {
     const msg = (json && json.error && json.error.message) || res.statusText;
-    const err = new Error(`${res.status} — ${msg}`);
+    const err = new Error(`${res.status} — ${explain(res.status, msg)}`);
     err.status = res.status;
     err.body = msg;
     throw err;
@@ -1098,6 +1124,26 @@ function saveImage(item, index) {
   a.click();
   a.remove();
 }
+
+$("btnCheck").addEventListener("click", async () => {
+  $("checkLog").textContent = "Đang kiểm tra…";
+  try {
+    const models = await listImageModels();
+    $("modelList").innerHTML = models.map((m) => `<option value="${esc(m)}"></option>`).join("");
+    if (!models.length) {
+      $("checkLog").textContent = "Key chạy được, nhưng không thấy model sinh ảnh nào.";
+      return;
+    }
+    if (!models.includes((state.settings.model || "").trim())) {
+      state.settings.model = models[0];
+      $("a-model").value = models[0];
+      save();
+    }
+    $("checkLog").textContent = `Key OK. Model ảnh dùng được: ${models.join(", ")}. Lưu ý: các model này thường cần bật thanh toán mới có quota.`;
+  } catch (err) {
+    $("checkLog").textContent = "Lỗi: " + err.message;
+  }
+});
 
 $("btnRun").addEventListener("click", async () => {
   const todo = state.items.filter((i) => i.status !== "done" && !images.has(i.uid));
