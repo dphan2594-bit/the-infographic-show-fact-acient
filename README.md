@@ -185,3 +185,35 @@ Chrome bình thường thì bỏ qua bước này.
 
 - Style guide ảnh AI: [`docs/SKILL-FLAT-EXPLAINER.md`](docs/SKILL-FLAT-EXPLAINER.md)
 - Remotion fundamentals: https://www.remotion.dev/docs/the-fundamentals
+
+## Style thứ hai — "Cosmic Flat Vector"
+
+Bên cạnh style The Infographics Show ở trên, repo còn một hệ thống thứ hai cho nội
+dung khoa học/quy mô lớn: vector phẳng trên nền vũ trụ tối, không viền nét, màu bão
+hoà cao. Style guide đầy đủ + bộ prompt AI ở
+[`docs/SKILL-COSMIC-EXPLAINER.md`](docs/SKILL-COSMIC-EXPLAINER.md).
+
+Chọn style nào cho nội dung gì: xem bảng so sánh ở Mục 1 của doc đó.
+
+### Composition
+
+| ID | Loại | Kích thước | Nội dung |
+|---|---|---|---|
+| `WhyRomeFell` | Video | 1920×1080 | Video mẫu 9 cảnh, vẽ hoàn toàn bằng code |
+| `Carousel` | Ảnh | 1080×1080 | Carousel 7 slide, 1 frame = 1 slide |
+| `StyleSheet` | Ảnh | 1500×2160 | Bảng tra cứu màu/chữ/linh kiện |
+
+```bash
+npx remotion render WhyRomeFell out/rome.mp4
+npx remotion still  StyleSheet  out/style-sheet.png
+npx remotion still  Carousel    out/slide-3.png --frame=2   # frame N = slide N+1
+```
+
+Bảng màu là **một nguồn sự thật duy nhất** ở `src/kurzgesagt/theme.ts` — Mục 5 của
+style guide phải khớp với file này, sửa một bên thì sửa cả bên kia.
+
+### Ảnh AI cho style này
+
+Ảnh sinh bằng AI (Mục 3 style guide) luôn **không có chữ**; chữ tiếng Việt được
+overlay bằng code. Khi khai báo trong `content/manifest.json`, `letterboxColor` phải
+đúng `#080B22` để không lộ đường viền giữa ảnh và nền.
