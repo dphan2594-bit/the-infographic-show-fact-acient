@@ -1,114 +1,143 @@
 import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { SceneShell } from "../components/SceneShell";
 import { Stat } from "../components/Stat";
-import { Body, Eyebrow, Headline } from "../components/Type";
-import { ramp } from "../anim";
-import { palette } from "../theme";
+import { Eyebrow, Headline } from "../components/Type";
+import { appear, drift } from "../anim";
+import { HEIGHT, WIDTH, palette } from "../theme";
+import {
+  City,
+  Creature,
+  Defs,
+  Glow,
+  PlanetArc,
+  SunRays,
+  Temple,
+  arcAngle,
+  arcY,
+} from "../illustration/parts";
+import type { Ground } from "../illustration/parts";
 
-/**
- * A filled arc that sweeps out to show how much of the known world Rome held
- * at its greatest extent, under Trajan in 117 AD.
- */
-const ReachArc: React.FC = () => {
-  const frame = useCurrentFrame();
-  const t = ramp(frame, 24, 96);
-  const radius = 150;
-  const circumference = 2 * Math.PI * radius;
+/* A large radius keeps the world nearly flat, so buildings near the edge of
+   the frame do not tilt far enough to look like they are toppling. */
+const GROUND_SHAPE: Ground = { top: 792, radius: 4200, centerX: 960 };
+const STONE = "#4A3F8C";
+const STONE_LIT = "#6355B8";
 
-  return (
-    <svg width={420} height={420} viewBox="0 0 420 420">
-      <circle
-        cx={210}
-        cy={210}
-        r={radius}
-        fill="none"
-        stroke={`${palette.muted}44`}
-        strokeWidth={26}
-      />
-      <circle
-        cx={210}
-        cy={210}
-        r={radius}
-        fill="none"
-        stroke={palette.gold}
-        strokeWidth={26}
-        strokeLinecap="round"
-        strokeDasharray={circumference}
-        /* A quarter of humanity — the arc stops at 25% of the ring. */
-        strokeDashoffset={circumference * (1 - t * 0.25)}
-        transform="rotate(-90 210 210)"
-      />
-    </svg>
-  );
-};
+/** A crowd spread along the horizon, dense because the empire is at its peak. */
+const CROWD = [
+  { x: 250, c: palette.teal },
+  { x: 318, c: palette.sky },
+  { x: 386, c: palette.violet },
+  { x: 1480, c: palette.sky },
+  { x: 1552, c: palette.teal },
+  { x: 1624, c: palette.violet },
+];
 
 export const PeakScene: React.FC = () => {
+  const frame = useCurrentFrame();
+  const cityIn = appear(frame, 18);
+
   return (
     <SceneShell mood="calm">
+      <AbsoluteFill>
+        <svg width={WIDTH} height={HEIGHT} viewBox={`0 0 ${WIDTH} ${HEIGHT}`}>
+          <Defs colors={[palette.gold]} />
+
+          <Glow x={1660} y={214} r={300} color={palette.gold} />
+          <g transform={`translate(1660 214)`}>
+            <SunRays
+              x={0}
+              y={0}
+              count={14}
+              inner={78}
+              length={40}
+              color={palette.amber}
+              rotation={drift(frame, 3)}
+            />
+            <circle r={66} fill={palette.gold} />
+          </g>
+
+          <PlanetArc
+            top={GROUND_SHAPE.top}
+            radius={GROUND_SHAPE.radius}
+            centerX={GROUND_SHAPE.centerX}
+            color="#2A2159"
+            rimColor="#3E3480"
+          />
+
+          {/* Aqueduct arches running off to the left — Rome at full stretch. */}
+          <g
+            transform={`translate(330 ${arcY(330, GROUND_SHAPE)}) rotate(${arcAngle(330, GROUND_SHAPE)})`}
+            opacity={cityIn}
+          >
+            {[0, 1, 2, 3].map((i) => (
+              <g key={i} transform={`translate(${i * 62} 0)`}>
+                <rect x={-8} y={-86} width={16} height={86} fill={STONE} />
+                <path
+                  d="M 8 -60 A 23 23 0 0 1 54 -60 L 54 -86 L 8 -86 Z"
+                  fill={STONE}
+                />
+              </g>
+            ))}
+            <rect x={-12} y={-104} width={272} height={20} fill={STONE_LIT} />
+          </g>
+
+          <City
+            x={960}
+            y={arcY(960, GROUND_SHAPE) + 2}
+            scale={1.75 * cityIn}
+            color={STONE}
+            accent={palette.gold}
+          />
+          <Temple
+            x={640}
+            y={arcY(640, GROUND_SHAPE) + 2}
+            scale={0.95 * appear(frame, 30)}
+            color={STONE}
+            roofColor={STONE_LIT}
+          />
+          <Temple
+            x={1300}
+            y={arcY(1300, GROUND_SHAPE) + 2}
+            scale={0.95 * appear(frame, 36)}
+            color={STONE}
+            roofColor={STONE_LIT}
+          />
+
+          {CROWD.map((who, i) => (
+            <Creature
+              key={who.x}
+              x={who.x}
+              y={arcY(who.x, GROUND_SHAPE) + 2}
+              scale={0.85 * appear(frame, 44 + i * 5)}
+              color={who.c}
+              look={who.x < 960 ? 1 : -1}
+            />
+          ))}
+        </svg>
+      </AbsoluteFill>
+
       <AbsoluteFill
         style={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center",
-          gap: 18,
+          padding: "70px 130px 0",
+          gap: 12,
         }}
       >
         <Eyebrow delay={0} color={palette.gold}>
           Năm 117 sau Công nguyên
         </Eyebrow>
-        <Headline delay={8} size={78}>
+        <Headline delay={8} size={74}>
           Đỉnh cao quyền lực
         </Headline>
 
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 90,
-            marginTop: 34,
-          }}
-        >
-          <Stat
-            value={5}
-            label="triệu km² lãnh thổ"
-            color={palette.sky}
-            delay={40}
-            size={96}
-          />
-
-          <div style={{ position: "relative" }}>
-            <ReachArc />
-            <AbsoluteFill
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Stat
-                value={25}
-                suffix="%"
-                label="dân số thế giới"
-                color={palette.gold}
-                delay={54}
-                size={82}
-              />
-            </AbsoluteFill>
-          </div>
-
-          <Stat
-            value={70}
-            label="triệu người dân"
-            color={palette.teal}
-            delay={68}
-            size={96}
-          />
+        <div style={{ display: "flex", gap: 130, marginTop: 40 }}>
+          <Stat value={5} label="triệu km² lãnh thổ" color={palette.sky} delay={46} size={86} />
+          <Stat value={70} label="triệu người dân" color={palette.teal} delay={58} size={86} />
+          <Stat value={25} suffix="%" label="dân số thế giới" color={palette.gold} delay={70} size={86} />
         </div>
-
-        <Body delay={92} size={34} color={palette.paper} style={{ marginTop: 62 }}>
-          Chưa nhà nước nào ở châu Âu lớn đến thế — và cũng chưa nhà nước nào tốn kém đến thế.
-        </Body>
       </AbsoluteFill>
     </SceneShell>
   );

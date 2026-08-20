@@ -165,6 +165,27 @@ Một dải ngang xuyên khung, các điểm mốc là hình tròn nằm trên d
 circular markers sitting on the band, each marker a different flat colour
 ```
 
+### K9 — Cảnh trên đường chân trời (Horizon Scene) — QUAN TRỌNG NHẤT
+Đây là archetype "xương sống" của style này: một đường cong hành tinh chiếm đáy
+khung, cảnh vật (thành phố, tường thành, cột đền) dựng trên đó, nhân vật đứng rải
+rác để tạo tỉ lệ. Bầu trời phía trên để trống cho chữ.
+```
+[SUBJECT] a curved planet surface filling the bottom third of the frame, a small
+flat-vector city of simple columned buildings standing on it, several tiny
+rounded creatures with two white dot eyes standing nearby for scale, a glowing
+sphere in the sky above
+[COMPOSITION] horizon in the lower third, upper half empty dark sky for a title
+```
+
+### K10 — Đám đông thưa dần (Thinning Crowd)
+Cùng một nhân vật lặp lại dọc một đường, khoảng cách giữa họ nói lên vấn đề —
+càng thưa càng yếu. Dùng cho "không đủ người", "dàn trải quá mỏng".
+```
+[SUBJECT] a long battlemented wall running across a curved horizon with evenly
+spaced towers, only four small creature figures standing guard along its entire
+length, large empty gaps between them
+```
+
 ### K8 — Before / After Split (đối lập)
 Khung chia đôi bằng một đường thẳng đứng, hai bên cùng bố cục nhưng khác trạng thái/màu.
 ```
@@ -318,5 +339,29 @@ Bộ component dựng sẵn theo đúng bảng màu và nguyên tắc trên, dù
 | `src/kurzgesagt/components/Type.tsx` | Headline / Body / Eyebrow tiếng Việt |
 | `src/kurzgesagt/components/Stat.tsx` | Số đếm tăng dần + nhãn, chip |
 | `src/kurzgesagt/components/CauseLayout.tsx` | Khung cảnh chuẩn: eyebrow + tiêu đề + hình + câu chốt |
+| `src/kurzgesagt/illustration/parts.tsx` | **Thư viện hình vẽ**: PlanetArc, Creature, City, Temple, Wall, Tower, Coin, SunRays, Glow |
+
+### Hai hàm bắt buộc khi vẽ trên hành tinh
+
+Đường chân trời là một hình tròn bán kính rất lớn, nên **mặt đất tụt xuống rất
+nhanh khi ra xa tâm khung**. Đặt vật ở một `y` cố định là nó sẽ lơ lửng ở hai mép.
+
+```ts
+arcY(x, ground)      // độ cao mặt đất tại x — mọi thứ đứng trên đất phải dùng
+arcAngle(x, ground)  // góc nghiêng mặt đất tại x — vật dài (tường, cầu dẫn) phải xoay theo
+```
+
+Bán kính lớn = thế giới phẳng hơn = vật ở mép ít nghiêng. Dưới ~3000 thì cầu dẫn
+nước và tường thành ở mép khung bắt đầu trông như sắp đổ.
+
+### Nguyên tắc nhân vật
+
+```
+□ MỘT thiết kế thân duy nhất cho cả kênh — chỉ đổi phụ kiện, không đổi hình thân
+□ Hai chấm mắt trắng, KHÔNG miệng, KHÔNG viền, KHÔNG mũi
+□ Phụ kiện phân vai: helmet = lính, crown = hoàng đế, hood = dân di cư, spear = vũ trang
+□ Nhân vật luôn NHỎ so với công trình — chênh lệch tỉ lệ chính là thứ tạo cảm giác quy mô
+□ Phụ kiện không được che mắt: mọi thứ đội đầu phải kết thúc phía trên y = -52
+```
 
 Composition mẫu hoàn chỉnh: `WhyRomeFell` (`src/kurzgesagt/RomeVideo.tsx`) — 9 scene, 1920×1080, toàn bộ vẽ bằng code, không dùng ảnh AI. Dùng làm tham chiếu khi cần biết một scene "đúng style" trông thế nào.

@@ -1,110 +1,97 @@
-import { useCurrentFrame } from "remotion";
+import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { SceneShell } from "../components/SceneShell";
 import { CauseLayout } from "../components/CauseLayout";
 import { appear, ramp } from "../anim";
-import { causeColors, font, palette } from "../theme";
+import { HEIGHT, WIDTH, causeColors, font, palette } from "../theme";
+import {
+  City,
+  Creature,
+  Defs,
+  Glow,
+  PlanetArc,
+  Tower,
+  Wall,
+  arcY,
+} from "../illustration/parts";
+import type { Ground } from "../illustration/parts";
 
 const ACCENT = causeColors.pressure;
+const GROUND_SHAPE: Ground = { top: 786, radius: 5200, centerX: 960 };
 
 /**
- * The canvas is sized so that a label sitting at LABEL_RADIUS from the centre
- * still lands inside the viewBox on every bearing used below — labels drawn
- * outside it get silently clipped by the SVG.
+ * Three waves closing on the city. Each stops at its own distance so later
+ * waves queue up behind earlier ones instead of standing on top of them, and
+ * each label is anchored to its own group rather than to a fixed slot.
  */
-const CANVAS_W = 1320;
-const CANVAS_H = 700;
-const CX = CANVAS_W / 2;
-const CY = 330;
-
-/** Angle in degrees, label, and when the wave fires. */
 const WAVES = [
-  { angle: 200, label: "Người Goth · 376", delay: 30 },
-  { angle: 340, label: "Người Hung · 440s", delay: 52 },
-  { angle: 105, label: "Người Vandal · 455", delay: 74 },
+  { label: "Người Goth · 376", from: -1, delay: 26, stop: 300 },
+  { label: "Người Hung · 440s", from: 1, delay: 54, stop: 300 },
+  { label: "Người Vandal · 455", from: -1, delay: 82, stop: 570 },
 ];
 
-const START_RADIUS = 300;
-const END_RADIUS = 118;
-const LABEL_RADIUS = 348;
+const MARCH_START = 780;
 
-const IncomingWaves: React.FC = () => {
+const Siege: React.FC = () => {
   const frame = useCurrentFrame();
 
   return (
-    <svg
-      width={CANVAS_W}
-      height={CANVAS_H}
-      viewBox={`0 0 ${CANVAS_W} ${CANVAS_H}`}
-    >
-      {/* Rome, holding the middle. It is squeezed smaller as the arrows land
-          rather than faded out, so the disc keeps its colour. */}
-      {(() => {
-        const pressure = ramp(frame, 60, 140);
-        return (
-          <>
-            <defs>
-              <radialGradient id="rome-glow">
-                <stop offset="0%" stopColor={palette.gold} stopOpacity={0.5} />
-                <stop offset="100%" stopColor={palette.gold} stopOpacity={0} />
-              </radialGradient>
-            </defs>
-            <circle
-              cx={CX}
-              cy={CY}
-              r={150 - pressure * 14}
-              fill="url(#rome-glow)"
-            />
-            <circle
-              cx={CX}
-              cy={CY}
-              r={74 - pressure * 12}
-              fill={palette.gold}
-            />
-          </>
-        );
-      })()}
+    <svg width={WIDTH} height={HEIGHT} viewBox={`0 0 ${WIDTH} ${HEIGHT}`}>
+      <Defs colors={[ACCENT, palette.gold]} />
 
-      {WAVES.map((wave) => {
-        const rad = (wave.angle * Math.PI) / 180;
-        const travel = ramp(frame, wave.delay, wave.delay + 40);
-        const fadeIn = appear(frame, wave.delay);
+      <PlanetArc
+        top={GROUND_SHAPE.top}
+        radius={GROUND_SHAPE.radius}
+        centerX={GROUND_SHAPE.centerX}
+        color="#2A1733"
+        rimColor="#3F2450"
+      />
 
-        const radius = START_RADIUS - (START_RADIUS - END_RADIUS) * travel;
-        const tipX = CX + Math.cos(rad) * radius;
-        const tipY = CY + Math.sin(rad) * radius;
-        /* Tail trails 90px behind the tip, along the same bearing. */
-        const tailX = CX + Math.cos(rad) * (radius + 96);
-        const tailY = CY + Math.sin(rad) * (radius + 96);
+      {/* Rome behind its wall, holding the middle. */}
+      <Glow x={960} y={arcY(960, GROUND_SHAPE) - 90} r={280} color={palette.gold} />
+      <City
+        x={960}
+        y={arcY(960, GROUND_SHAPE) - 26}
+        scale={1.25}
+        color="#5A4A9E"
+        accent={palette.gold}
+      />
+      <Wall x={840} y={arcY(960, GROUND_SHAPE) + 2} width={240} color="#4A3D85" height={40} />
+      <Tower x={834} y={arcY(834, GROUND_SHAPE) + 2} color="#5A4A9E" height={64} />
+      <Tower x={1086} y={arcY(1086, GROUND_SHAPE) + 2} color="#5A4A9E" height={64} />
 
-        const labelX = CX + Math.cos(rad) * LABEL_RADIUS;
-        const labelY = CY + Math.sin(rad) * LABEL_RADIUS;
+      {WAVES.map((wave, w) => {
+        const travel = ramp(frame, wave.delay, wave.delay + 46);
+        const distance = MARCH_START - (MARCH_START - wave.stop) * travel;
+        const fade = appear(frame, wave.delay);
 
         return (
-          <g key={wave.label} opacity={fadeIn}>
-            <line
-              x1={tailX}
-              y1={tailY}
-              x2={tipX}
-              y2={tipY}
-              stroke={ACCENT}
-              strokeWidth={13}
-              strokeLinecap="round"
-            />
-            {/* Arrowhead: a triangle rotated to point at the centre. */}
-            <polygon
-              points="0,-15 30,0 0,15"
-              fill={ACCENT}
-              transform={`translate(${tipX} ${tipY}) rotate(${wave.angle + 180})`}
-            />
+          <g key={wave.label} opacity={fade}>
+            {[0, 1, 2, 3].map((i) => {
+              const x = 960 + wave.from * (distance + i * 58);
+              const y = arcY(x, GROUND_SHAPE) + 2;
+              /* A small vertical bob keeps the group feeling like it marches. */
+              const bob = Math.sin(frame / 5 + i * 1.2 + w) * 3;
+              return (
+                <Creature
+                  key={i}
+                  x={x}
+                  y={y + bob}
+                  scale={0.98}
+                  color={ACCENT}
+                  accessory={i % 2 === 0 ? "spear" : "hood"}
+                  accessoryColor={i % 2 === 0 ? palette.paper : "#6B4FD6"}
+                  look={wave.from * -1}
+                />
+              );
+            })}
             <text
-              x={labelX}
-              y={labelY}
+              x={960 + wave.from * (distance + 87)}
+              y={arcY(960 + wave.from * (distance + 87), GROUND_SHAPE) - 132}
               fill={palette.paper}
               fontFamily={font.family}
               fontWeight={font.bold}
-              fontSize={26}
+              fontSize={27}
               textAnchor="middle"
-              dominantBaseline="middle"
             >
               {wave.label}
             </text>
@@ -118,13 +105,16 @@ const IncomingWaves: React.FC = () => {
 export const PressureScene: React.FC = () => {
   return (
     <SceneShell mood="grim">
+      <AbsoluteFill>
+        <Siege />
+      </AbsoluteFill>
       <CauseLayout
         index={4}
         accent={ACCENT}
         title="Sức ép dồn từ bên ngoài"
         takeaway="Các dân tộc phía bắc bị đẩy về phía nam — và một biên giới đã mỏng thì không chặn nổi."
       >
-        <IncomingWaves />
+        <span />
       </CauseLayout>
     </SceneShell>
   );

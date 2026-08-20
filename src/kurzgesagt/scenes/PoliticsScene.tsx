@@ -1,63 +1,85 @@
-import { useCurrentFrame } from "remotion";
+import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { SceneShell } from "../components/SceneShell";
 import { CauseLayout } from "../components/CauseLayout";
 import { Stat } from "../components/Stat";
-import { appear } from "../anim";
-import { causeColors, font, palette } from "../theme";
+import { appear, ramp } from "../anim";
+import { HEIGHT, WIDTH, causeColors, palette } from "../theme";
+import { Creature, Defs, Glow, PlanetArc, arcY } from "../illustration/parts";
+import type { Ground } from "../illustration/parts";
 
 const ACCENT = causeColors.politics;
-const EMPERORS = 26;
-const COLUMNS = 13;
+const GROUND_SHAPE: Ground = { top: 742, radius: 5200, centerX: 960 };
+const EMPERORS = 13;
 /** frames between one emperor taking the throne and the next */
-const STEP = 4.5;
+const STEP = 9;
+const FIRST = 24;
 
 /**
- * Each square is a reign: it snaps on in the accent colour, then immediately
- * drains to grey as the next one lights. Run fast enough, the row reads as
- * churn rather than as 26 separate events.
+ * Each emperor rises, wears the crown for a moment, then topples sideways as
+ * the next one appears. Run end to end, the row reads as churn — which is the
+ * whole claim of this beat.
  */
-const ReignGrid: React.FC = () => {
+const Throne: React.FC = () => {
   const frame = useCurrentFrame();
 
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: `repeat(${COLUMNS}, 62px)`,
-        gap: 16,
-      }}
-    >
+    <svg width={WIDTH} height={HEIGHT} viewBox={`0 0 ${WIDTH} ${HEIGHT}`}>
+      <Defs colors={[ACCENT]} />
+
+      <PlanetArc
+        top={GROUND_SHAPE.top}
+        radius={GROUND_SHAPE.radius}
+        centerX={GROUND_SHAPE.centerX}
+        color="#2C1A3E"
+        rimColor="#43285C"
+      />
+
       {new Array(EMPERORS).fill(0).map((_, i) => {
-        const start = 26 + i * STEP;
-        const on = appear(frame, start, 26);
-        /* Dims once the next two reigns have begun, but keeps enough opacity
-           that the finished row still reads as 26 squares. */
-        const spent = Math.max(0, Math.min(1, (frame - start - STEP * 2) / 14));
+        const x = 190 + i * 130;
+        const y = arcY(x, GROUND_SHAPE) + 2;
+        const start = FIRST + i * STEP;
+        const rise = appear(frame, start);
+        /* Falls once the next two have taken the throne. */
+        const fall = ramp(frame, start + STEP * 2, start + STEP * 2 + 14);
 
         return (
-          <div
-            key={i}
-            style={{
-              width: 62,
-              height: 62,
-              borderRadius: 14,
-              backgroundColor: ACCENT,
-              opacity: on * (1 - spent * 0.55),
-              transform: `scale(${on * (1 - spent * 0.12)})`,
-            }}
-          />
+          <g key={x}>
+            <Glow
+              x={x}
+              y={y - 46}
+              r={96}
+              color={ACCENT}
+              opacity={rise * (1 - fall) * 0.85}
+            />
+            {/* Pivot at the feet so the body tips over rather than sliding. */}
+            <g transform={`rotate(${fall * 78} ${x} ${y})`}>
+              <Creature
+                x={x}
+                y={y}
+                scale={rise}
+                color={ACCENT}
+                accessory="crown"
+                accessoryColor={palette.gold}
+                opacity={1 - fall * 0.55}
+              />
+            </g>
+          </g>
         );
       })}
-    </div>
+    </svg>
   );
 };
 
 export const PoliticsScene: React.FC = () => {
   const frame = useCurrentFrame();
-  const captionIn = appear(frame, 20);
+  const statsIn = appear(frame, 128);
 
   return (
     <SceneShell mood="grim">
+      <AbsoluteFill>
+        <Throne />
+      </AbsoluteFill>
+
       <CauseLayout
         index={3}
         accent={ACCENT}
@@ -67,50 +89,21 @@ export const PoliticsScene: React.FC = () => {
         <div
           style={{
             display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 44,
+            gap: 130,
+            opacity: statsIn,
+            transform: `translateY(-40px)`,
           }}
         >
-          <div
-            style={{
-              fontFamily: font.family,
-              fontWeight: font.bold,
-              fontSize: 28,
-              letterSpacing: "0.06em",
-              color: palette.muted,
-              opacity: captionIn,
-            }}
-          >
-            Khủng hoảng thế kỷ III · năm 235–284
-          </div>
-
-          <ReignGrid />
-
-          <div style={{ display: "flex", gap: 120 }}>
-            <Stat
-              value={26}
-              label="hoàng đế"
-              color={ACCENT}
-              delay={90}
-              size={92}
-            />
-            <Stat
-              value={50}
-              label="năm"
-              color={palette.paper}
-              delay={100}
-              size={92}
-            />
-            <Stat
-              value={1.9}
-              decimals={1}
-              label="năm cầm quyền trung bình"
-              color={palette.muted}
-              delay={110}
-              size={92}
-            />
-          </div>
+          <Stat value={26} label="hoàng đế" color={ACCENT} delay={128} size={92} />
+          <Stat value={50} label="năm" color={palette.paper} delay={136} size={92} />
+          <Stat
+            value={1.9}
+            decimals={1}
+            label="năm cầm quyền trung bình"
+            color={palette.muted}
+            delay={144}
+            size={92}
+          />
         </div>
       </CauseLayout>
     </SceneShell>
