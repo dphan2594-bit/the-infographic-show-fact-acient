@@ -73,7 +73,8 @@ export type IdleName =
   | "sway"
   | "breathe"
   | "orbit"
-  | "twinkle";
+  | "twinkle"
+  | "breathe-still";
 
 export type EntrancePreset = {
   name: EntranceName;
@@ -544,6 +545,16 @@ const IDLE_PRESETS: IdlePreset[] = [
         transform: `scale(${round(1 + pulse * 0.05)})`,
       };
     },
+  },
+  {
+    name: "breathe-still",
+    label: "Breathe (scale only)",
+    description:
+      "A slow chest-rise scale with no opacity change — the loop for a cutout laid over its own artwork, where fading would show the copy against the original.",
+    apply: ({ frame }) => ({
+      opacity: 1,
+      transform: `scale(${round(1 + Math.sin(frame * 0.05) * 0.012)})`,
+    }),
   },
   {
     name: "breathe",

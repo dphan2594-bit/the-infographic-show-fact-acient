@@ -14,6 +14,8 @@ import { GlowPulseOverlay } from "./overlays/GlowPulseOverlay";
 import { ShootingStarsOverlay } from "./overlays/ShootingStarsOverlay";
 import { DriftParticlesOverlay } from "./overlays/DriftParticlesOverlay";
 import { EngineTrailOverlay } from "./overlays/EngineTrailOverlay";
+import { CutoutOverlay } from "./overlays/CutoutOverlay";
+import { BlinkOverlay } from "./overlays/BlinkOverlay";
 
 export const OverlayRenderer: React.FC<{ overlay: Overlay }> = ({ overlay }) => {
   switch (overlay.type) {
@@ -176,6 +178,36 @@ export const OverlayRenderer: React.FC<{ overlay: Overlay }> = ({ overlay }) => 
           color={overlay.color}
           travelSeconds={overlay.travelSeconds}
           seed={overlay.seed}
+        />
+      );
+    case "cutout":
+      return (
+        <CutoutOverlay
+          src={overlay.src}
+          x={overlay.x}
+          y={overlay.y}
+          width={overlay.width}
+          height={overlay.height}
+          feather={overlay.feather}
+          originX={overlay.originX}
+          originY={overlay.originY}
+          entrance={overlay.entrance}
+          delayFrames={overlay.delayFrames}
+          idle={overlay.idle}
+        />
+      );
+    case "blink":
+      return (
+        <BlinkOverlay
+          x={overlay.x}
+          y={overlay.y}
+          width={overlay.width}
+          height={overlay.height}
+          color={overlay.color}
+          periodSeconds={overlay.periodSeconds}
+          closedFrames={overlay.closedFrames}
+          offsetSeconds={overlay.offsetSeconds}
+          radiusPercent={overlay.radiusPercent}
         />
       );
     case "processFlow":

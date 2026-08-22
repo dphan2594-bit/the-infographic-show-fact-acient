@@ -236,6 +236,35 @@ type OverlayVariant =
       seed?: string;
     }
   | ({
+      /**
+       * Lifts a rectangle of the background image and animates just that copy,
+       * so a character in flat artwork can breathe or sway without the picture
+       * being exported in layers. Keep the motion small.
+       */
+      type: "cutout";
+      src: string;
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+      feather?: number;
+      originX?: number;
+      originY?: number;
+    } & EntranceProps)
+  | {
+      /** covers painted eyes with a patch of skin for a few frames — a blink */
+      type: "blink";
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+      color: string;
+      periodSeconds?: number;
+      closedFrames?: number;
+      offsetSeconds?: number;
+      radiusPercent?: number;
+    }
+  | ({
       /** horizontal process-flow diagram (E8): boxes + connecting arrows, staggered reveal */
       type: "processFlow";
       steps: { label: string }[];
