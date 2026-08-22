@@ -2,6 +2,7 @@ import { CalculateMetadataFunction, Composition } from "remotion";
 import { InfographicVideo, getTotalDurationInFrames } from "./InfographicVideo";
 import { PRESET_GALLERY_DURATION, PresetGallery } from "./PresetGallery";
 import { activeScenes } from "./scenes/active";
+import { illustrationScenes } from "./scenes/illustration";
 import { kurzgesagtScenes } from "./scenes/kurzgesagt";
 import type { Scene } from "./scenes/types";
 
@@ -66,6 +67,26 @@ export const KurzgesagtDemoComposition = () => {
       width={WIDTH}
       height={HEIGHT}
       defaultProps={{ scenes: kurzgesagtScenes }}
+      calculateMetadata={calculateMetadata}
+    />
+  );
+};
+
+/**
+ * A single flat illustration brought to life (src/scenes/illustration.ts):
+ * camera push, orbiting bodies on the painted orbits, breathing glows,
+ * twinkle and meteors. Landscape, matching the artwork's aspect ratio.
+ */
+export const AnimatedIllustrationComposition = () => {
+  return (
+    <Composition
+      id="AnimatedIllustration"
+      component={InfographicVideo}
+      durationInFrames={getTotalDurationInFrames(illustrationScenes)}
+      fps={FPS}
+      width={1920}
+      height={888}
+      defaultProps={{ scenes: illustrationScenes }}
       calculateMetadata={calculateMetadata}
     />
   );

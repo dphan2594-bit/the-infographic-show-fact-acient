@@ -9,6 +9,9 @@ import { ChartLineOverlay } from "./overlays/ChartLineOverlay";
 import { ProcessFlowOverlay } from "./overlays/ProcessFlowOverlay";
 import { OrbitSystemOverlay } from "./overlays/OrbitSystemOverlay";
 import { SparkleBurstOverlay } from "./overlays/SparkleBurstOverlay";
+import { StarLayerOverlay } from "./overlays/StarLayerOverlay";
+import { GlowPulseOverlay } from "./overlays/GlowPulseOverlay";
+import { ShootingStarsOverlay } from "./overlays/ShootingStarsOverlay";
 
 export const OverlayRenderer: React.FC<{ overlay: Overlay }> = ({ overlay }) => {
   switch (overlay.type) {
@@ -97,6 +100,7 @@ export const OverlayRenderer: React.FC<{ overlay: Overlay }> = ({ overlay }) => 
           coreColor={overlay.coreColor}
           glowColor={overlay.glowColor}
           rings={overlay.rings}
+          showCore={overlay.showCore}
           entrance={overlay.entrance}
           delayFrames={overlay.delayFrames}
           idle={overlay.idle}
@@ -112,6 +116,38 @@ export const OverlayRenderer: React.FC<{ overlay: Overlay }> = ({ overlay }) => 
           colors={overlay.colors}
           spread={overlay.spread}
           durationInFrames={overlay.durationInFrames}
+          seed={overlay.seed}
+        />
+      );
+    case "starLayer":
+      return (
+        <StarLayerOverlay
+          density={overlay.density}
+          seed={overlay.seed}
+          driftSpeed={overlay.driftSpeed}
+          opacity={overlay.opacity}
+        />
+      );
+    case "glowPulse":
+      return (
+        <GlowPulseOverlay
+          x={overlay.x}
+          y={overlay.y}
+          radius={overlay.radius}
+          color={overlay.color}
+          periodSeconds={overlay.periodSeconds}
+          minOpacity={overlay.minOpacity}
+          maxOpacity={overlay.maxOpacity}
+        />
+      );
+    case "shootingStars":
+      return (
+        <ShootingStarsOverlay
+          count={overlay.count}
+          periodSeconds={overlay.periodSeconds}
+          travelSeconds={overlay.travelSeconds}
+          angleDeg={overlay.angleDeg}
+          color={overlay.color}
           seed={overlay.seed}
         />
       );

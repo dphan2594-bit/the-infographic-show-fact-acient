@@ -1,5 +1,6 @@
 import "./index.css";
 import {
+  AnimatedIllustrationComposition,
   InfographicComposition,
   KurzgesagtDemoComposition,
   PresetGalleryComposition,
@@ -11,6 +12,7 @@ export const RemotionRoot: React.FC = () => {
       <InfographicComposition />
       <PresetGalleryComposition />
       <KurzgesagtDemoComposition />
+      <AnimatedIllustrationComposition />
     </>
   );
 };

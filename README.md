@@ -54,10 +54,15 @@ src/
       ProcessFlowOverlay.tsx    # E8 process flow — box pop-in + mũi tên tự vẽ
       OrbitSystemOverlay.tsx    # lõi phát sáng + vệ tinh chạy trên vòng elip
       SparkleBurstOverlay.tsx   # chùm hạt + vòng xung kích nhấn 1 khoảnh khắc
+      StarLayerOverlay.tsx      # lớp sao nhấp nháy phủ lên tranh có sẵn
+      GlowPulseOverlay.tsx      # quầng sáng "thở" cho mặt trời/động cơ trong tranh
+      ShootingStarsOverlay.tsx  # sao băng cắt ngang bầu trời theo chu kỳ
   InfographicVideo.tsx    # nối scene bằng <TransitionSeries> (fade/slide/wipe)
   PresetGallery.tsx        # composition xem trước toàn bộ preset
   scenes/kurzgesagt.ts     # kịch bản demo cho gói animation Kurzgesagt
-  Composition.tsx          # đăng ký composition: Infographic / PresetGallery / KurzgesagtDemo
+  scenes/illustration.ts   # animate 1 ảnh tĩnh (đo hình học quỹ đạo từ chính file PNG)
+  Composition.tsx          # đăng ký composition: Infographic / PresetGallery /
+                           #   KurzgesagtDemo / AnimatedIllustration
 ```
 
 ## Khớp audio/ảnh/phụ đề tự động
@@ -284,6 +289,35 @@ npx remotion render KurzgesagtDemo out/kurzgesagt.mp4
 - Mọi thứ ngẫu nhiên (vị trí sao, hạt) đều đi qua bộ sinh có seed trong
   `src/animation/random.ts` — dùng `Math.random()` sẽ khiến mỗi frame một khác và
   hình bị "sôi".
+
+## Animate một ảnh tĩnh (composition `AnimatedIllustration`)
+
+Ảnh flat vector có sẵn (PNG) không tách lớp được, nhưng vẫn "sống" được bằng 4
+lớp chuyển động chồng lên — đúng cách Kurzgesagt xử lý một cảnh tĩnh:
+
+1. **Camera đẩy chậm** — `scene.camera` (`zoomFrom`/`zoomTo`/`panXPercent`/`panYPercent`)
+   áp cho **cả ảnh nền lẫn overlay** nên mọi thứ vẽ bằng code không bị lệch khỏi
+   tranh. (Khác `background.kenBurns`: cái đó chỉ đẩy ảnh, glow/hành tinh sẽ trôi
+   ra khỏi vị trí.)
+2. **Hành tinh chạy trên đúng quỹ đạo đã vẽ trong ảnh** — `orbitSystem` với
+   `showCore: false` và `showRing: false` trên từng vòng: chỉ vệ tinh là của ta,
+   vòng elip là nét có sẵn trong tranh.
+3. **Glow thở trên mọi nguồn sáng** — `glowPulse` đặt lên mặt trời, đèn ăng-ten,
+   luồng khí động cơ.
+4. **Lớp sao nhấp nháy + sao băng** — `starLayer` (đặt `driftSpeed: 0` để không
+   trôi lệch với sao đã vẽ) và `shootingStars`.
+
+Điểm mấu chốt là **đo hình học thật của ảnh, không ước lượng**: tâm hệ mặt trời,
+độ nghiêng (-18°), độ dẹt (0.36) và bán trục của 5 quỹ đạo được dò bằng cách quét
+tia + fit conic trực tiếp trên file PNG, nhờ vậy vệ tinh chạy khít nét vẽ. Toàn bộ
+số liệu nằm trong [`src/scenes/illustration.ts`](src/scenes/illustration.ts).
+
+```console
+npx remotion render AnimatedIllustration out/animated-illustration.mp4
+```
+
+Muốn áp cho ảnh khác: thay `background.src`, rồi chỉnh lại toạ độ `SUN`, thông số
+`rings` và vị trí `glowPulse` cho khớp tranh mới.
 
 ## Commands
 

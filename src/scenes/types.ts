@@ -67,6 +67,8 @@ export type OrbitRing = {
   tiltDeg?: number;
   color?: string;
   opacity?: number;
+  /** draw the ellipse itself, default true — false when the orbit is already painted into the artwork */
+  showRing?: boolean;
   satelliteColor?: string;
   satelliteSize?: number;
   /** seconds for the satellite to go all the way round, default 6 */
@@ -139,6 +141,8 @@ export type Overlay =
       coreColor?: string;
       glowColor?: string;
       rings?: OrbitRing[];
+      /** draw the glowing core, default true */
+      showCore?: boolean;
     } & EntranceProps)
   | {
       /** one-shot particle burst to punctuate a reveal */
@@ -151,6 +155,36 @@ export type Overlay =
       colors?: string[];
       spread?: number;
       durationInFrames?: number;
+      seed?: string;
+    }
+  | {
+      /** twinkling star layer laid over finished artwork */
+      type: "starLayer";
+      density?: number;
+      seed?: string;
+      /** parallax drift in px/s — keep 0 over artwork that already has stars */
+      driftSpeed?: number;
+      opacity?: number;
+    }
+  | {
+      /** breathing radial glow, for a painted sun / engine / portal */
+      type: "glowPulse";
+      x: number;
+      y: number;
+      radius?: number;
+      color?: string;
+      periodSeconds?: number;
+      minOpacity?: number;
+      maxOpacity?: number;
+    }
+  | {
+      /** meteors crossing the sky on a loop */
+      type: "shootingStars";
+      count?: number;
+      periodSeconds?: number;
+      travelSeconds?: number;
+      angleDeg?: number;
+      color?: string;
       seed?: string;
     }
   | ({
@@ -191,6 +225,21 @@ export type Scene = {
    * fight the image's own baked-in text for the same pixels.
    */
   captionBar?: { color: string; heightPercent?: number; position?: "top" | "bottom" };
+  /**
+   * Slow camera move applied to the background AND every overlay at once, so
+   * animation drawn in code stays registered with the artwork underneath.
+   * (`background.kenBurns` moves only the image, which would slide a painted
+   * sun out from under its glow.)
+   */
+  camera?: {
+    /** scale at the first frame, default 1 */
+    zoomFrom?: number;
+    /** scale at the last frame, default 1 */
+    zoomTo?: number;
+    /** horizontal drift by the last frame, in percent of frame width */
+    panXPercent?: number;
+    panYPercent?: number;
+  };
   /** optional per-scene voiceover/sfx, plays from the start of the scene */
   audioSrc?: string;
   /**

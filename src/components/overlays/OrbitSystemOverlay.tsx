@@ -20,6 +20,8 @@ export const OrbitSystemOverlay: React.FC<{
   coreColor?: string;
   glowColor?: string;
   rings?: OrbitRing[];
+  /** draw the glowing core, default true — turn off to reuse a painted sun */
+  showCore?: boolean;
   entrance?: Entrance;
   delayFrames?: number;
   idle?: Idle;
@@ -30,6 +32,7 @@ export const OrbitSystemOverlay: React.FC<{
   coreColor = KURZ.violet,
   glowColor = KURZ.cyan,
   rings = [],
+  showCore = true,
   entrance = "pop",
   delayFrames = 0,
   idle = "breathe",
@@ -63,7 +66,7 @@ export const OrbitSystemOverlay: React.FC<{
         </defs>
         <g transform={`translate(${cx} ${cy})`}>
           {/* glow first so rings and satellites read on top of it */}
-          <circle r={core * 2.6} fill="url(#orbit-core-glow)" />
+          {showCore ? <circle r={core * 2.6} fill="url(#orbit-core-glow)" /> : null}
           {rings.map((ring, i) => {
             const rx = ring.radius * scale;
             const ry = rx * (ring.flatten ?? 0.42);
@@ -75,32 +78,44 @@ export const OrbitSystemOverlay: React.FC<{
             const satelliteSize = (ring.satelliteSize ?? 16) * scale;
             return (
               <g key={i} transform={`rotate(${tilt})`}>
-                <ellipse
-                  rx={rx}
-                  ry={ry}
-                  fill="none"
-                  stroke={ring.color ?? KURZ.cyan}
-                  strokeWidth={2.5 * scale}
-                  opacity={ring.opacity ?? 0.75}
-                />
-                <circle
-                  cx={Math.cos(angle) * rx}
-                  cy={Math.sin(angle) * ry}
-                  r={satelliteSize}
-                  fill={satelliteColor}
-                />
+                {ring.showRing === false ? null : (
+                  <ellipse
+                    rx={rx}
+                    ry={ry}
+                    fill="none"
+                    stroke={ring.color ?? KURZ.cyan}
+                    strokeWidth={2.5 * scale}
+                    opacity={ring.opacity ?? 0.75}
+                  />
+                )}
+                <g transform={`translate(${Math.cos(angle) * rx} ${Math.sin(angle) * ry})`}>
+                  <circle r={satelliteSize} fill={satelliteColor} />
+                  {/* same offset highlight as the core, so a satellite drawn
+                      over flat artwork matches the painted bodies around it */}
+                  <circle
+                    cx={-satelliteSize * 0.3}
+                    cy={-satelliteSize * 0.3}
+                    r={satelliteSize * 0.42}
+                    fill={KURZ.star}
+                    opacity={0.22}
+                  />
+                </g>
               </g>
             );
           })}
-          <circle r={core} fill={coreColor} />
-          {/* offset highlight — flat art's stand-in for a light source */}
-          <circle
-            cx={-core * 0.3}
-            cy={-core * 0.3}
-            r={core * 0.3}
-            fill={KURZ.star}
-            opacity={0.85}
-          />
+          {showCore ? (
+            <>
+              <circle r={core} fill={coreColor} />
+              {/* offset highlight — flat art's stand-in for a light source */}
+              <circle
+                cx={-core * 0.3}
+                cy={-core * 0.3}
+                r={core * 0.3}
+                fill={KURZ.star}
+                opacity={0.85}
+              />
+            </>
+          ) : null}
         </g>
       </svg>
     </AbsoluteFill>

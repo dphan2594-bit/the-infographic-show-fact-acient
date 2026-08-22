@@ -31,9 +31,7 @@ export const ChartLineOverlay: React.FC<{
   });
   const drawnLength = totalLength * progress;
 
-  const pathD = pixelPoints
-    .map((p, i) => `${i === 0 ? "M" : "L"}${p.x},${p.y}`)
-    .join(" ");
+  const pathD = pixelPoints.map((p, i) => `${i === 0 ? "M" : "L"}${p.x},${p.y}`).join(" ");
 
   const leadIndex = cumulative.findIndex((c) => c >= drawnLength);
   const segIndex = leadIndex <= 0 ? 0 : leadIndex - 1;
