@@ -35,6 +35,18 @@ const LEAD_IN = {
   video: "Flat vector 2D animation",
 };
 
+/**
+ * Prompt cho image-to-video ("animate") khác hẳn text-to-image: phong cách,
+ * bảng màu và bố cục đã nằm sẵn trong ảnh nguồn, nhồi lại cả công thức Mục 3
+ * chỉ khiến model vẽ lại từ đầu. Ở đây chỉ mô tả CHUYỂN ĐỘNG, cộng một neo giữ
+ * cho clip không trôi khỏi phong cách ảnh gốc.
+ */
+const ANIMATE_TOKENS = [
+  "smooth natural motion",
+  "keep the original flat vector style and colors",
+  "consistent character design",
+];
+
 function normalizePalette(palette) {
   if (!palette) return null;
   const parts = Array.isArray(palette) ? palette : [palette];
@@ -78,7 +90,9 @@ function withoutDuplicates(tokens, existingText) {
  * @param {string|string[]} [options.palette]      tên màu, vd ["muted beige", "forest green"]
  * @param {string} [options.composition]           ghi chú bố cục, vd "centered composition"
  * @param {string} [options.motion]                mô tả chuyển động — chỉ dùng cho video
- * @param {"image"|"video"} [options.kind]         mặc định "image"
+ * @param {"image"|"video"|"animate"} [options.kind] mặc định "image"; "animate" =
+ *        image-to-video, chỉ mô tả chuyển động và BỎ QUA palette/composition vì
+ *        ảnh nguồn đã quyết định hai thứ đó
  * @param {string} [options.negativePrompt]        ghi đè negative prompt mặc định
  * @returns {{ prompt: string, negativePrompt: string }}
  */
@@ -95,15 +109,20 @@ export function buildPrompt({
     throw new Error("Thiếu mô tả chủ thể (imagePrompt/videoPrompt rỗng).");
   }
 
-  const parts = [LEAD_IN[kind] ?? LEAD_IN.image, trimmedSubject];
+  const parts =
+    kind === "animate"
+      ? [trimmedSubject, ...withoutDuplicates(ANIMATE_TOKENS, trimmedSubject)]
+      : [LEAD_IN[kind] ?? LEAD_IN.image, trimmedSubject];
 
-  const paletteClause = normalizePalette(palette);
-  if (paletteClause) parts.push(paletteClause);
+  if (kind !== "animate") {
+    const paletteClause = normalizePalette(palette);
+    if (paletteClause) parts.push(paletteClause);
 
-  parts.push(...withoutDuplicates(STYLE_TOKENS, trimmedSubject));
+    parts.push(...withoutDuplicates(STYLE_TOKENS, trimmedSubject));
 
-  if (composition) parts.push(String(composition).trim());
-  if (kind === "video" && motion) parts.push(String(motion).trim());
+    if (composition) parts.push(String(composition).trim());
+    if (kind === "video" && motion) parts.push(String(motion).trim());
+  }
 
   const assembled = parts.join(", ");
   const noTextTokens = withoutDuplicates(NO_TEXT_TOKENS, assembled);

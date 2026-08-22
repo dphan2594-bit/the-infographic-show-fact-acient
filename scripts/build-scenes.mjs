@@ -38,11 +38,11 @@ const KEN_BURNS_ROTATION = [
   "pan-down",
 ];
 
-async function getAudioDurationInFrames(audioRelativePath) {
-  const absolutePath = path.join(PUBLIC_DIR, audioRelativePath);
+async function getMediaDurationInSeconds(relativePath, label) {
+  const absolutePath = path.join(PUBLIC_DIR, relativePath);
   if (!existsSync(absolutePath)) {
     throw new Error(
-      `Audio file not found: public/${audioRelativePath} (khai báo trong manifest nhưng chưa có file)`,
+      `${label} file not found: public/${relativePath} (khai báo trong manifest nhưng chưa có file)`,
     );
   }
   const { slowDurationInSeconds } = await parseMedia({
@@ -50,10 +50,15 @@ async function getAudioDurationInFrames(audioRelativePath) {
     reader: nodeReader,
     fields: { slowDurationInSeconds: true },
   });
-  return Math.round(slowDurationInSeconds * FPS) + PADDING_FRAMES;
+  return slowDurationInSeconds;
 }
 
-function buildBackground(entry, kenBurnsIndex) {
+async function getAudioDurationInFrames(audioRelativePath) {
+  const seconds = await getMediaDurationInSeconds(audioRelativePath, "Audio");
+  return Math.round(seconds * FPS) + PADDING_FRAMES;
+}
+
+async function buildBackground(entry, kenBurnsIndex, sceneDurationInFrames) {
   if (entry.image) {
     const kenBurns =
       entry.kenBurns ?? KEN_BURNS_ROTATION[kenBurnsIndex % KEN_BURNS_ROTATION.length];
@@ -65,7 +70,31 @@ function buildBackground(entry, kenBurnsIndex) {
     return background;
   }
   if (entry.video) {
-    return { type: "video", src: entry.video };
+    const background = { type: "video", src: entry.video };
+    // Clip image-to-video thường chỉ ~5s trong khi scene dài bằng lời thoại,
+    // nên đo clip để Background biết cách lấp (lặp / giảm tốc).
+    const clipSeconds = await getMediaDurationInSeconds(entry.video, "Video");
+    background.clipDurationInFrames = Math.round(clipSeconds * FPS);
+    if (entry.fitToScene) background.fitToScene = entry.fitToScene;
+
+    const fitToScene = entry.fitToScene ?? "loop";
+    const ratio = background.clipDurationInFrames / sceneDurationInFrames;
+    if (ratio < 1) {
+      const detail =
+        fitToScene === "loop"
+          ? `sẽ lặp ${(1 / ratio).toFixed(1)} lần`
+          : fitToScene === "slow"
+            ? `sẽ phát ở tốc độ ${ratio.toFixed(2)}x`
+            : "sẽ đứng ở frame cuối sau khi hết clip";
+      const warn = fitToScene === "slow" && ratio < 0.3;
+      console[warn ? "warn" : "log"](
+        `${warn ? "⚠" : "•"} ${entry.id}: clip ${clipSeconds.toFixed(1)}s ngắn hơn scene ` +
+          `${(sceneDurationInFrames / FPS).toFixed(1)}s — ${detail}` +
+          (warn ? ' (chậm quá dễ bị giật, cân nhắc "loop")' : ""),
+      );
+    }
+
+    return background;
   }
   return { type: "color", color: entry.backgroundColor ?? "#E8DFC8" };
 }
@@ -131,7 +160,7 @@ async function main() {
       );
     }
 
-    const background = buildBackground(entry, kenBurnsIndex);
+    const background = await buildBackground(entry, kenBurnsIndex, durationInFrames);
     if (background.type === "image") {
       kenBurnsIndex += 1;
     }

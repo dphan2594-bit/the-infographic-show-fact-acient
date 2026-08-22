@@ -138,7 +138,12 @@ npm run media -- --dry-run    # chỉ in prompt cuối cùng, không gọi API
 npm run build:scenes
 ```
 
-Hướng dẫn đầy đủ (dựng server, chọn workflow, sinh clip video):
+Ảnh **đã có sẵn** cũng animate được thành clip thay cho hiệu ứng Ken Burns —
+thêm `animateFrom` + `videoMotion` rồi chạy `npm run media -- --kind animate`.
+Clip i2v thường chỉ ~5s nên `build-scenes.mjs` tự đo và lặp/giảm tốc cho vừa
+scene (`fitToScene`).
+
+Hướng dẫn đầy đủ (dựng server, chọn workflow, sinh clip, animate ảnh có sẵn):
 [`docs/PIXELLE-BRIDGE.md`](docs/PIXELLE-BRIDGE.md).
 
 ## Thêm scene mới thủ công

@@ -22,7 +22,20 @@ export type Background =
       /** background shown behind a "contain"-fit image, matches the source graphic's own bg by default */
       letterboxColor?: string;
     }
-  | { type: "video"; src: string }
+  | {
+      type: "video";
+      src: string;
+      /**
+       * Clip sinh bằng image-to-video thường chỉ ~5s, trong khi scene dài bằng
+       * lời thoại (10-20s). Chọn cách lấp phần còn thiếu:
+       *   "loop"   — lặp lại clip (mặc định)
+       *   "slow"   — giảm tốc độ phát cho vừa đúng scene
+       *   "freeze" — phát 1 lần rồi đứng ở frame cuối
+       */
+      fitToScene?: "loop" | "slow" | "freeze";
+      /** độ dài thật của clip, do build-scenes.mjs đo — cần cho "loop"/"slow" */
+      clipDurationInFrames?: number;
+    }
   | { type: "color"; color: string };
 
 /**

@@ -43,7 +43,7 @@ const USAGE = `
 Cách dùng: node scripts/pixelle-media.mjs [options]
 
   --api <url>            Base URL của Pixelle-Video (mặc định ${DEFAULTS.api}, hoặc $PIXELLE_API_URL)
-  --kind image|video|all Chỉ sinh loại này (mặc định all)
+  --kind <loại>          image | video | animate | all (mặc định all)
   --only <id,id>         Chỉ xử lý các scene id này
   --force                Sinh lại kể cả khi file asset đã tồn tại
   --dry-run              Chỉ in prompt cuối cùng, không gọi API, không ghi file
@@ -86,8 +86,8 @@ function parseArgs(argv) {
         break;
       case "--kind":
         options.kind = takeValue(arg, i);
-        if (!["image", "video", "all"].includes(options.kind)) {
-          throw new Error(`--kind phải là image | video | all, nhận được "${options.kind}"`);
+        if (!["image", "video", "animate", "all"].includes(options.kind)) {
+          throw new Error(`--kind phải là image | video | animate | all, nhận được "${options.kind}"`);
         }
         i += 1;
         break;
@@ -204,16 +204,19 @@ async function postJson(url, body, timeoutSeconds) {
  */
 const generationState = { mediaEndpointMissing: false, warnedAboutFallback: false };
 
-async function generateMedia({ kind, prompt, negativePrompt, workflow, duration, options }) {
+async function generateMedia({ kind, prompt, negativePrompt, workflow, duration, sourceImage, options }) {
   const payload = {
     prompt,
     width: options.width,
     height: options.height,
-    media_type: kind,
+    // "animate" là image-to-video — với Pixelle vẫn là media_type "video",
+    // khác ở chỗ có thêm ảnh đầu vào.
+    media_type: kind === "animate" ? "video" : kind,
     negative_prompt: negativePrompt,
   };
   if (workflow) payload.workflow = workflow;
   if (duration) payload.duration = duration;
+  if (sourceImage) payload.image = sourceImage;
 
   if (!generationState.mediaEndpointMissing) {
     try {
@@ -229,7 +232,7 @@ async function generateMedia({ kind, prompt, negativePrompt, workflow, duration,
     }
   }
 
-  if (kind === "video") {
+  if (kind === "video" || kind === "animate") {
     throw new Error(
       `Server ${options.api} không có /api/media/generate nên không sinh được video clip.\n` +
         `  Pixelle-Video gốc chỉ expose /api/image/generate (ảnh) và /api/video/generate (pipeline video hoàn chỉnh),\n` +
@@ -269,6 +272,43 @@ async function audioDurationSeconds(audioRelativePath) {
   return slowDurationInSeconds;
 }
 
+/**
+ * Đọc ra chủ thể prompt (và ảnh nguồn nếu là animate) của 1 scene cho 1 loại job.
+ * Trả subject = null nghĩa là scene không yêu cầu loại job này.
+ */
+function describeJob(entry, kind) {
+  if (kind === "image") {
+    return { subject: entry.imagePrompt ?? null, sourceImage: null };
+  }
+  if (kind === "video") {
+    return { subject: entry.videoPrompt ?? null, sourceImage: null };
+  }
+
+  // animate: image-to-video từ 1 ảnh đã có trong public/
+  if (!entry.animateFrom) return { subject: null, sourceImage: null };
+
+  const sourceImage = entry.animateFrom === true ? entry.image : entry.animateFrom;
+  if (!sourceImage) {
+    throw new Error(
+      `${entry.id}: "animateFrom": true nhưng scene chưa có field "image" để animate. ` +
+        `Ghi thẳng đường dẫn, vd "animateFrom": "images/${entry.id}.jpg".`,
+    );
+  }
+  if (!existsSync(path.join(PUBLIC_DIR, sourceImage))) {
+    throw new Error(`${entry.id}: không thấy ảnh nguồn public/${sourceImage} để animate.`);
+  }
+
+  const subject = entry.videoMotion ?? entry.animatePrompt ?? null;
+  if (!subject) {
+    throw new Error(
+      `${entry.id}: có "animateFrom" nhưng thiếu "videoMotion" — cần mô tả chuyển động, ` +
+        `vd "videoMotion": "the seeds slowly spill between the fingers".`,
+    );
+  }
+
+  return { subject, sourceImage };
+}
+
 /** Các job cần chạy, suy ra từ manifest. */
 function planJobs(manifest, options) {
   const jobs = [];
@@ -280,19 +320,29 @@ function planJobs(manifest, options) {
     }
     if (options.only && !options.only.has(entry.id)) continue;
 
-    for (const kind of ["image", "video"]) {
-      const promptField = kind === "image" ? "imagePrompt" : "videoPrompt";
-      const subject = entry[promptField];
-      if (!subject || !wants(kind)) continue;
+    if (entry.animateFrom && entry.videoPrompt) {
+      throw new Error(
+        `${entry.id}: có cả "animateFrom" lẫn "videoPrompt" — cả hai đều sinh ra field "video". ` +
+          `Chọn một: animate ảnh có sẵn, hoặc sinh clip mới từ chữ.`,
+      );
+    }
 
-      const existingSrc = entry[kind];
+    for (const kind of ["image", "video", "animate"]) {
+      if (!wants(kind)) continue;
+
+      // "animate" sinh ra clip nên cũng ghi vào field "video".
+      const outputField = kind === "animate" ? "video" : kind;
+      const { subject, sourceImage } = describeJob(entry, kind);
+      if (!subject) continue;
+
+      const existingSrc = entry[outputField];
       const alreadyOnDisk = existingSrc && existsSync(path.join(PUBLIC_DIR, existingSrc));
       if (alreadyOnDisk && !options.force) {
         console.log(`↷ ${entry.id} (${kind}): đã có public/${existingSrc}, bỏ qua (dùng --force để sinh lại)`);
         continue;
       }
 
-      jobs.push({ entry, kind, subject, promptField });
+      jobs.push({ entry, kind, subject, sourceImage, outputField });
     }
   }
 
@@ -300,7 +350,7 @@ function planJobs(manifest, options) {
 }
 
 async function runJob(job, options) {
-  const { entry, kind, subject } = job;
+  const { entry, kind, subject, sourceImage } = job;
 
   const { prompt, negativePrompt } = buildPrompt({
     subject,
@@ -312,19 +362,32 @@ async function runJob(job, options) {
   });
 
   if (options.dryRun) {
-    console.log(`\n— ${entry.id} (${kind}) —\nprompt: ${prompt}\nnegative: ${negativePrompt}`);
+    const from = sourceImage ? `\nảnh nguồn: public/${sourceImage}` : "";
+    console.log(`\n— ${entry.id} (${kind}) —${from}\nprompt: ${prompt}\nnegative: ${negativePrompt}`);
     return null;
   }
 
-  const duration = kind === "video" && entry.audio ? await audioDurationSeconds(entry.audio) : null;
-  const workflow = options.workflow ?? entry[kind === "image" ? "imageWorkflow" : "videoWorkflow"] ?? null;
+  const producesVideo = kind === "video" || kind === "animate";
+  const duration = producesVideo && entry.audio ? await audioDurationSeconds(entry.audio) : null;
+  const workflowField = kind === "image" ? "imageWorkflow" : "videoWorkflow";
+  const workflow = options.workflow ?? entry[workflowField] ?? null;
 
   console.log(`→ ${entry.id} (${kind}): đang sinh…${duration ? ` (khớp ${duration.toFixed(1)}s audio)` : ""}`);
-  const rawPath = await generateMedia({ kind, prompt, negativePrompt, workflow, duration, options });
+  const rawPath = await generateMedia({
+    kind,
+    prompt,
+    negativePrompt,
+    workflow,
+    duration,
+    // Pixelle chạy ở process khác nên cần đường dẫn tuyệt đối, không phải
+    // đường dẫn tương đối theo public/ của repo này.
+    sourceImage: sourceImage ? path.join(PUBLIC_DIR, sourceImage) : null,
+    options,
+  });
 
   const asset = resolveAsset(rawPath, options.api);
   const directory = kind === "image" ? "images" : "videos";
-  const relativePath = `${directory}/${entry.id}${extensionFor(asset, kind)}`;
+  const relativePath = `${directory}/${entry.id}${extensionFor(asset, producesVideo ? "video" : "image")}`;
   await saveAsset(asset, path.join(PUBLIC_DIR, relativePath), options.timeoutSeconds);
 
   console.log(`✓ ${entry.id} (${kind}): public/${relativePath}`);
@@ -344,7 +407,19 @@ async function runJobs(jobs, options) {
       try {
         const relativePath = await runJob(job, options);
         if (relativePath) {
-          job.entry[job.kind] = relativePath;
+          job.entry[job.outputField] = relativePath;
+
+          if (job.kind === "animate") {
+            // build-scenes.mjs ưu tiên "image" hơn "video", nên giữ lại "image"
+            // đồng nghĩa clip vừa sinh không bao giờ được render. Ảnh nguồn
+            // không mất đi: nó được ghi cố định vào "animateFrom".
+            job.entry.animateFrom = job.sourceImage;
+            if (job.entry.image) {
+              console.log(`  ${job.entry.id}: "image" → "animateFrom" để scene render clip thay vì ảnh tĩnh`);
+              delete job.entry.image;
+            }
+          }
+
           written += 1;
         }
       } catch (error) {

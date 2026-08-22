@@ -52,6 +52,10 @@ class MediaGenerateRequest(BaseModel):
     width: int = Field(1080, ge=512, le=2048)
     height: int = Field(1920, ge=512, le=2048)
     workflow: Optional[str] = Field(None, description="vd runninghub/image_flux.json")
+    image: Optional[str] = Field(
+        None,
+        description="Đường dẫn TUYỆT ĐỐI tới ảnh đầu vào cho image-to-video (phải tồn tại trên máy chạy Pixelle)",
+    )
     negative_prompt: Optional[str] = None
     duration: Optional[float] = Field(None, gt=0, description="Độ dài clip (giây), khớp audio TTS")
     seed: Optional[int] = None
@@ -64,6 +68,24 @@ class MediaGenerateResponse(BaseModel):
     media_type: str
     media_path: str = Field(..., description="URL hoặc đường dẫn file media đã sinh")
     duration: Optional[float] = None
+
+
+def _image_param(core: Any, request: "MediaGenerateRequest") -> dict[str, str]:
+    """Tên tham số cho ảnh đầu vào — hai nhánh của Pixelle dùng hai quy ước khác nhau.
+
+    * Workflow ``api/...`` (Kling, Seedance, DashScope…): ``MediaService`` chuyển
+      tiếp ``image_path`` sang provider, đúng nhánh image2video.
+    * Workflow ComfyUI/RunningHub: ``image_path`` bị bỏ qua ở nhánh này, ảnh phải
+      đi qua ``**params`` với key ``image`` — cùng quy ước mà
+      ``ImageAnalysisService`` đang dùng.
+    """
+    workflow = request.workflow
+    if workflow is None:
+        workflow = getattr(getattr(core, "media", None), "config", {}).get("default_workflow")
+
+    if isinstance(workflow, str) and workflow.startswith("api/"):
+        return {"image_path": request.image}
+    return {"image": request.image}
 
 
 def build_app() -> Any:
@@ -106,6 +128,17 @@ def build_app() -> Any:
             value = getattr(request, field)
             if value is not None:
                 params[field] = value
+
+        if request.image:
+            if not Path(request.image).exists():
+                raise HTTPException(
+                    status_code=400,
+                    detail=(
+                        f"Không thấy ảnh đầu vào: {request.image}. Đường dẫn phải tồn tại trên "
+                        "MÁY CHẠY PIXELLE — nếu Pixelle chạy ở máy khác, copy ảnh sang đó trước."
+                    ),
+                )
+            params.update(_image_param(core, request))
 
         try:
             result = await core.media(**params)

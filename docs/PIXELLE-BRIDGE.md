@@ -47,7 +47,9 @@ Thêm các field sau vào scene trong `content/manifest.json`
 |---|---|---|
 | `imagePrompt` | ✔ (nếu muốn sinh ảnh) | **Chủ thể** cảnh, viết bằng tiếng Anh |
 | `videoPrompt` | ✔ (nếu muốn sinh clip) | Chủ thể của clip, tiếng Anh |
-| `videoMotion` | | Mô tả chuyển động, chỉ áp cho `videoPrompt` |
+| `videoMotion` | | Mô tả chuyển động — dùng cho `videoPrompt` và **bắt buộc** với `animateFrom` |
+| `animateFrom` | | Animate một ảnh đã có → clip (xem mục 5). `true` = dùng chính `image` của scene |
+| `fitToScene` | | `loop` (mặc định) / `slow` / `freeze` — cách lấp khi clip ngắn hơn scene |
 | `palette` | | Tên màu tiếng Anh, vd `["muted beige", "forest green"]` — tối đa 4 (Mục 5) |
 | `composition` | | Ghi chú bố cục, vd `"centered close-up composition"` |
 | `negativePrompt` | | Ghi đè negative prompt mặc định |
@@ -67,7 +69,8 @@ npm run media                          # sinh những asset còn thiếu
 npm run media -- --dry-run             # chỉ in prompt cuối cùng, không gọi API
 npm run media -- --only scene-01-hook  # chỉ 1 scene
 npm run media -- --force               # sinh lại kể cả khi file đã có
-npm run media -- --kind video          # chỉ clip
+npm run media -- --kind video          # chỉ clip sinh từ chữ
+npm run media -- --kind animate        # chỉ clip animate từ ảnh có sẵn
 npm run media -- --api http://192.168.1.10:8000
 ```
 
@@ -114,6 +117,67 @@ cảnh báo rằng negative prompt bị bỏ qua), còn clip sẽ báo lỗi rõ
 
 Khi scene có `audio`, cầu nối đo độ dài file TTS rồi truyền `duration` sang
 Pixelle, nên clip sinh ra dài đúng bằng lời thoại.
+
+## 5. Animate ảnh có sẵn thành clip (image-to-video)
+
+Thay vì để Ken Burns pan/zoom trên ảnh tĩnh, có thể đưa chính ảnh đó cho model
+image-to-video (`i2v_LTX2`, `video_wan2.2`, hoặc Kling/Seedance qua `api/…`) để
+nó chuyển động thật.
+
+```json
+{
+  "id": "scene-01-hook",
+  "image": "images/scene-01-survival-seeds.jpg",
+  "audio": "audio/scene-01-survival-seeds.mp3",
+  "animateFrom": true,
+  "videoMotion": "the seeds slowly spill between the fingers",
+  "fitToScene": "loop"
+}
+```
+
+```bash
+npm run media -- --kind animate --api http://127.0.0.1:8765
+node scripts/build-scenes.mjs
+```
+
+`animateFrom: true` nghĩa là animate chính `image` của scene; muốn chỉ ảnh khác
+thì ghi thẳng đường dẫn (`"animateFrom": "images/abc.jpg"`).
+
+**Prompt animate khác prompt sinh ảnh.** Phong cách, bảng màu và bố cục đã nằm
+trong ảnh nguồn rồi, nhồi lại cả công thức Mục 3 chỉ khiến model vẽ lại từ đầu.
+Nên với `animate`, cầu nối chỉ gửi mô tả chuyển động (`videoMotion`) cộng một
+neo giữ phong cách — `palette` và `composition` của scene bị **bỏ qua** (chúng
+vẫn dùng cho job sinh ảnh của scene đó).
+
+**Cần sidecar.** Đây là sinh video nên bắt buộc chạy `pixelle-sidecar.py` (mục 4).
+
+**Ảnh nguồn phải nằm trên máy chạy Pixelle.** Cầu nối gửi đường dẫn tuyệt đối
+tới file trong `public/`; nếu Pixelle chạy ở máy/container khác thì copy ảnh
+sang đó trước, nếu không sidecar sẽ báo lỗi 400 kèm đường dẫn nó không tìm thấy.
+
+**Sau khi sinh xong, `image` bị xoá khỏi scene** và đường dẫn ảnh nguồn được ghi
+cố định vào `animateFrom`. Lý do: `build-scenes.mjs` ưu tiên `image` hơn `video`,
+giữ cả hai đồng nghĩa clip vừa sinh không bao giờ được render. Ảnh không mất —
+nó vẫn nằm trong `public/images/` và được `animateFrom` trỏ tới, nên `--force`
+lúc nào cũng animate lại được.
+
+### Clip ngắn hơn scene
+
+Model i2v thường chỉ ra clip ~5s, trong khi scene dài bằng lời thoại (10–20s).
+`build-scenes.mjs` tự đo độ dài clip thật và báo tỉ lệ; `fitToScene` quyết định
+cách lấp phần còn thiếu:
+
+| `fitToScene` | Kết quả |
+|---|---|
+| `loop` (mặc định) | lặp lại clip cho hết scene — an toàn nhất, đổi lại có điểm nối |
+| `slow` | giảm tốc độ phát cho vừa đúng scene; dưới ~0.3x dễ giật, script sẽ cảnh báo |
+| `freeze` | phát 1 lần rồi đứng ở frame cuối |
+
+Ví dụ log khi clip 4.1s nằm trong scene 18.4s:
+
+```
+• scene-01-hook: clip 4.1s ngắn hơn scene 18.4s — sẽ lặp 4.5 lần
+```
 
 ## Cấu hình
 
