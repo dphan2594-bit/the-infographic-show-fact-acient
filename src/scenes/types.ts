@@ -246,10 +246,20 @@ type OverlayVariant =
     } & EntranceProps);
 
 /**
- * Every overlay may override where it is locked; the sensible default per type
- * lives in src/components/Scene.tsx.
+ * Every overlay may override where it is locked, and may be limited to a beat
+ * inside the scene instead of running its whole length. A long scene is
+ * usually a chain of beats ("coins glint, then the ledger unrolls, then the
+ * camera pulls back"), and each beat's overlay should come and go with it.
+ *
+ * `startFrame`/`endFrame` are frames within the scene. Inside that window the
+ * overlay sees its own clock starting at 0, so `delayFrames` and `atFrame`
+ * stay relative to the beat, and the last 10 frames fade out.
  */
-export type Overlay = OverlayVariant & { lockTo?: OverlayLock };
+export type Overlay = OverlayVariant & {
+  lockTo?: OverlayLock;
+  startFrame?: number;
+  endFrame?: number;
+};
 
 export type SceneTransition =
   | { type: "fade"; durationInFrames?: number }

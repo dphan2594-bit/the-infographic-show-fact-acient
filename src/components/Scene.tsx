@@ -1,4 +1,12 @@
-import { AbsoluteFill, Audio, staticFile, useVideoConfig } from "remotion";
+import {
+  AbsoluteFill,
+  Audio,
+  Sequence,
+  interpolate,
+  staticFile,
+  useCurrentFrame,
+  useVideoConfig,
+} from "remotion";
 import type { Overlay, Scene as SceneType } from "../scenes/types";
 import { Background } from "./Background";
 import { OverlayRenderer } from "./OverlayRenderer";
@@ -25,6 +33,48 @@ const FRAME_LOCKED: ReadonlySet<string> = new Set([
 
 const isFrameLocked = (overlay: Overlay) =>
   overlay.lockTo ? overlay.lockTo === "frame" : FRAME_LOCKED.has(overlay.type);
+
+/** frames an overlay takes to fade out when its beat ends */
+const BEAT_FADE_OUT = 10;
+
+const BeatFadeOut: React.FC<{ durationInFrames: number; children: React.ReactNode }> = ({
+  durationInFrames,
+  children,
+}) => {
+  const frame = useCurrentFrame();
+  const opacity = interpolate(frame, [durationInFrames - BEAT_FADE_OUT, durationInFrames], [1, 0], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  return <AbsoluteFill style={{ opacity }}>{children}</AbsoluteFill>;
+};
+
+/**
+ * Renders an overlay, limited to its beat when it declares one. Inside a beat
+ * the overlay's clock restarts at 0, so its entrance plays when the beat
+ * starts rather than when the scene does.
+ */
+const TimedOverlay: React.FC<{ overlay: Overlay }> = ({ overlay }) => {
+  if (overlay.startFrame === undefined && overlay.endFrame === undefined) {
+    return <OverlayRenderer overlay={overlay} />;
+  }
+
+  const from = overlay.startFrame ?? 0;
+  const durationInFrames =
+    overlay.endFrame === undefined ? undefined : Math.max(1, overlay.endFrame - from);
+
+  return (
+    <Sequence from={from} durationInFrames={durationInFrames} layout="none">
+      {durationInFrames === undefined ? (
+        <OverlayRenderer overlay={overlay} />
+      ) : (
+        <BeatFadeOut durationInFrames={durationInFrames}>
+          <OverlayRenderer overlay={overlay} />
+        </BeatFadeOut>
+      )}
+    </Sequence>
+  );
+};
 
 export const Scene: React.FC<{ scene: SceneType }> = ({ scene }) => {
   const isAnimate = scene.motion === "animate";
@@ -71,7 +121,7 @@ export const Scene: React.FC<{ scene: SceneType }> = ({ scene }) => {
         {overlays
           .filter((overlay) => !isFrameLocked(overlay))
           .map((overlay, i) => (
-            <OverlayRenderer key={`image-${i}`} overlay={overlay} />
+            <TimedOverlay key={`image-${i}`} overlay={overlay} />
           ))}
       </AbsoluteFill>
 
@@ -97,7 +147,7 @@ export const Scene: React.FC<{ scene: SceneType }> = ({ scene }) => {
 
       {/* text and atmosphere: pinned to the frame, never dragged by the camera */}
       {overlays.filter(isFrameLocked).map((overlay, i) => (
-        <OverlayRenderer key={`frame-${i}`} overlay={overlay} />
+        <TimedOverlay key={`frame-${i}`} overlay={overlay} />
       ))}
 
       {scene.audioSrc ? (
