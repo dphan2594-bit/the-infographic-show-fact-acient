@@ -28,7 +28,8 @@
     "build": "remotion bundle",
     "build:scenes": "node scripts/build-scenes.mjs",
     "upgrade": "remotion upgrade",
-    "lint": "eslint src && tsc"
+    "lint": "eslint src && tsc",
+    "render:batch": "node scripts/render-batch.mjs"
   },
   "sideEffects": [
     "*.css"

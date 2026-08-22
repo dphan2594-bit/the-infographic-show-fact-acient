@@ -348,6 +348,18 @@ npx remotion render AnimatedIllustration out/animated-illustration.mp4
 Muốn áp cho ảnh khác: thay `background.src`, rồi chỉnh `SYSTEM`, thông số `orbit()`
 và vị trí `glowPulse`/`engineTrail` cho khớp tranh mới.
 
+## Dựng hàng loạt 50–60 cảnh
+
+Có sẵn ảnh + audio + mô tả animation cho vài chục cảnh thì đọc
+[`docs/BATCH-PIPELINE.md`](docs/BATCH-PIPELINE.md): định dạng manifest đầy đủ,
+bảng 13 camera preset, danh sách fx, và cách render theo chunk có thể chạy lại.
+
+```console
+npm run build:scenes                             # manifest → scenes
+npm run render:batch                             # bản dọc 1080x1920
+npm run render:batch -- --comp=InfographicWide   # bản ngang 1920x1080
+```
+
 ## Commands
 
 **Cài dependencies**

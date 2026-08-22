@@ -82,5 +82,22 @@
       { "type": "sparkleBurst", "x": 50, "y": 34, "atFrame": 30 }
     ],
     "transitionIn": { "type": "fade" }
+  },
+  {
+    "id": "batch-example",
+    "motion": "static",
+    "archetype": "Mẫu cho pipeline hàng loạt — xem docs/BATCH-PIPELINE.md",
+    "image": "images/scene-07-space.png",
+    "audio": "audio/scene-07.mp3",
+    "caption": "Camera đẩy vào điểm nhấn, hiệu ứng khai báo bằng tên.",
+    "captionEntrance": "rise-float",
+    "camera": { "preset": "push-in", "focusX": 50, "focusY": 34 },
+    "cameraVertical": { "preset": "push-in-fast", "focusX": 50, "focusY": 42, "intensity": 1.2 },
+    "fx": [
+      "stars",
+      "dust",
+      { "type": "glow", "x": 50, "y": 34, "radius": 210, "color": "#FFF0B0" }
+    ],
+    "transitionIn": { "type": "fade" }
   }
 ]

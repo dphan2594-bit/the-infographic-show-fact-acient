@@ -263,6 +263,10 @@ export type Scene = {
    * sun out from under its glow.) See src/animation/useCamera.ts.
    */
   camera?: CameraConfig;
+  /** overrides `camera` when rendering the vertical (9:16) composition */
+  cameraVertical?: CameraConfig;
+  /** overrides `camera` when rendering the wide (16:9) composition */
+  cameraWide?: CameraConfig;
   /** optional per-scene voiceover/sfx, plays from the start of the scene */
   audioSrc?: string;
   /**

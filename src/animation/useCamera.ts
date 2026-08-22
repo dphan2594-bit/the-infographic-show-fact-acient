@@ -1,4 +1,5 @@
 import { Easing, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
+import { resolveCameraPreset, type CameraPresetName } from "./cameraPresets";
 
 /**
  * Keyframed camera for a scene: a list of shots the camera eases between,
@@ -19,6 +20,13 @@ export type CameraKeyframe = {
 };
 
 export type CameraConfig = {
+  /** name of a move from src/animation/cameraPresets.ts, resolved to keyframes */
+  preset?: CameraPresetName;
+  /** the point a preset move is about, in percent of the frame */
+  focusX?: number;
+  focusY?: number;
+  /** scales how far a preset travels, default 1 */
+  intensity?: number;
   keyframes?: CameraKeyframe[];
   /** continuous floating drift, in percent of the frame */
   driftPercent?: number;
@@ -42,13 +50,32 @@ const clampPan = (pan: number, zoom: number) => {
   return Math.max(-limit, Math.min(limit, pan));
 };
 
-export const useCameraTransform = (camera: CameraConfig | undefined, durationInFrames: number) => {
+export const useCameraTransform = (
+  cameraInput: CameraConfig | undefined,
+  durationInFrames: number,
+) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  if (!camera) {
+  if (!cameraInput) {
     return "";
   }
+
+  // a preset expands into the same keyframe track a hand-written move uses;
+  // explicit keyframes on the same object still win
+  const camera: CameraConfig = cameraInput.preset
+    ? {
+        ...resolveCameraPreset({
+          preset: cameraInput.preset,
+          focusX: cameraInput.focusX,
+          focusY: cameraInput.focusY,
+          intensity: cameraInput.intensity,
+          driftPercent: cameraInput.driftPercent,
+          driftSeconds: cameraInput.driftSeconds,
+        }),
+        ...(cameraInput.keyframes ? { keyframes: cameraInput.keyframes } : {}),
+      }
+    : cameraInput;
 
   const keyframes: CameraKeyframe[] =
     camera.keyframes && camera.keyframes.length > 0

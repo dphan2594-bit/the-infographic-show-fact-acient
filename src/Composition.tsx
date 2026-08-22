@@ -37,6 +37,25 @@ export const InfographicComposition = () => {
 };
 
 /**
+ * The same scene list at 16:9, for YouTube. Scenes can carry `cameraWide` to
+ * frame each shot differently from the vertical cut.
+ */
+export const InfographicWideComposition = () => {
+  return (
+    <Composition
+      id="InfographicWide"
+      component={InfographicVideo}
+      durationInFrames={getTotalDurationInFrames(activeScenes)}
+      fps={FPS}
+      width={1920}
+      height={1080}
+      defaultProps={{ scenes: activeScenes }}
+      calculateMetadata={calculateMetadata}
+    />
+  );
+};
+
+/**
  * Preview-only composition: every animation preset playing side by side, so
  * you can pick one by eye before writing it into content/manifest.json.
  */

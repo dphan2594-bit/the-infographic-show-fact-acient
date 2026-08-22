@@ -1,4 +1,4 @@
-import { AbsoluteFill, Audio, staticFile } from "remotion";
+import { AbsoluteFill, Audio, staticFile, useVideoConfig } from "remotion";
 import type { Scene as SceneType } from "../scenes/types";
 import { Background } from "./Background";
 import { OverlayRenderer } from "./OverlayRenderer";
@@ -12,7 +12,13 @@ export const Scene: React.FC<{ scene: SceneType }> = ({ scene }) => {
   // The scene camera wraps background AND overlays, so code-drawn motion
   // (orbiting bodies, glows) stays locked to the artwork it sits on — unlike
   // background.kenBurns, which moves only the image out from under them.
-  const cameraTransform = useCameraTransform(scene.camera, scene.durationInFrames);
+  // The same scene list renders both a 9:16 and a 16:9 composition, and a move
+  // framed for one shape rarely works on the other — so a scene may carry a
+  // camera per orientation, falling back to the shared one.
+  const { width, height } = useVideoConfig();
+  const camera =
+    (height > width ? scene.cameraVertical : scene.cameraWide) ?? scene.camera;
+  const cameraTransform = useCameraTransform(camera, scene.durationInFrames);
   const combinedTransform = [cameraTransform, shake.transform, punch.transform]
     .filter((t) => t && t !== "none")
     .join(" ");
