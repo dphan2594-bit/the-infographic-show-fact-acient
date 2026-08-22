@@ -34,10 +34,10 @@ export const ShootingStarsOverlay: React.FC<{
       generate(`${seed}-meteors`, count, (rand) => ({
         startX: -0.15 + rand() * 0.5,
         startY: rand() * 0.55,
-        length: 90 + rand() * 110,
+        length: 55 + rand() * 65,
         distance: 0.5 + rand() * 0.45,
         offset: rand(),
-        thickness: 1.6 + rand() * 1.4,
+        thickness: 1.4 + rand() * 1.1,
       })),
     [count, seed],
   );
@@ -74,11 +74,7 @@ export const ShootingStarsOverlay: React.FC<{
           // fade in on entry, out on exit, so nothing pops
           const opacity = Math.sin(progress * Math.PI);
           return (
-            <g
-              key={i}
-              opacity={opacity * 0.9}
-              transform={`translate(${x} ${y}) rotate(${angleDeg})`}
-            >
+            <g key={i} opacity={opacity} transform={`translate(${x} ${y}) rotate(${angleDeg})`}>
               <rect
                 x={-tail}
                 y={(-star.thickness * scale) / 2}

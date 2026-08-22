@@ -12,6 +12,8 @@ import { SparkleBurstOverlay } from "./overlays/SparkleBurstOverlay";
 import { StarLayerOverlay } from "./overlays/StarLayerOverlay";
 import { GlowPulseOverlay } from "./overlays/GlowPulseOverlay";
 import { ShootingStarsOverlay } from "./overlays/ShootingStarsOverlay";
+import { DriftParticlesOverlay } from "./overlays/DriftParticlesOverlay";
+import { EngineTrailOverlay } from "./overlays/EngineTrailOverlay";
 
 export const OverlayRenderer: React.FC<{ overlay: Overlay }> = ({ overlay }) => {
   switch (overlay.type) {
@@ -148,6 +150,31 @@ export const OverlayRenderer: React.FC<{ overlay: Overlay }> = ({ overlay }) => 
           travelSeconds={overlay.travelSeconds}
           angleDeg={overlay.angleDeg}
           color={overlay.color}
+          seed={overlay.seed}
+        />
+      );
+    case "driftParticles":
+      return (
+        <DriftParticlesOverlay
+          count={overlay.count}
+          angleDeg={overlay.angleDeg}
+          speed={overlay.speed}
+          colors={overlay.colors}
+          seed={overlay.seed}
+          opacity={overlay.opacity}
+        />
+      );
+    case "engineTrail":
+      return (
+        <EngineTrailOverlay
+          x={overlay.x}
+          y={overlay.y}
+          angleDeg={overlay.angleDeg}
+          length={overlay.length}
+          spread={overlay.spread}
+          count={overlay.count}
+          color={overlay.color}
+          travelSeconds={overlay.travelSeconds}
           seed={overlay.seed}
         />
       );

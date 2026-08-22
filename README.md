@@ -31,6 +31,7 @@ src/
     presets.ts            # thư viện preset entrance/idle (AE + Kurzgesagt)
     useEntranceStyle.ts   # hook entrance dùng chung, đọc từ presets.ts
     random.ts             # PRNG có seed — sao/hạt phải cố định qua từng frame
+    useCamera.ts          # camera có keyframe cho cả scene (zoom/focus/drift)
   theme/
     kurzgesagt.ts         # bảng màu vũ trụ (navy, tím, cyan, hồng, vàng)
   components/
@@ -57,6 +58,8 @@ src/
       StarLayerOverlay.tsx      # lớp sao nhấp nháy phủ lên tranh có sẵn
       GlowPulseOverlay.tsx      # quầng sáng "thở" cho mặt trời/động cơ trong tranh
       ShootingStarsOverlay.tsx  # sao băng cắt ngang bầu trời theo chu kỳ
+      DriftParticlesOverlay.tsx # bụi màu trôi 3 tầng độ sâu (parallax)
+      EngineTrailOverlay.tsx    # dash chạy ra khỏi miệng phun / vệt warp
   InfographicVideo.tsx    # nối scene bằng <TransitionSeries> (fade/slide/wipe)
   PresetGallery.tsx        # composition xem trước toàn bộ preset
   scenes/kurzgesagt.ts     # kịch bản demo cho gói animation Kurzgesagt
@@ -292,32 +295,58 @@ npx remotion render KurzgesagtDemo out/kurzgesagt.mp4
 
 ## Animate một ảnh tĩnh (composition `AnimatedIllustration`)
 
-Ảnh flat vector có sẵn (PNG) không tách lớp được, nhưng vẫn "sống" được bằng 4
+Ảnh flat vector có sẵn (PNG) không tách lớp được, nhưng vẫn "sống" được bằng 5
 lớp chuyển động chồng lên — đúng cách Kurzgesagt xử lý một cảnh tĩnh:
 
-1. **Camera đẩy chậm** — `scene.camera` (`zoomFrom`/`zoomTo`/`panXPercent`/`panYPercent`)
-   áp cho **cả ảnh nền lẫn overlay** nên mọi thứ vẽ bằng code không bị lệch khỏi
-   tranh. (Khác `background.kenBurns`: cái đó chỉ đẩy ảnh, glow/hành tinh sẽ trôi
-   ra khỏi vị trí.)
-2. **Hành tinh chạy trên đúng quỹ đạo đã vẽ trong ảnh** — `orbitSystem` với
-   `showCore: false` và `showRing: false` trên từng vòng: chỉ vệ tinh là của ta,
-   vòng elip là nét có sẵn trong tranh.
-3. **Glow thở trên mọi nguồn sáng** — `glowPulse` đặt lên mặt trời, đèn ăng-ten,
-   luồng khí động cơ.
-4. **Lớp sao nhấp nháy + sao băng** — `starLayer` (đặt `driftSpeed: 0` để không
-   trôi lệch với sao đã vẽ) và `shootingStars`.
+**1. Camera có keyframe** — `scene.camera` (xem [`src/animation/useCamera.ts`](src/animation/useCamera.ts)):
 
-Điểm mấu chốt là **đo hình học thật của ảnh, không ước lượng**: tâm hệ mặt trời,
-độ nghiêng (-18°), độ dẹt (0.36) và bán trục của 5 quỹ đạo được dò bằng cách quét
-tia + fit conic trực tiếp trên file PNG, nhờ vậy vệ tinh chạy khít nét vẽ. Toàn bộ
-số liệu nằm trong [`src/scenes/illustration.ts`](src/scenes/illustration.ts).
+```ts
+camera: {
+  keyframes: [
+    { at: 0,   zoom: 1.26, focusX: 47, focusY: 40 },  // cận mặt trời
+    { at: 30,  zoom: 1.05, focusX: 50, focusY: 50 },  // lùi ra toàn cảnh
+    { at: 62,  zoom: 1.14, focusX: 56, focusY: 52 },  // trôi sang phải
+    { at: 100, zoom: 1.30, focusX: 61, focusY: 57 },  // đẩy vào con tàu
+  ],
+  driftPercent: 0.5,   // trôi nhẹ liên tục, không bao giờ đứng chết
+  driftSeconds: 8,
+}
+```
+
+- `at` = phần trăm thời lượng scene, `focusX/focusY` = điểm cần đưa vào giữa
+  khung (nghĩ theo kiểu "đẩy vào mặt trời" thay vì tính translate).
+- Easing in-out giữa các keyframe; pan **tự clamp** theo zoom (`(1 - 1/zoom) / 2`)
+  nên không bao giờ lòi mép ảnh ra khung.
+- Camera áp cho **cả ảnh nền lẫn overlay** → hành tinh/quầng sáng vẽ bằng code
+  không bị trôi lệch khỏi tranh. (`background.kenBurns` chỉ đẩy ảnh — đừng dùng
+  chung với overlay định vị theo toạ độ.)
+
+**2. Hành tinh chạy trên đúng quỹ đạo đã vẽ trong ảnh** — `orbitSystem` với
+`showCore: false` và `showRing: false`: 7 vệ tinh, chu kỳ 4.5–13 giây, một vòng
+chạy ngược chiều. Thêm `pulse: true` cho vòng nào muốn có **xung sáng chạy dọc
+quỹ đạo** (`pulseColor`, `pulseArcPercent`, `pulseSecondsPerRevolution`).
+
+**3. Glow thở trên mọi nguồn sáng** — `glowPulse` đặt lên mặt trời, đèn ăng-ten,
+miệng phun động cơ (blend `screen` nên chỉ cộng sáng, không đè màu tranh).
+
+**4. Luồng phản lực sống** — `engineTrail`: các dash chạy ra khỏi miệng phun,
+xoè dần thành hình nón, mờ ở hai đầu để hoà với dash đã vẽ sẵn trong tranh.
+
+**5. Không khí** — `starLayer` (nhấp nháy, `driftSpeed: 0` để không lệch với sao
+đã vẽ), `driftParticles` (bụi màu trôi ở 3 tầng độ sâu → tạo parallax khi camera
+di chuyển), `shootingStars` (sao băng cắt ngang mỗi ~3.6 giây).
+
+Điểm mấu chốt là **đo hình học thật của ảnh, không ước lượng**: tâm hệ, độ nghiêng
+(-18°), độ dẹt (0.36) và bán trục của 5 quỹ đạo được dò bằng cách quét tia + fit
+conic trực tiếp trên file PNG, nhờ vậy vệ tinh chạy khít nét vẽ. Toàn bộ số liệu
+nằm trong [`src/scenes/illustration.ts`](src/scenes/illustration.ts).
 
 ```console
 npx remotion render AnimatedIllustration out/animated-illustration.mp4
 ```
 
-Muốn áp cho ảnh khác: thay `background.src`, rồi chỉnh lại toạ độ `SUN`, thông số
-`rings` và vị trí `glowPulse` cho khớp tranh mới.
+Muốn áp cho ảnh khác: thay `background.src`, rồi chỉnh `SYSTEM`, thông số `orbit()`
+và vị trí `glowPulse`/`engineTrail` cho khớp tranh mới.
 
 ## Commands
 

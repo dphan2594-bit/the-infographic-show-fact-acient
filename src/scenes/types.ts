@@ -1,3 +1,4 @@
+import type { CameraConfig } from "../animation/useCamera";
 import type { EntranceName, IdleName } from "../animation/presets";
 import type { SpaceBackground } from "../components/space/SpaceBackdrop";
 
@@ -76,6 +77,13 @@ export type OrbitRing = {
   direction?: "cw" | "ccw";
   /** starting angle in radians, so two satellites do not sit on top of each other */
   phase?: number;
+  /** run a light pulse along the ring — energy flowing through the orbit */
+  pulse?: boolean;
+  pulseColor?: string;
+  /** length of the glowing arc, in percent of the ring, default 14 */
+  pulseArcPercent?: number;
+  /** seconds for the pulse to lap the ring, default 55% of the satellite's period */
+  pulseSecondsPerRevolution?: number;
 };
 
 export type Overlay =
@@ -187,6 +195,29 @@ export type Overlay =
       color?: string;
       seed?: string;
     }
+  | {
+      /** coloured dust drifting at three depths, for parallax over flat art */
+      type: "driftParticles";
+      count?: number;
+      angleDeg?: number;
+      speed?: number;
+      colors?: string[];
+      seed?: string;
+      opacity?: number;
+    }
+  | {
+      /** dashes streaming away from a point: exhaust plume, warp trail, beam */
+      type: "engineTrail";
+      x: number;
+      y: number;
+      angleDeg?: number;
+      length?: number;
+      spread?: number;
+      count?: number;
+      color?: string;
+      travelSeconds?: number;
+      seed?: string;
+    }
   | ({
       /** horizontal process-flow diagram (E8): boxes + connecting arrows, staggered reveal */
       type: "processFlow";
@@ -226,20 +257,12 @@ export type Scene = {
    */
   captionBar?: { color: string; heightPercent?: number; position?: "top" | "bottom" };
   /**
-   * Slow camera move applied to the background AND every overlay at once, so
-   * animation drawn in code stays registered with the artwork underneath.
+   * Keyframed camera move applied to the background AND every overlay at once,
+   * so animation drawn in code stays registered with the artwork underneath.
    * (`background.kenBurns` moves only the image, which would slide a painted
-   * sun out from under its glow.)
+   * sun out from under its glow.) See src/animation/useCamera.ts.
    */
-  camera?: {
-    /** scale at the first frame, default 1 */
-    zoomFrom?: number;
-    /** scale at the last frame, default 1 */
-    zoomTo?: number;
-    /** horizontal drift by the last frame, in percent of frame width */
-    panXPercent?: number;
-    panYPercent?: number;
-  };
+  camera?: CameraConfig;
   /** optional per-scene voiceover/sfx, plays from the start of the scene */
   audioSrc?: string;
   /**

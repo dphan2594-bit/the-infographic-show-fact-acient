@@ -1,31 +1,18 @@
-import { AbsoluteFill, Audio, interpolate, staticFile, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Audio, staticFile } from "remotion";
 import type { Scene as SceneType } from "../scenes/types";
 import { Background } from "./Background";
 import { OverlayRenderer } from "./OverlayRenderer";
 import { useCameraShake, useImpactPunch } from "../animation/useCameraFx";
+import { useCameraTransform } from "../animation/useCamera";
 
 export const Scene: React.FC<{ scene: SceneType }> = ({ scene }) => {
-  const frame = useCurrentFrame();
   const isAnimate = scene.motion === "animate";
   const shake = useCameraShake(isAnimate);
   const punch = useImpactPunch(isAnimate);
-  // A scene-level camera move wraps background AND overlays, so code-drawn
-  // motion (orbiting dots, glows) stays locked to the artwork it sits on —
-  // unlike background.kenBurns, which moves the image out from under them.
-  const camera = scene.camera;
-  const cameraTransform = camera
-    ? (() => {
-        const at = (from: number, to: number) =>
-          interpolate(frame, [0, scene.durationInFrames], [from, to], {
-            extrapolateLeft: "clamp",
-            extrapolateRight: "clamp",
-          });
-        const zoom = at(camera.zoomFrom ?? 1, camera.zoomTo ?? 1);
-        const x = at(0, camera.panXPercent ?? 0);
-        const y = at(0, camera.panYPercent ?? 0);
-        return `scale(${zoom.toFixed(4)}) translate(${x.toFixed(3)}%, ${y.toFixed(3)}%)`;
-      })()
-    : "";
+  // The scene camera wraps background AND overlays, so code-drawn motion
+  // (orbiting bodies, glows) stays locked to the artwork it sits on — unlike
+  // background.kenBurns, which moves only the image out from under them.
+  const cameraTransform = useCameraTransform(scene.camera, scene.durationInFrames);
   const combinedTransform = [cameraTransform, shake.transform, punch.transform]
     .filter((t) => t && t !== "none")
     .join(" ");

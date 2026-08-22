@@ -76,6 +76,12 @@ export const OrbitSystemOverlay: React.FC<{
             const angle = direction * ((seconds / period) * Math.PI * 2) + (ring.phase ?? 0);
             const satelliteColor = ring.satelliteColor ?? KURZ_ACCENTS[i % KURZ_ACCENTS.length];
             const satelliteSize = (ring.satelliteSize ?? 16) * scale;
+            // Ramanujan's approximation — good to ~1e-5 for these ellipses,
+            // and we only need it to size the dash pattern
+            const h = ((rx - ry) / (rx + ry)) ** 2;
+            const circumference = Math.PI * (rx + ry) * (1 + (3 * h) / (10 + Math.sqrt(4 - 3 * h)));
+            const pulseArc = ((ring.pulseArcPercent ?? 9) / 100) * circumference;
+            const pulsePeriod = ring.pulseSecondsPerRevolution ?? period * 0.55;
             return (
               <g key={i} transform={`rotate(${tilt})`}>
                 {ring.showRing === false ? null : (
@@ -88,6 +94,19 @@ export const OrbitSystemOverlay: React.FC<{
                     opacity={ring.opacity ?? 0.75}
                   />
                 )}
+                {ring.pulse ? (
+                  <ellipse
+                    rx={rx}
+                    ry={ry}
+                    fill="none"
+                    stroke={ring.pulseColor ?? ring.satelliteColor ?? KURZ.cyan}
+                    strokeWidth={2 * scale}
+                    strokeLinecap="round"
+                    strokeDasharray={`${pulseArc} ${circumference}`}
+                    strokeDashoffset={-((seconds / pulsePeriod) % 1) * circumference * direction}
+                    opacity={0.4}
+                  />
+                ) : null}
                 <g transform={`translate(${Math.cos(angle) * rx} ${Math.sin(angle) * ry})`}>
                   <circle r={satelliteSize} fill={satelliteColor} />
                   {/* same offset highlight as the core, so a satellite drawn
