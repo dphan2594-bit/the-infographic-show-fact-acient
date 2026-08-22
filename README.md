@@ -21,6 +21,9 @@ content/
   manifest.json           # manifest thật của bạn (không commit sẵn, tự tạo)
 scripts/
   build-scenes.mjs         # manifest + audio thật → src/scenes/generated.ts
+  pixelle-media.mjs        # sinh ảnh/clip từng scene bằng Pixelle-Video → public/
+  pixelle-prompt.mjs       # ghép công thức prompt Mục 3 quanh mô tả trong manifest
+  pixelle-sidecar.py       # (tuỳ chọn) route sinh clip video cho Pixelle-Video
 src/
   scenes/
     types.ts     # định nghĩa Scene, Background, Overlay, SceneTransition
@@ -106,6 +109,38 @@ Nếu tiêu đề ảnh nằm ở rìa còn lại (vd ảnh có chữ sát đáy
 `captionBar` và chỉ set `"caption": {"position": "top"}`-style bằng field `captionPosition`
 trên chính entry manifest thay vì dùng dải màu riêng.
 
+## Sinh ảnh/clip bằng Pixelle-Video
+
+Nếu chưa có sẵn ảnh, [Pixelle-Video](https://github.com/AIDC-AI/Pixelle-Video) có
+thể sinh ảnh/clip cho từng scene, tải thẳng vào `public/` rồi ghi đường dẫn ngược
+lại manifest. Pixelle chỉ lo khâu sinh media — chữ tiếng Việt, overlay và motion
+graphics vẫn hoàn toàn thuộc về Remotion, đúng nguyên tắc "chữ không do AI sinh"
+(Mục 2 style guide).
+
+Thêm `imagePrompt` (hoặc `videoPrompt`) vào scene trong `content/manifest.json`,
+chỉ cần mô tả **chủ thể** bằng tiếng Anh — phần công thức phong cách được ghép tự
+động:
+
+```json
+{
+  "id": "scene-01-hook",
+  "imagePrompt": "cupped hands holding a small pile of millet seeds",
+  "palette": ["muted beige", "forest green"],
+  "composition": "centered close-up composition"
+}
+```
+
+Rồi chạy, với server Pixelle-Video đang bật:
+
+```console
+npm run media                 # sinh những asset còn thiếu
+npm run media -- --dry-run    # chỉ in prompt cuối cùng, không gọi API
+npm run build:scenes
+```
+
+Hướng dẫn đầy đủ (dựng server, chọn workflow, sinh clip video):
+[`docs/PIXELLE-BRIDGE.md`](docs/PIXELLE-BRIDGE.md).
+
 ## Thêm scene mới thủ công
 
 Chỉnh `src/scenes/sample.ts` (hoặc tạo file scene mới và trỏ `src/scenes/active.ts`
@@ -155,6 +190,12 @@ npm i
 npm run dev
 ```
 
+**Sinh ảnh/clip còn thiếu qua Pixelle-Video** (xem [`docs/PIXELLE-BRIDGE.md`](docs/PIXELLE-BRIDGE.md))
+
+```console
+npm run media
+```
+
 **Render video**
 
 ```console
@@ -184,4 +225,5 @@ Chrome bình thường thì bỏ qua bước này.
 ## Docs
 
 - Style guide ảnh AI: [`docs/SKILL-FLAT-EXPLAINER.md`](docs/SKILL-FLAT-EXPLAINER.md)
+- Cầu nối Pixelle-Video: [`docs/PIXELLE-BRIDGE.md`](docs/PIXELLE-BRIDGE.md)
 - Remotion fundamentals: https://www.remotion.dev/docs/the-fundamentals

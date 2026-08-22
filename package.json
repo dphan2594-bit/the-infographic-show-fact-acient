@@ -27,6 +27,7 @@
     "dev": "remotion studio",
     "build": "remotion bundle",
     "build:scenes": "node scripts/build-scenes.mjs",
+    "media": "node scripts/pixelle-media.mjs",
     "upgrade": "remotion upgrade",
     "lint": "eslint src && tsc"
   },
