@@ -128,7 +128,52 @@ Sai tên preset (`"push-inn"`) hay thiếu file audio đều báo lỗi ngay ở
 
 ---
 
-## 5. Render
+## 5. Series short 9:16 → video tổng hợp 16:9
+
+Một manifest phục vụ cả hai: mỗi cảnh gắn `"episode": "01"` để gom thành từng
+short, còn video dài chỉ là **toàn bộ danh sách** đó render ở khung ngang.
+
+```json
+{ "id": "ep01-hook", "episode": "01", "image": "...", "camera": { "preset": "push-in", "focusX": 72, "focusY": 62 } }
+```
+
+```console
+node scripts/render-batch.mjs --list                       # có những tập nào
+node scripts/render-batch.mjs --episode=01                 # 1 short  → out/Infographic-ep01.mp4
+node scripts/render-batch.mjs --episodes                   # tất cả short, mỗi tập 1 file
+node scripts/render-batch.mjs --comp=InfographicWide       # video dài → out/InfographicWide.mp4
+```
+
+### Khung hình tự chuyển như thế nào
+
+Không phải "cắt đại giữa ảnh". Ba cơ chế cùng hoạt động:
+
+1. **`focusX`/`focusY` của camera cũng là tâm crop.** Ảnh ngang vào khung dọc
+   mất ~60% chiều rộng; điểm nhắm quyết định phần còn lại là chủ thể hay khoảng
+   trời trống. Khai một lần trong `camera`, cả hai khung dùng chung. Muốn crop
+   khác camera thì đặt riêng `background.focusX/focusY`.
+2. **Chữ và badge co giãn theo khung** (`useFrameScale`): mọi kích thước tính
+   theo khung 1080px, nên caption giữ đúng tỉ lệ ở cả 1080×1920 lẫn 1920×1080
+   thay vì bé lại khi khung rộng ra.
+3. **Overlay khoá theo tranh hay theo khung.** Glow, quỹ đạo, badge trỏ vào chi
+   tiết trong ảnh → đi theo camera. Phụ đề, tiêu đề, sao/bụi/sao băng → đứng
+   yên trong khung, không bị camera đẩy lệch tâm. Ghi đè bằng
+   `"lockTo": "image" | "frame"` trên chính overlay đó.
+
+Cần dàn cảnh khác hẳn giữa hai khung thì dùng `cameraVertical` / `cameraWide`:
+
+```json
+{
+  "camera": { "preset": "push-in", "focusX": 50, "focusY": 45 },
+  "cameraVertical": { "preset": "push-in-fast", "focusX": 72, "focusY": 62, "intensity": 1.2 }
+}
+```
+
+**Lưu ý về bố cục:** ảnh ngang crop sang 9:16 chỉ giữ được ~56% chiều rộng, nên
+khi tạo ảnh hãy để chủ thể chính trong khoảng giữa ngang 60% và tránh đặt chi
+tiết quan trọng sát mép trái/phải.
+
+## 6. Render
 
 ```console
 npm run render:batch                                  # bản dọc  → out/Infographic.mp4

@@ -1,6 +1,7 @@
 import { AbsoluteFill } from "remotion";
 import { useEntranceStyle } from "../../animation/useEntranceStyle";
 import type { Entrance, Idle } from "../../scenes/types";
+import { useFrameScale } from "../../animation/useFrameScale";
 
 const StaggerItem: React.FC<{
   icon: string;
@@ -13,6 +14,7 @@ const StaggerItem: React.FC<{
   idle: Idle;
 }> = ({ icon, label, x, y, accentColor, entrance, delayFrames, idle }) => {
   const { opacity, transform, filter, clipPath } = useEntranceStyle(entrance, delayFrames, idle);
+  const scale = useFrameScale();
 
   return (
     <div
@@ -32,16 +34,16 @@ const StaggerItem: React.FC<{
     >
       <div
         style={{
-          width: 110,
-          height: 110,
+          width: 120 * scale,
+          height: 120 * scale,
           borderRadius: "50%",
           backgroundColor: accentColor,
-          border: "6px solid white",
+          border: `${6 * scale}px solid white`,
           boxShadow: "0 6px 16px rgba(0,0,0,0.25)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontSize: 46,
+          fontSize: 50 * scale,
         }}
       >
         {icon}
@@ -54,7 +56,7 @@ const StaggerItem: React.FC<{
           color: "white",
           fontFamily: "Arial, sans-serif",
           fontWeight: 700,
-          fontSize: 15,
+          fontSize: 17 * scale,
           textTransform: "uppercase",
           letterSpacing: 1,
           whiteSpace: "nowrap",

@@ -27,8 +27,15 @@ export type Background =
       fit?: "cover" | "contain";
       /** background shown behind a "contain"-fit image, matches the source graphic's own bg by default */
       letterboxColor?: string;
+      /**
+       * Which point of the artwork to keep when the frame has to crop it, in
+       * percent. Defaults to the camera's focus point for the frame being
+       * rendered, which is what lets one image serve both 9:16 and 16:9.
+       */
+      focusX?: number;
+      focusY?: number;
     }
-  | { type: "video"; src: string }
+  | { type: "video"; src: string; focusX?: number; focusY?: number }
   | { type: "color"; color: string }
   /**
    * Animated Kurzgesagt-style space backdrop rendered entirely in code —
@@ -86,7 +93,17 @@ export type OrbitRing = {
   pulseSecondsPerRevolution?: number;
 };
 
-export type Overlay =
+/**
+ * Whether an overlay travels with the scene camera or stays put in the frame.
+ *
+ * Anything anchored to a spot in the artwork (a glow on a painted sun, an
+ * orbiting body, a badge pointing at something) must move with the camera, or
+ * it slides off its target. Text and atmosphere must not: a caption pushed
+ * around by the camera drifts off-centre and out of the title-safe area.
+ */
+export type OverlayLock = "image" | "frame";
+
+type OverlayVariant =
   | ({
       type: "chapterTitle";
       title: string;
@@ -228,6 +245,12 @@ export type Overlay =
       staggerFrames?: number;
     } & EntranceProps);
 
+/**
+ * Every overlay may override where it is locked; the sensible default per type
+ * lives in src/components/Scene.tsx.
+ */
+export type Overlay = OverlayVariant & { lockTo?: OverlayLock };
+
 export type SceneTransition =
   | { type: "fade"; durationInFrames?: number }
   | {
@@ -244,6 +267,12 @@ export type SceneTransition =
 
 export type Scene = {
   id: string;
+  /**
+   * Groups scenes into one short of a series ("01", "02", ...). Render a
+   * single episode with `npm run render:batch -- --episode=01`; leave it out
+   * and every scene is rendered as one long compilation.
+   */
+  episode?: string;
   /** matches the doc's Mục 8 static/animate classification, for traceability only */
   motion: "static" | "animate";
   archetype: string;

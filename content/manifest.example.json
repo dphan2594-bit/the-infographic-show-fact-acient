@@ -85,6 +85,7 @@
   },
   {
     "id": "batch-example",
+    "episode": "01",
     "motion": "static",
     "archetype": "Mẫu cho pipeline hàng loạt — xem docs/BATCH-PIPELINE.md",
     "image": "images/scene-07-space.png",

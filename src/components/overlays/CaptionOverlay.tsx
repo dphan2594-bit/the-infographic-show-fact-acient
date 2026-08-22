@@ -1,6 +1,7 @@
 import { AbsoluteFill } from "remotion";
 import { useEntranceStyle } from "../../animation/useEntranceStyle";
 import type { Entrance, Idle } from "../../scenes/types";
+import { useFrameScale } from "../../animation/useFrameScale";
 
 export const CaptionOverlay: React.FC<{
   text: string;
@@ -10,6 +11,7 @@ export const CaptionOverlay: React.FC<{
   idle?: Idle;
 }> = ({ text, position = "bottom", entrance = "fade", delayFrames = 0, idle = "none" }) => {
   const { opacity, transform, filter, clipPath } = useEntranceStyle(entrance, delayFrames, idle);
+  const scale = useFrameScale();
 
   return (
     <AbsoluteFill
@@ -19,22 +21,22 @@ export const CaptionOverlay: React.FC<{
     >
       <div
         style={{
-          margin: position === "bottom" ? "0 auto 64px" : "64px auto 0",
-          maxWidth: "80%",
+          margin: position === "bottom" ? `0 auto ${72 * scale}px` : `${72 * scale}px auto 0`,
+          maxWidth: "86%",
           opacity,
           transform,
           filter,
           clipPath,
           backgroundColor: "rgba(0,0,0,0.7)",
-          padding: "14px 28px",
-          borderRadius: 12,
+          padding: `${16 * scale}px ${30 * scale}px`,
+          borderRadius: 14 * scale,
         }}
       >
         <div
           style={{
             fontFamily: "Arial, sans-serif",
             fontWeight: 600,
-            fontSize: 26,
+            fontSize: 34 * scale,
             color: "white",
             textAlign: "center",
             lineHeight: 1.3,

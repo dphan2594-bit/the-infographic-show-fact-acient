@@ -1,6 +1,7 @@
 import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { useEntranceStyle } from "../../animation/useEntranceStyle";
 import type { Entrance, Idle } from "../../scenes/types";
+import { useFrameScale } from "../../animation/useFrameScale";
 
 export const ChapterTitleOverlay: React.FC<{
   title: string;
@@ -28,6 +29,7 @@ export const ChapterTitleOverlay: React.FC<{
   const badge = useEntranceStyle("slideDown", delayFrames);
   const titleStyle = useEntranceStyle(entrance, delayFrames + 4, idle);
   const subtitleStyle = useEntranceStyle("fade-up", delayFrames + 10);
+  const scale = useFrameScale();
   const patternShift = (frame * 0.6) % 80;
 
   return (
@@ -56,15 +58,15 @@ export const ChapterTitleOverlay: React.FC<{
         <div
           style={{
             display: "inline-block",
-            padding: "6px 24px",
+            padding: `${7 * scale}px ${26 * scale}px`,
             borderRadius: 999,
             backgroundColor: accentColor,
             color: "white",
             fontFamily: "Arial, sans-serif",
             fontWeight: 700,
-            fontSize: 22,
+            fontSize: 24 * scale,
             letterSpacing: 2,
-            marginBottom: 24,
+            marginBottom: 26 * scale,
             textTransform: "uppercase",
             opacity: badge.opacity,
             transform: badge.transform,
@@ -78,7 +80,7 @@ export const ChapterTitleOverlay: React.FC<{
           style={{
             fontFamily: "Arial, sans-serif",
             fontWeight: 900,
-            fontSize: 64,
+            fontSize: 68 * scale,
             color: "white",
             textShadow: "0 6px 0 rgba(0,0,0,0.25)",
             textTransform: "uppercase",
@@ -94,10 +96,10 @@ export const ChapterTitleOverlay: React.FC<{
         {subtitle ? (
           <div
             style={{
-              marginTop: 20,
+              marginTop: 22 * scale,
               fontFamily: "Arial, sans-serif",
               fontWeight: 500,
-              fontSize: 28,
+              fontSize: 30 * scale,
               color: "rgba(255,255,255,0.9)",
               opacity: subtitleStyle.opacity,
               transform: subtitleStyle.transform,

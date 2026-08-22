@@ -239,6 +239,8 @@ async function main() {
 
     const scene = {
       id: entry.id,
+      // groups scenes into one short of a series; see docs/BATCH-PIPELINE.md
+      ...(entry.episode ? { episode: String(entry.episode) } : {}),
       motion: entry.motion ?? "static",
       archetype: entry.archetype ?? "",
       durationInFrames,

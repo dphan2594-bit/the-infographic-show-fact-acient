@@ -23,7 +23,23 @@ export const KenBurnsImage: React.FC<{
   durationInFrames: number;
   fit?: "cover" | "contain";
   letterboxColor?: string;
-}> = ({ src, direction = "zoom-in", durationInFrames, fit = "cover", letterboxColor }) => {
+  /**
+   * Which point of the picture to keep when the frame crops it, in percent.
+   * This is what makes one artwork work in both 9:16 and 16:9: a wide image in
+   * a vertical frame loses ~60% of its width, and the focus decides whether
+   * what survives is the subject or the empty sky next to it.
+   */
+  focusX?: number;
+  focusY?: number;
+}> = ({
+  src,
+  direction = "zoom-in",
+  durationInFrames,
+  fit = "cover",
+  letterboxColor,
+  focusX = 50,
+  focusY = 50,
+}) => {
   const frame = useCurrentFrame();
   const { from, to } = TRANSFORMS[direction];
 
@@ -57,6 +73,7 @@ export const KenBurnsImage: React.FC<{
           width: "100%",
           height: "100%",
           objectFit: fit,
+          objectPosition: `${focusX}% ${focusY}%`,
           transform: `scale(${scale}) translate(${x}%, ${y}%)`,
           transformOrigin: "center center",
         }}
