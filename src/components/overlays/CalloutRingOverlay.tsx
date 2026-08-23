@@ -91,8 +91,12 @@ export const CalloutRingOverlay: React.FC<{
               ? `${18 * scale} ${12 * scale}`
               : `${perimeter * drawn} ${perimeter}`
           }
-          // start the draw at the top of the ring, not at three o'clock
-          transform={`rotate(-90 ${cx} ${cy})`}
+          // Start the draw at the top of the ring rather than at three
+          // o'clock. Rotating the element would do it too, but it would also
+          // stand the ellipse on its side — a ring sized to a wide subject
+          // came out tall. Shifting the dash pattern a quarter of the way
+          // round moves only the starting point.
+          strokeDashoffset={-perimeter / 4}
         />
       </svg>
     </AbsoluteFill>
