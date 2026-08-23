@@ -26,49 +26,49 @@
           },
           {
             "at": 21,
-            "zoom": 1.3,
-            "focusX": 50,
-            "focusY": 62
+            "zoom": 1.34,
+            "focusX": 44,
+            "focusY": 63
           },
           {
             "at": 36,
-            "zoom": 1.28,
-            "focusX": 50,
-            "focusY": 62
+            "zoom": 1.32,
+            "focusX": 44,
+            "focusY": 63
           },
           {
             "at": 43,
-            "zoom": 1.16,
-            "focusX": 50,
-            "focusY": 55
+            "zoom": 1.2,
+            "focusX": 56,
+            "focusY": 56
           },
           {
             "at": 58,
-            "zoom": 1.14,
-            "focusX": 50,
-            "focusY": 55
+            "zoom": 1.18,
+            "focusX": 56,
+            "focusY": 56
           },
           {
             "at": 65,
-            "zoom": 1.02,
-            "focusX": 50,
-            "focusY": 48
+            "zoom": 1.06,
+            "focusX": 47,
+            "focusY": 47
           },
           {
             "at": 84,
-            "zoom": 1.02,
-            "focusX": 50,
-            "focusY": 48
+            "zoom": 1.05,
+            "focusX": 47,
+            "focusY": 47
           },
           {
             "at": 92,
-            "zoom": 1.14,
+            "zoom": 1.18,
             "focusX": 50,
             "focusY": 78
           },
           {
             "at": 100,
-            "zoom": 1.16,
+            "zoom": 1.2,
             "focusX": 50,
             "focusY": 78
           }
@@ -247,7 +247,7 @@
           "x": 50,
           "y": 22,
           "size": 92,
-          "color": "#8CE99A",
+          "color": "#FFFFFF",
           "subtitle": "bậc thứ hai — trên cả thợ thủ công",
           "entrance": "squash-pop",
           "startFrame": 92,
@@ -266,7 +266,7 @@
           "x": 50,
           "y": 74,
           "size": 96,
-          "color": "#9BD1FF",
+          "color": "#FFFFFF",
           "subtitle": "đọc sách, làm quan — đứng trên tất cả",
           "entrance": "squash-pop",
           "startFrame": 176,
@@ -309,7 +309,7 @@
           "x": 50,
           "y": 60,
           "size": 90,
-          "color": "#FFFFFF",
+          "color": "#FFD34D",
           "subtitle": "đỉnh của trật tự",
           "entrance": "squash-pop",
           "startFrame": 262,
@@ -329,7 +329,7 @@
           "y": 82,
           "radiusX": 12,
           "radiusY": 17,
-          "color": "#FF4D6D",
+          "color": "#E85D5D",
           "strokeWidth": 6,
           "drawFrames": 16,
           "dashed": true,
@@ -341,7 +341,7 @@
           "x": 50,
           "y": 26,
           "size": 96,
-          "color": "#FF4D6D",
+          "color": "#E85D5D",
           "subtitle": "bậc thấp nhất trong bốn tầng",
           "entrance": "stamp",
           "startFrame": 330,
