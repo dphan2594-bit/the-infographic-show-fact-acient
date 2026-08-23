@@ -1,0 +1,187 @@
+{
+  "scenes": [
+    {
+      "id": "S01-nguoi-giau-nhat-dung-thap-nhat",
+      "motion": "static",
+      "archetype": "S01 — Người giàu nhất đứng thấp nhất (Scale-reveal zoom-out)",
+      "durationInFrames": 360,
+      "background": {
+        "type": "image",
+        "src": "images/si-nong/S01.jpg",
+        "kenBurns": "none"
+      },
+      "camera": {
+        "keyframes": [
+          {
+            "at": 0,
+            "zoom": 1.5,
+            "focusX": 50,
+            "focusY": 70
+          },
+          {
+            "at": 34,
+            "zoom": 1.34,
+            "focusX": 50,
+            "focusY": 64
+          },
+          {
+            "at": 62,
+            "zoom": 1.16,
+            "focusX": 50,
+            "focusY": 56
+          },
+          {
+            "at": 100,
+            "zoom": 1.01,
+            "focusX": 50,
+            "focusY": 50
+          }
+        ],
+        "driftPercent": 0.35,
+        "driftSeconds": 11
+      },
+      "overlays": [
+        {
+          "type": "cutout",
+          "src": "images/si-nong/S01.jpg",
+          "x": 41,
+          "y": 70,
+          "width": 23,
+          "height": 30,
+          "feather": 14,
+          "idle": "breathe-still"
+        },
+        {
+          "type": "blink",
+          "x": 48.5,
+          "y": 76.0,
+          "width": 1.5,
+          "height": 0.8,
+          "color": "#ff9b76",
+          "periodSeconds": 3.6,
+          "closedFrames": 3
+        },
+        {
+          "type": "blink",
+          "x": 50.6,
+          "y": 76.0,
+          "width": 1.5,
+          "height": 0.8,
+          "color": "#ff9b76",
+          "periodSeconds": 3.6,
+          "closedFrames": 3
+        },
+        {
+          "type": "cutout",
+          "src": "images/si-nong/S01.jpg",
+          "x": 44.5,
+          "y": 47,
+          "width": 12.5,
+          "height": 25,
+          "feather": 16,
+          "idle": "breathe-still",
+          "startFrame": 120
+        },
+        {
+          "type": "blink",
+          "x": 49.3,
+          "y": 50.7,
+          "width": 1.1,
+          "height": 0.7,
+          "color": "#f8764c",
+          "periodSeconds": 4.4,
+          "closedFrames": 3,
+          "offsetSeconds": 1.2,
+          "startFrame": 130
+        },
+        {
+          "type": "blink",
+          "x": 50.6,
+          "y": 50.7,
+          "width": 1.1,
+          "height": 0.7,
+          "color": "#f8764c",
+          "periodSeconds": 4.4,
+          "closedFrames": 3,
+          "offsetSeconds": 1.2,
+          "startFrame": 130
+        },
+        {
+          "type": "glowPulse",
+          "x": 50,
+          "y": 86,
+          "radius": 210,
+          "color": "#FFD34D",
+          "periodSeconds": 2.4,
+          "minOpacity": 0.14,
+          "maxOpacity": 0.46
+        },
+        {
+          "type": "glowPulse",
+          "x": 74,
+          "y": 90,
+          "radius": 130,
+          "color": "#FFC46B",
+          "periodSeconds": 3.2,
+          "minOpacity": 0.1,
+          "maxOpacity": 0.34
+        },
+        {
+          "type": "driftParticles",
+          "count": 30,
+          "angleDeg": 275,
+          "speed": 16,
+          "opacity": 0.55,
+          "colors": [
+            "#FFE08A",
+            "#FFD34D",
+            "#FFFFFF"
+          ],
+          "seed": "s01-gold"
+        },
+        {
+          "type": "sparkleBurst",
+          "x": 50,
+          "y": 84,
+          "atFrame": 26,
+          "count": 18,
+          "spread": 210,
+          "colors": [
+            "#FFE08A",
+            "#FFFFFF"
+          ]
+        },
+        {
+          "type": "glowPulse",
+          "x": 50,
+          "y": 14,
+          "radius": 170,
+          "color": "#FFD98A",
+          "periodSeconds": 3.4,
+          "minOpacity": 0.12,
+          "maxOpacity": 0.4,
+          "startFrame": 250
+        },
+        {
+          "type": "sparkleBurst",
+          "x": 50,
+          "y": 16,
+          "atFrame": 300,
+          "count": 16,
+          "spread": 240,
+          "colors": [
+            "#FFD98A",
+            "#FFF3C4"
+          ]
+        },
+        {
+          "type": "caption",
+          "text": "Người giàu nhất trong xã hội — lại bị xếp ở bậc thấp nhất.",
+          "entrance": "rise-float",
+          "startFrame": 30,
+          "position": "top"
+        }
+      ]
+    }
+  ]
+}
