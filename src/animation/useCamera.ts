@@ -20,6 +20,12 @@ export type CameraKeyframe = {
 };
 
 export type CameraConfig = {
+  /**
+   * Start this scene's move from wherever the previous scene's camera ended,
+   * so a cut does not jump. Resolved in src/InfographicVideo.tsx before the
+   * scenes are rendered.
+   */
+  continueFromPrevious?: boolean;
   /** name of a move from src/animation/cameraPresets.ts, resolved to keyframes */
   preset?: CameraPresetName;
   /** the point a preset move is about, in percent of the frame */

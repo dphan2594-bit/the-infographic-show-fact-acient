@@ -75,7 +75,10 @@ export const BigTextOverlay: React.FC<{
             textTransform: "uppercase",
             // a hard shadow keeps heavy type readable over any artwork
             textShadow: `0 ${6 * scale}px 0 rgba(0,0,0,0.28)`,
-            whiteSpace: "pre-line",
+            // "pre", not "pre-line": the line breaks in the text are the
+            // composition, and letting the frame edge add its own re-wraps a
+            // two-line headline into four
+            whiteSpace: "pre",
           }}
         >
           {text}

@@ -338,8 +338,22 @@ export type Overlay = OverlayVariant & {
   endFrame?: number;
 };
 
+/**
+ * How one scene is joined to the next.
+ *
+ * The first three are plain cuts; the rest are the joins that make a sequence
+ * of stills feel like one continuous piece — a flash on the beat, a whip with
+ * motion blur, an iris opening on the new subject, a zoom that carries through
+ * from one picture into the next.
+ */
 export type SceneTransition =
   | { type: "fade"; durationInFrames?: number }
+  | { type: "flash"; color?: string; intensity?: number; durationInFrames?: number }
+  | { type: "whip"; direction?: "from-left" | "from-right"; durationInFrames?: number }
+  | { type: "iris"; durationInFrames?: number }
+  | { type: "clock-wipe"; durationInFrames?: number }
+  | { type: "zoom-through"; durationInFrames?: number }
+  | { type: "dissolve"; durationInFrames?: number }
   | {
       type: "slide";
       direction?: "from-left" | "from-right" | "from-top" | "from-bottom";
