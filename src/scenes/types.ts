@@ -265,6 +265,54 @@ type OverlayVariant =
       radiusPercent?: number;
     }
   | ({
+      /** dims everything except one oval — points the eye inside a busy picture */
+      type: "spotlight";
+      x: number;
+      y: number;
+      radiusX: number;
+      radiusY: number;
+      darkness?: number;
+      softness?: number;
+      color?: string;
+    } & EntranceProps)
+  | ({
+      /** headline typography placed anywhere in the frame */
+      type: "bigText";
+      text: string;
+      x: number;
+      y: number;
+      size?: number;
+      color?: string;
+      subtitle?: string;
+      align?: "left" | "center" | "right";
+      plate?: boolean;
+      plateColor?: string;
+    } & EntranceProps)
+  | {
+      /** ring drawn around something, optionally with a leader line */
+      type: "calloutRing";
+      x: number;
+      y: number;
+      radiusX: number;
+      radiusY: number;
+      color?: string;
+      strokeWidth?: number;
+      drawFrames?: number;
+      leaderX?: number;
+      leaderY?: number;
+      dashed?: boolean;
+      pulse?: boolean;
+    }
+  | {
+      /** short flash of colour over the frame, for a cut or a stressed word */
+      type: "flash";
+      atFrame?: number;
+      color?: string;
+      attackFrames?: number;
+      releaseFrames?: number;
+      intensity?: number;
+    }
+  | ({
       /** horizontal process-flow diagram (E8): boxes + connecting arrows, staggered reveal */
       type: "processFlow";
       steps: { label: string }[];

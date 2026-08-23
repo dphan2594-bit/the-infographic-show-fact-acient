@@ -29,6 +29,8 @@ const FRAME_LOCKED: ReadonlySet<string> = new Set([
   "starLayer",
   "driftParticles",
   "shootingStars",
+  "bigText",
+  "flash",
 ]);
 
 const isFrameLocked = (overlay: Overlay) =>

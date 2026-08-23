@@ -16,6 +16,10 @@ import { DriftParticlesOverlay } from "./overlays/DriftParticlesOverlay";
 import { EngineTrailOverlay } from "./overlays/EngineTrailOverlay";
 import { CutoutOverlay } from "./overlays/CutoutOverlay";
 import { BlinkOverlay } from "./overlays/BlinkOverlay";
+import { SpotlightOverlay } from "./overlays/SpotlightOverlay";
+import { BigTextOverlay } from "./overlays/BigTextOverlay";
+import { CalloutRingOverlay } from "./overlays/CalloutRingOverlay";
+import { FlashOverlay } from "./overlays/FlashOverlay";
 
 export const OverlayRenderer: React.FC<{ overlay: Overlay }> = ({ overlay }) => {
   switch (overlay.type) {
@@ -208,6 +212,64 @@ export const OverlayRenderer: React.FC<{ overlay: Overlay }> = ({ overlay }) => 
           closedFrames={overlay.closedFrames}
           offsetSeconds={overlay.offsetSeconds}
           radiusPercent={overlay.radiusPercent}
+        />
+      );
+    case "spotlight":
+      return (
+        <SpotlightOverlay
+          x={overlay.x}
+          y={overlay.y}
+          radiusX={overlay.radiusX}
+          radiusY={overlay.radiusY}
+          darkness={overlay.darkness}
+          softness={overlay.softness}
+          color={overlay.color}
+          entrance={overlay.entrance}
+          delayFrames={overlay.delayFrames}
+          idle={overlay.idle}
+        />
+      );
+    case "bigText":
+      return (
+        <BigTextOverlay
+          text={overlay.text}
+          x={overlay.x}
+          y={overlay.y}
+          size={overlay.size}
+          color={overlay.color}
+          subtitle={overlay.subtitle}
+          align={overlay.align}
+          plate={overlay.plate}
+          plateColor={overlay.plateColor}
+          entrance={overlay.entrance}
+          delayFrames={overlay.delayFrames}
+          idle={overlay.idle}
+        />
+      );
+    case "calloutRing":
+      return (
+        <CalloutRingOverlay
+          x={overlay.x}
+          y={overlay.y}
+          radiusX={overlay.radiusX}
+          radiusY={overlay.radiusY}
+          color={overlay.color}
+          strokeWidth={overlay.strokeWidth}
+          drawFrames={overlay.drawFrames}
+          leaderX={overlay.leaderX}
+          leaderY={overlay.leaderY}
+          dashed={overlay.dashed}
+          pulse={overlay.pulse}
+        />
+      );
+    case "flash":
+      return (
+        <FlashOverlay
+          atFrame={overlay.atFrame}
+          color={overlay.color}
+          attackFrames={overlay.attackFrames}
+          releaseFrames={overlay.releaseFrames}
+          intensity={overlay.intensity}
         />
       );
     case "processFlow":
