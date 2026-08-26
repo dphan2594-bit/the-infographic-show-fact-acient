@@ -217,6 +217,11 @@ export const OverlayRenderer: React.FC<{ overlay: Overlay }> = ({ overlay }) => 
           motionBlur={overlay.motionBlur}
           alive={overlay.alive}
           weight={overlay.weight}
+          anticipateFrames={overlay.anticipateFrames}
+          anticipatePercent={overlay.anticipatePercent}
+          arcPercent={overlay.arcPercent}
+          followThrough={overlay.followThrough}
+          followSeconds={overlay.followSeconds}
           bobPercent={overlay.bobPercent}
           breathePercent={overlay.breathePercent}
           periodSeconds={overlay.periodSeconds}

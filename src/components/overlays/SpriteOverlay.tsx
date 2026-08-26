@@ -1,5 +1,5 @@
 import { AbsoluteFill, Img, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
-import { getPresetStyle } from "../../animation/presets";
+import { getEntrancePreset, getPresetStyle } from "../../animation/presets";
 import type { Entrance, Idle } from "../../scenes/types";
 
 /** Pulls the translation out of a preset's transform string, in pixels. */
@@ -57,6 +57,27 @@ export const SpriteOverlay: React.FC<{
    *  along the direction of travel while accelerating, squashes on the frame
    *  it stops. This is what gives a falling object mass. */
   weight?: number;
+  /** Frames of wind-up before the entrance runs. The sprite hangs at its
+   *  starting pose, drifts a little the *wrong* way and compresses, then goes.
+   *  Nothing in nature moves without first loading up to move, and an entrance
+   *  that simply begins reads as a cut rather than as an action.
+   *
+   *  Only reads on an entrance that starts on screen — "stamp", "squash-pop",
+   *  "pop", "overshoot". A drop begins above the frame, so there is nothing
+   *  visible to wind up; telegraph the landing instead, with a shadow that
+   *  grows under the spot a beat before the impact. */
+  anticipateFrames?: number;
+  /** How far the wind-up travels, in percent of the sprite's height. */
+  anticipatePercent?: number;
+  /** Bows the entrance path sideways, in percent of the sprite's width.
+   *  A thing that falls dead straight reads as a lift being switched off. */
+  arcPercent?: number;
+  /** Degrees of damped wobble after the entrance settles. A hand stops; what
+   *  it is carrying does not. Give a prop or a limb its own pivot and this
+   *  keeps it swinging for a beat after the body has landed. */
+  followThrough?: number;
+  /** Seconds for the follow-through to die away, default 0.9. */
+  followSeconds?: number;
   /** vertical bob, in percent of the sprite's own height */
   bobPercent?: number;
   /** scale swell, in percent */
@@ -84,6 +105,11 @@ export const SpriteOverlay: React.FC<{
   motionBlur = 0,
   alive = 0,
   weight = 0,
+  anticipateFrames = 0,
+  anticipatePercent = 0,
+  arcPercent = 0,
+  followThrough = 0,
+  followSeconds = 0.9,
   entrance = "none",
   delayFrames = 0,
   idle = "none",
@@ -99,7 +125,10 @@ export const SpriteOverlay: React.FC<{
       delayFrames,
       idle,
     });
-  const style = at(frame);
+  const style =
+    anticipateFrames > 0 && frame < delayFrames && frame >= delayFrames - anticipateFrames
+      ? { ...at(delayFrames), opacity: at(delayFrames).opacity }
+      : at(frame);
 
   const phase = (((frame / fps + phaseSeconds) / periodSeconds) % 1 + 1) % 1;
 
@@ -138,6 +167,34 @@ export const SpriteOverlay: React.FC<{
   const speed = speedAt(frame);
   const smear = motionBlur > 0 ? Math.min(motionBlur, speed * 0.42) : 0;
 
+  const spriteWidth = (width / 100) * frameWidth;
+  const spriteHeight = (height / 100) * frameHeight;
+  const entranceFrames = Math.max(1, getEntrancePreset(entrance).durationInFrames);
+  // where the entrance is, 0 before it starts and 1 once it has settled
+  const travel = Math.min(1, Math.max(0, (frame - delayFrames) * entranceSpeed / entranceFrames));
+
+  // ANTICIPATION — hold at the start pose, ease the wrong way, then release
+  const windUp =
+    anticipateFrames > 0 && frame < delayFrames && frame >= delayFrames - anticipateFrames
+      ? Math.sin(((frame - (delayFrames - anticipateFrames)) / anticipateFrames) * Math.PI)
+      : 0;
+  const windUpY = -windUp * (anticipatePercent / 100) * spriteHeight;
+
+  // ARCS — bow the path sideways, widest at the middle of the travel
+  const arc =
+    arcPercent !== 0 && travel > 0 && travel < 1
+      ? Math.sin(travel * Math.PI) * (arcPercent / 100) * spriteWidth
+      : 0;
+
+  // FOLLOW-THROUGH — a damped wobble once the body has stopped
+  const settled = (frame - delayFrames) * entranceSpeed - entranceFrames;
+  const follow =
+    followThrough !== 0 && settled > 0
+      ? followThrough *
+        Math.exp(-(settled / fps) / followSeconds) *
+        Math.sin((settled / fps) * Math.PI * 2 * 2.4)
+      : 0;
+
   // Stretch along the travel while it is speeding up; squash on the frame it
   // stops. Anchored at the feet (the default origin), a squash reads as the
   // weight arriving rather than as the figure shrinking.
@@ -153,8 +210,9 @@ export const SpriteOverlay: React.FC<{
     (0.62 * Math.sin((seconds / 2.3) * Math.PI * 2) +
       0.38 * Math.sin((seconds / 3.7) * Math.PI * 2 + 1.1));
 
-  const scaleX = breathe * (1 + life * 0.030 - stretch * 0.62 + squash * 0.70);
-  const scaleY = breathe * (1 - life * 0.026 + stretch - squash);
+  // the wind-up compresses along the axis it is about to travel
+  const scaleX = breathe * (1 + life * 0.030 - stretch * 0.62 + squash * 0.70 + windUp * 0.06);
+  const scaleY = breathe * (1 - life * 0.026 + stretch - squash - windUp * 0.07);
   const skew = life * 1.5;
 
   return (
@@ -168,7 +226,8 @@ export const SpriteOverlay: React.FC<{
           height: (height / 100) * frameHeight,
           transformOrigin: `${originX}% ${originY}%`,
           transform:
-            `translateY(${bob.toFixed(2)}px) rotate(${swing.toFixed(2)}deg) ` +
+            `translate(${arc.toFixed(2)}px, ${(bob + windUpY).toFixed(2)}px) ` +
+            `rotate(${(swing + follow).toFixed(2)}deg) ` +
             `skewX(${skew.toFixed(3)}deg) scale(${scaleX.toFixed(4)}, ${scaleY.toFixed(4)}) ` +
             style.transform,
           opacity: style.opacity,

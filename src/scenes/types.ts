@@ -279,6 +279,14 @@ type OverlayVariant =
       alive?: number;
       /** velocity-driven squash and stretch, 0–1 — what gives a fall mass */
       weight?: number;
+      /** frames of wind-up before the entrance — anticipation */
+      anticipateFrames?: number;
+      anticipatePercent?: number;
+      /** bows the entrance path sideways, percent of the sprite's width */
+      arcPercent?: number;
+      /** degrees of damped wobble after the entrance settles */
+      followThrough?: number;
+      followSeconds?: number;
       bobPercent?: number;
       breathePercent?: number;
       periodSeconds?: number;

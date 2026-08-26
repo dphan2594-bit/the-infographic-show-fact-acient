@@ -3,7 +3,7 @@
     {
       "id": "S03-rigged",
       "motion": "static",
-      "archetype": "S03 — bốn bậc, rig đầy đủ",
+      "archetype": "S03 — rig đủ 12 nguyên tắc",
       "durationInFrames": 420,
       "background": {
         "type": "image",
@@ -88,11 +88,47 @@
       },
       "overlays": [
         {
+          "type": "glowPulse",
+          "x": 49,
+          "y": 32,
+          "radius": 120,
+          "color": "#101A4A",
+          "periodSeconds": 0.75,
+          "minOpacity": 0.1,
+          "maxOpacity": 0.46,
+          "startFrame": 37,
+          "endFrame": 55
+        },
+        {
+          "type": "glowPulse",
+          "x": 39,
+          "y": 74,
+          "radius": 120,
+          "color": "#101A4A",
+          "periodSeconds": 0.75,
+          "minOpacity": 0.1,
+          "maxOpacity": 0.46,
+          "startFrame": 129,
+          "endFrame": 147
+        },
+        {
+          "type": "glowPulse",
+          "x": 66,
+          "y": 98,
+          "radius": 120,
+          "color": "#101A4A",
+          "periodSeconds": 0.75,
+          "minOpacity": 0.1,
+          "maxOpacity": 0.46,
+          "startFrame": 221,
+          "endFrame": 239
+        },
+        {
           "type": "sprite",
           "src": "images/si-nong/sprites/S03-scholar.png",
           "x": 41.424418604651166,
           "y": 1.3020833333333335,
-          "width": 15.988372093023257,
+          "width": 16.71511627906977,
           "height": 29.947916666666668,
           "entrance": "elastic-drop",
           "delayFrames": 40,
@@ -100,7 +136,30 @@
           "motionBlur": 22,
           "weight": 1.0,
           "alive": 0.85,
-          "phaseSeconds": 0.0
+          "arcPercent": 5,
+          "anticipateFrames": 9,
+          "anticipatePercent": 7
+        },
+        {
+          "type": "sprite",
+          "src": "images/si-nong/sprites/S03-scroll.png",
+          "x": 51.30813953488372,
+          "y": 2.864583333333333,
+          "width": 6.831395348837209,
+          "height": 19.53125,
+          "entrance": "elastic-drop",
+          "delayFrames": 40,
+          "entranceSpeed": 2.1,
+          "motionBlur": 22,
+          "weight": 0.7,
+          "alive": 0.6,
+          "arcPercent": 5,
+          "originX": 19,
+          "originY": 70,
+          "followThrough": 11,
+          "followSeconds": 1.1,
+          "anticipateFrames": 9,
+          "anticipatePercent": 7
         },
         {
           "type": "sprite",
@@ -114,8 +173,11 @@
           "entranceSpeed": 2.1,
           "motionBlur": 22,
           "weight": 1.0,
-          "alive": 0.93,
-          "phaseSeconds": 0.9
+          "alive": 0.9,
+          "arcPercent": -5,
+          "phaseSeconds": 0.9,
+          "anticipateFrames": 9,
+          "anticipatePercent": 7
         },
         {
           "type": "sprite",
@@ -129,13 +191,18 @@
           "entranceSpeed": 1.85,
           "motionBlur": 22,
           "weight": 0.8,
-          "alive": 0.78,
+          "alive": 0.75,
+          "arcPercent": -6,
           "originX": 7.6,
           "originY": 51.5,
           "swingDeg": 14,
           "swingShape": "strike",
           "periodSeconds": 1.45,
-          "phaseSeconds": 0.55
+          "phaseSeconds": 0.55,
+          "followThrough": 8,
+          "followSeconds": 0.8,
+          "anticipateFrames": 9,
+          "anticipatePercent": 7
         },
         {
           "type": "sprite",
@@ -150,7 +217,12 @@
           "motionBlur": 22,
           "weight": 1.0,
           "alive": 1.0,
-          "phaseSeconds": 1.7
+          "arcPercent": 6,
+          "phaseSeconds": 1.7,
+          "followThrough": 6,
+          "followSeconds": 0.9,
+          "anticipateFrames": 9,
+          "anticipatePercent": 7
         },
         {
           "type": "driftParticles",
