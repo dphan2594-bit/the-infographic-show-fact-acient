@@ -44,6 +44,36 @@ a rendered frame and would not have been found by reading the JSON.
 - **≤ 6 colours per scene.**
 - Ken Burns changes direction every 3–5 s; roughly 20–25 % of scenes animate.
 
+## Motion, measured against the reference
+
+`scripts/measure-reference.mjs` reads a video's pacing; the same per-frame
+energy sampling comparing our render to a Kurzgesagt short is what settled how
+this repo animates. What it showed, in order of how much it mattered:
+
+- **Dynamic range beats amount.** Their frames are flat and then explode: median
+  motion 0.69, p90 5.50. Ours drifted constantly and never went anywhere —
+  median 0.27, p90 0.69. A camera always creeping plus a sprite always breathing
+  is mush, because no accent rises above it. Hold the frame dead still, then
+  move hard.
+- **A held frame still deforms.** Their shapes never stop warping even when
+  nothing is happening. A bitmap cannot redraw itself but it warps affinely, and
+  `sprite`'s `alive` does exactly that — non-uniform scale plus skew on two
+  periods that do not divide into each other, so it never ticks. Measured tight
+  around one of our figures, this reaches 0.59 against their 0.69.
+- **Frame the subject, not the tableau.** Whole-frame liveliness was still 0.15
+  when the same animation measured 0.59 around the figure itself: the subject
+  only occupied a corner. Push in until it fills the shot. This alone took the
+  whole-frame number from 0.15 to 0.26 and p90 past theirs.
+- **Fast moves need blur.** `motionBlur` samples `getPresetStyle` a frame back
+  and smears by how far the sprite actually travelled. Sharp frames on a fast
+  move strobe.
+- **`weight`** stretches along the travel while accelerating and squashes on the
+  frame it stops, anchored at the feet — mass, without touching the artwork.
+
+Still not done, all needing per-part rigging: anticipation (nothing winds up
+before it moves), arcs (drops are straight vertical), and follow-through on
+sub-parts (a held scroll does not lag the hand carrying it).
+
 ## Type
 
 One family, shipped in the repo: `src/theme/fonts.ts` (Be Vietnam Pro, loaded

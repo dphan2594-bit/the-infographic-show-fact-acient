@@ -47,6 +47,16 @@ export const SpriteOverlay: React.FC<{
   /** smear the sprite in proportion to how fast it is travelling. A fast move
    *  rendered as sharp frames strobes; a real camera would have blurred it. */
   motionBlur?: number;
+  /** Continuous deformation while the sprite is otherwise at rest, 0–1.
+   *  Measured against a real Kurzgesagt short, the thing separating their held
+   *  frames from ours is not that theirs drift — it is that their shapes never
+   *  stop deforming. A bitmap cannot redraw itself, but it can be warped, and
+   *  a warp reads as life where a translation reads as drift. */
+  alive?: number;
+  /** Squash and stretch driven by the sprite's own velocity, 0–1. Stretches
+   *  along the direction of travel while accelerating, squashes on the frame
+   *  it stops. This is what gives a falling object mass. */
+  weight?: number;
   /** vertical bob, in percent of the sprite's own height */
   bobPercent?: number;
   /** scale swell, in percent */
@@ -72,6 +82,8 @@ export const SpriteOverlay: React.FC<{
   phaseSeconds = 0,
   entranceSpeed = 1,
   motionBlur = 0,
+  alive = 0,
+  weight = 0,
   entrance = "none",
   delayFrames = 0,
   idle = "none",
@@ -111,14 +123,39 @@ export const SpriteOverlay: React.FC<{
   const bob = (bobPercent / 100) * (height / 100) * frameHeight * Math.sin(phase * Math.PI * 2);
   const breathe = 1 + (breathePercent / 100) * Math.sin(phase * Math.PI * 2);
 
-  // How far this sprite travelled since the previous frame, entrance included.
-  const previousPhase = ((((frame - 1) / fps + phaseSeconds) / periodSeconds) % 1 + 1) % 1;
-  const previousBob =
-    (bobPercent / 100) * (height / 100) * frameHeight * Math.sin(previousPhase * Math.PI * 2);
-  const [px0, py0] = translationOf(at(frame - 1).transform);
-  const [px1, py1] = translationOf(style.transform);
-  const speed = Math.hypot(px1 - px0, py1 - py0 + (bob - previousBob));
+  // How far this sprite travelled on this frame and the one before it, so the
+  // deformation can tell accelerating from arriving.
+  const bobAt = (f: number) =>
+    (bobPercent / 100) *
+    (height / 100) *
+    frameHeight *
+    Math.sin(((((f / fps + phaseSeconds) / periodSeconds) % 1) + 1) % 1 * Math.PI * 2);
+  const speedAt = (f: number) => {
+    const [ax, ay] = translationOf(at(f - 1).transform);
+    const [bx, by] = translationOf(at(f).transform);
+    return Math.hypot(bx - ax, by - ay + (bobAt(f) - bobAt(f - 1)));
+  };
+  const speed = speedAt(frame);
   const smear = motionBlur > 0 ? Math.min(motionBlur, speed * 0.42) : 0;
+
+  // Stretch along the travel while it is speeding up; squash on the frame it
+  // stops. Anchored at the feet (the default origin), a squash reads as the
+  // weight arriving rather than as the figure shrinking.
+  const impact = Math.max(0, speedAt(frame - 1) - speed);
+  const stretch = weight * Math.min(0.30, speed * 0.0055);
+  const squash = weight * Math.min(0.26, impact * 0.0075);
+
+  // Two periods that do not divide into each other, so the loop never ticks
+  // like a metronome the way a single sine does.
+  const seconds = frame / fps + phaseSeconds;
+  const life =
+    alive *
+    (0.62 * Math.sin((seconds / 2.3) * Math.PI * 2) +
+      0.38 * Math.sin((seconds / 3.7) * Math.PI * 2 + 1.1));
+
+  const scaleX = breathe * (1 + life * 0.030 - stretch * 0.62 + squash * 0.70);
+  const scaleY = breathe * (1 - life * 0.026 + stretch - squash);
+  const skew = life * 1.5;
 
   return (
     <AbsoluteFill style={{ pointerEvents: "none" }}>
@@ -130,7 +167,10 @@ export const SpriteOverlay: React.FC<{
           width: (width / 100) * frameWidth,
           height: (height / 100) * frameHeight,
           transformOrigin: `${originX}% ${originY}%`,
-          transform: `translateY(${bob.toFixed(2)}px) rotate(${swing.toFixed(2)}deg) scale(${breathe.toFixed(4)}) ${style.transform}`,
+          transform:
+            `translateY(${bob.toFixed(2)}px) rotate(${swing.toFixed(2)}deg) ` +
+            `skewX(${skew.toFixed(3)}deg) scale(${scaleX.toFixed(4)}, ${scaleY.toFixed(4)}) ` +
+            style.transform,
           opacity: style.opacity,
           filter: smear > 0.4 ? `blur(${smear.toFixed(1)}px) ${style.filter ?? ""}` : style.filter,
         }}

@@ -215,6 +215,8 @@ export const OverlayRenderer: React.FC<{ overlay: Overlay }> = ({ overlay }) => 
           swingShape={overlay.swingShape}
           entranceSpeed={overlay.entranceSpeed}
           motionBlur={overlay.motionBlur}
+          alive={overlay.alive}
+          weight={overlay.weight}
           bobPercent={overlay.bobPercent}
           breathePercent={overlay.breathePercent}
           periodSeconds={overlay.periodSeconds}

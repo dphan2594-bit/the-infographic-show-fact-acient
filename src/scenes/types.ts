@@ -274,6 +274,11 @@ type OverlayVariant =
       entranceSpeed?: number;
       /** smear in proportion to travel speed, so a fast move does not strobe */
       motionBlur?: number;
+      /** continuous deformation at rest, 0–1 — a warp reads as life where a
+       *  translation reads as drift */
+      alive?: number;
+      /** velocity-driven squash and stretch, 0–1 — what gives a fall mass */
+      weight?: number;
       bobPercent?: number;
       breathePercent?: number;
       periodSeconds?: number;
