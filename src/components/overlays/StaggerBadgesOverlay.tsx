@@ -1,3 +1,4 @@
+import { BODY_FONT } from "../../theme/fonts";
 import { AbsoluteFill } from "remotion";
 import { useEntranceStyle } from "../../animation/useEntranceStyle";
 import type { Entrance, Idle } from "../../scenes/types";
@@ -54,7 +55,7 @@ const StaggerItem: React.FC<{
           borderRadius: 8,
           backgroundColor: "rgba(0,0,0,0.65)",
           color: "white",
-          fontFamily: "Arial, sans-serif",
+          fontFamily: BODY_FONT,
           fontWeight: 700,
           fontSize: 17 * scale,
           textTransform: "uppercase",

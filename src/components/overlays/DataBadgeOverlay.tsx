@@ -1,3 +1,4 @@
+import { BODY_FONT } from "../../theme/fonts";
 import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { useEntranceStyle } from "../../animation/useEntranceStyle";
 import type { Entrance, Idle } from "../../scenes/types";
@@ -81,7 +82,7 @@ export const DataBadgeOverlay: React.FC<{
         >
           <div
             style={{
-              fontFamily: "Arial, sans-serif",
+              fontFamily: BODY_FONT,
               fontWeight: 900,
               fontSize: 38 * scale,
               color: "white",
@@ -94,7 +95,7 @@ export const DataBadgeOverlay: React.FC<{
             <div
               style={{
                 marginTop: 6,
-                fontFamily: "Arial, sans-serif",
+                fontFamily: BODY_FONT,
                 fontWeight: 700,
                 fontSize: 15 * scale,
                 color: "white",

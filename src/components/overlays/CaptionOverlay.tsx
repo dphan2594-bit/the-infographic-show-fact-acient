@@ -1,3 +1,4 @@
+import { BODY_FONT } from "../../theme/fonts";
 import { AbsoluteFill } from "remotion";
 import { useEntranceStyle } from "../../animation/useEntranceStyle";
 import type { Entrance, Idle } from "../../scenes/types";
@@ -34,7 +35,7 @@ export const CaptionOverlay: React.FC<{
       >
         <div
           style={{
-            fontFamily: "Arial, sans-serif",
+            fontFamily: BODY_FONT,
             fontWeight: 600,
             fontSize: 34 * scale,
             color: "white",

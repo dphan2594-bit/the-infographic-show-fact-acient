@@ -1,3 +1,4 @@
+import { BODY_FONT } from "../../theme/fonts";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { useEntranceStyle } from "../../animation/useEntranceStyle";
 import type { Entrance, Idle } from "../../scenes/types";
@@ -62,7 +63,7 @@ export const ChapterTitleOverlay: React.FC<{
             borderRadius: 999,
             backgroundColor: accentColor,
             color: "white",
-            fontFamily: "Arial, sans-serif",
+            fontFamily: BODY_FONT,
             fontWeight: 700,
             fontSize: 24 * scale,
             letterSpacing: 2,
@@ -78,7 +79,7 @@ export const ChapterTitleOverlay: React.FC<{
         </div>
         <div
           style={{
-            fontFamily: "Arial, sans-serif",
+            fontFamily: BODY_FONT,
             fontWeight: 900,
             fontSize: 68 * scale,
             color: "white",
@@ -97,7 +98,7 @@ export const ChapterTitleOverlay: React.FC<{
           <div
             style={{
               marginTop: 22 * scale,
-              fontFamily: "Arial, sans-serif",
+              fontFamily: BODY_FONT,
               fontWeight: 500,
               fontSize: 30 * scale,
               color: "rgba(255,255,255,0.9)",

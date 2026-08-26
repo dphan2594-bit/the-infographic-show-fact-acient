@@ -1,3 +1,4 @@
+import { BODY_FONT } from "./theme/fonts";
 import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
 import {
   entrancePresets,
@@ -33,7 +34,7 @@ export const PresetGallery: React.FC = () => {
   const cellWidth = Math.floor((width - GRID_PADDING * 2 - CELL_MARGIN * 2 * COLUMNS) / COLUMNS);
 
   return (
-    <AbsoluteFill style={{ backgroundColor: BG, fontFamily: "Arial, sans-serif" }}>
+    <AbsoluteFill style={{ backgroundColor: BG, fontFamily: BODY_FONT }}>
       <div style={{ padding: "36px 40px 12px" }}>
         <div
           style={{

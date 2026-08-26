@@ -1,3 +1,4 @@
+import { BODY_FONT } from "../../theme/fonts";
 import { AbsoluteFill } from "remotion";
 import { useEntranceStyle } from "../../animation/useEntranceStyle";
 import type { Entrance, Idle } from "../../scenes/types";
@@ -35,7 +36,7 @@ export const DateHudOverlay: React.FC<{
         <div style={{ fontSize: 22 * scale }}>📅</div>
         <div
           style={{
-            fontFamily: "Arial, sans-serif",
+            fontFamily: BODY_FONT,
             fontWeight: 800,
             fontSize: 22 * scale,
             color: "#222",

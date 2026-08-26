@@ -1,4 +1,5 @@
 import "./index.css";
+import { loadFonts } from "./theme/fonts";
 import {
   AnimatedIllustrationComposition,
   InfographicComposition,
@@ -6,6 +7,8 @@ import {
   KurzgesagtDemoComposition,
   PresetGalleryComposition,
 } from "./Composition";
+
+loadFonts();
 
 export const RemotionRoot: React.FC = () => {
   return (

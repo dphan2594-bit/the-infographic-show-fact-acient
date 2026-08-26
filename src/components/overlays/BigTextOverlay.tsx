@@ -1,3 +1,4 @@
+import { DISPLAY_FONT, BODY_FONT } from "../../theme/fonts";
 import { AbsoluteFill } from "remotion";
 import { useEntranceStyle } from "../../animation/useEntranceStyle";
 import { useFrameScale } from "../../animation/useFrameScale";
@@ -59,17 +60,20 @@ export const BigTextOverlay: React.FC<{
           opacity: style.opacity,
           filter: style.filter,
           textAlign: align,
-          padding: plate ? `${14 * scale}px ${30 * scale}px` : undefined,
+          padding: plate ? `${20 * scale}px ${30 * scale}px ${16 * scale}px` : undefined,
           borderRadius: plate ? 18 * scale : undefined,
           backgroundColor: plate ? plateColor : undefined,
         }}
       >
         <div
           style={{
-            fontFamily: "Arial Black, Arial, sans-serif",
+            fontFamily: DISPLAY_FONT,
             fontWeight: 900,
             fontSize: size * scale,
-            lineHeight: 1.02,
+            // Vietnamese stacks a tone mark above the vowel's own diacritic,
+            // so a capital Ĩ or Ỡ reaches well past the Latin cap height.
+            // At 1.02 the plate clipped the tilde clean off.
+            lineHeight: 1.16,
             letterSpacing: -1 * scale,
             color,
             textTransform: "uppercase",
@@ -87,7 +91,7 @@ export const BigTextOverlay: React.FC<{
           <div
             style={{
               marginTop: 10 * scale,
-              fontFamily: "Arial, sans-serif",
+              fontFamily: BODY_FONT,
               fontWeight: 700,
               fontSize: size * 0.32 * scale,
               letterSpacing: 1 * scale,
