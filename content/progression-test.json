@@ -3,8 +3,8 @@
     {
       "id": "S03-progression",
       "motion": "static",
-      "archetype": "Thử nghiệm: bức tranh tự tiến triển",
-      "durationInFrames": 360,
+      "archetype": "Thử nghiệm: giữ yên rồi bật",
+      "durationInFrames": 390,
       "background": {
         "type": "image",
         "src": "images/si-nong/sprites/S03-tiers.png",
@@ -14,25 +14,31 @@
         "keyframes": [
           {
             "at": 0,
-            "zoom": 1.1,
-            "focusX": 50,
-            "focusY": 46
-          },
-          {
-            "at": 55,
             "zoom": 1.06,
             "focusX": 50,
-            "focusY": 50
+            "focusY": 48
+          },
+          {
+            "at": 70,
+            "zoom": 1.06,
+            "focusX": 50,
+            "focusY": 48
+          },
+          {
+            "at": 78,
+            "zoom": 1.01,
+            "focusX": 50,
+            "focusY": 52
           },
           {
             "at": 100,
-            "zoom": 1.02,
+            "zoom": 1.01,
             "focusX": 50,
             "focusY": 52
           }
         ],
-        "driftPercent": 0.2,
-        "driftSeconds": 9
+        "driftPercent": 0.18,
+        "driftSeconds": 11
       },
       "overlays": [
         {
@@ -43,9 +49,11 @@
           "width": 15.988372093023257,
           "height": 29.947916666666668,
           "entrance": "elastic-drop",
-          "delayFrames": 20,
-          "breathePercent": 1.0,
-          "periodSeconds": 3.4
+          "delayFrames": 36,
+          "entranceSpeed": 2.1,
+          "motionBlur": 20,
+          "breathePercent": 0.9,
+          "periodSeconds": 3.6
         },
         {
           "type": "sprite",
@@ -55,10 +63,11 @@
           "width": 14.898255813953487,
           "height": 27.994791666666668,
           "entrance": "elastic-drop",
-          "delayFrames": 62,
-          "bobPercent": 1.4,
-          "breathePercent": 1.0,
-          "periodSeconds": 1.6
+          "delayFrames": 120,
+          "entranceSpeed": 2.1,
+          "motionBlur": 20,
+          "breathePercent": 0.9,
+          "periodSeconds": 3.6
         },
         {
           "type": "sprite",
@@ -68,12 +77,15 @@
           "width": 6.686046511627906,
           "height": 13.411458333333334,
           "entrance": "elastic-drop",
-          "delayFrames": 62,
+          "delayFrames": 120,
+          "entranceSpeed": 2.1,
+          "motionBlur": 20,
           "originX": 7.6,
           "originY": 51.5,
-          "swingDeg": 12,
+          "swingDeg": 13,
           "swingShape": "strike",
-          "periodSeconds": 1.6
+          "periodSeconds": 1.5,
+          "phaseSeconds": 0.5
         },
         {
           "type": "sprite",
@@ -83,67 +95,89 @@
           "width": 17.078488372093023,
           "height": 34.50520833333333,
           "entrance": "elastic-drop",
-          "delayFrames": 104,
-          "breathePercent": 1.2,
-          "periodSeconds": 3.0
+          "delayFrames": 204,
+          "entranceSpeed": 2.1,
+          "motionBlur": 20,
+          "breathePercent": 0.9,
+          "periodSeconds": 3.6
         },
         {
           "type": "sparkleBurst",
           "x": 49,
           "y": 29,
-          "atFrame": 42,
-          "count": 16,
-          "spread": 170,
+          "atFrame": 49,
+          "count": 22,
+          "spread": 260,
           "colors": [
             "#FFD34D",
             "#FFFFFF"
           ]
         },
         {
+          "type": "flash",
+          "atFrame": 49,
+          "color": "#FFD34D",
+          "intensity": 0.3,
+          "releaseFrames": 7
+        },
+        {
           "type": "sparkleBurst",
           "x": 39,
           "y": 71,
-          "atFrame": 84,
-          "count": 16,
-          "spread": 170,
+          "atFrame": 133,
+          "count": 22,
+          "spread": 260,
           "colors": [
             "#FFFFFF",
             "#FFD34D"
           ]
         },
         {
+          "type": "flash",
+          "atFrame": 133,
+          "color": "#FFFFFF",
+          "intensity": 0.3,
+          "releaseFrames": 7
+        },
+        {
           "type": "sparkleBurst",
           "x": 66,
           "y": 95,
-          "atFrame": 126,
-          "count": 18,
-          "spread": 190,
+          "atFrame": 217,
+          "count": 22,
+          "spread": 260,
           "colors": [
             "#E85D5D",
             "#FFFFFF"
           ]
         },
         {
+          "type": "flash",
+          "atFrame": 217,
+          "color": "#E85D5D",
+          "intensity": 0.3,
+          "releaseFrames": 7
+        },
+        {
           "type": "bigText",
           "text": "bốn bậc",
           "x": 50,
           "y": 88,
-          "size": 52,
+          "size": 54,
           "color": "#FFFFFF",
           "entrance": "fade-up",
-          "startFrame": 8,
-          "endFrame": 150
+          "startFrame": 6,
+          "endFrame": 200
         },
         {
           "type": "bigText",
           "text": "người buôn xếp chót",
           "x": 50,
           "y": 88,
-          "size": 52,
+          "size": 54,
           "color": "#E85D5D",
-          "entrance": "fade-up",
-          "startFrame": 160,
-          "endFrame": 300
+          "entrance": "stamp",
+          "startFrame": 218
         }
       ]
     }

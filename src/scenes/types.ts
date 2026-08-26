@@ -270,6 +270,10 @@ type OverlayVariant =
       swingDeg?: number;
       /** "strike" raises slowly and drops fast, the way a hammer is used */
       swingShape?: "sine" | "strike";
+      /** multiplies the entrance's clock — a snap instead of a drift */
+      entranceSpeed?: number;
+      /** smear in proportion to travel speed, so a fast move does not strobe */
+      motionBlur?: number;
       bobPercent?: number;
       breathePercent?: number;
       periodSeconds?: number;

@@ -1,6 +1,15 @@
 import { AbsoluteFill, Img, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
-import { useEntranceStyle } from "../../animation/useEntranceStyle";
+import { getPresetStyle } from "../../animation/presets";
 import type { Entrance, Idle } from "../../scenes/types";
+
+/** Pulls the translation out of a preset's transform string, in pixels. */
+const translationOf = (transform: string): [number, number] => {
+  const pair = /translate\(\s*(-?[\d.]+)px\s*,\s*(-?[\d.]+)px\s*\)/.exec(transform);
+  if (pair) return [Number(pair[1]), Number(pair[2])];
+  const x = /translateX\(\s*(-?[\d.]+)px/.exec(transform);
+  const y = /translateY\(\s*(-?[\d.]+)px/.exec(transform);
+  return [x ? Number(x[1]) : 0, y ? Number(y[1]) : 0];
+};
 
 const resolveSrc = (src: string) => (src.startsWith("http") ? src : staticFile(src));
 
@@ -32,6 +41,12 @@ export const SpriteOverlay: React.FC<{
   swingDeg?: number;
   /** "strike" raises slowly and drops fast, the way a hammer is actually used */
   swingShape?: "sine" | "strike";
+  /** multiplies the entrance's clock — 2 makes the same preset land twice as
+   *  fast, which is most of what separates a snap from a drift */
+  entranceSpeed?: number;
+  /** smear the sprite in proportion to how fast it is travelling. A fast move
+   *  rendered as sharp frames strobes; a real camera would have blurred it. */
+  motionBlur?: number;
   /** vertical bob, in percent of the sprite's own height */
   bobPercent?: number;
   /** scale swell, in percent */
@@ -55,13 +70,24 @@ export const SpriteOverlay: React.FC<{
   breathePercent = 0,
   periodSeconds = 2,
   phaseSeconds = 0,
+  entranceSpeed = 1,
+  motionBlur = 0,
   entrance = "none",
   delayFrames = 0,
   idle = "none",
 }) => {
   const frame = useCurrentFrame();
   const { width: frameWidth, height: frameHeight, fps } = useVideoConfig();
-  const style = useEntranceStyle(entrance, delayFrames, idle);
+
+  const at = (f: number) =>
+    getPresetStyle({
+      frame: delayFrames + Math.max(0, f - delayFrames) * entranceSpeed,
+      fps,
+      entrance,
+      delayFrames,
+      idle,
+    });
+  const style = at(frame);
 
   const phase = (((frame / fps + phaseSeconds) / periodSeconds) % 1 + 1) % 1;
 
@@ -85,6 +111,15 @@ export const SpriteOverlay: React.FC<{
   const bob = (bobPercent / 100) * (height / 100) * frameHeight * Math.sin(phase * Math.PI * 2);
   const breathe = 1 + (breathePercent / 100) * Math.sin(phase * Math.PI * 2);
 
+  // How far this sprite travelled since the previous frame, entrance included.
+  const previousPhase = ((((frame - 1) / fps + phaseSeconds) / periodSeconds) % 1 + 1) % 1;
+  const previousBob =
+    (bobPercent / 100) * (height / 100) * frameHeight * Math.sin(previousPhase * Math.PI * 2);
+  const [px0, py0] = translationOf(at(frame - 1).transform);
+  const [px1, py1] = translationOf(style.transform);
+  const speed = Math.hypot(px1 - px0, py1 - py0 + (bob - previousBob));
+  const smear = motionBlur > 0 ? Math.min(motionBlur, speed * 0.42) : 0;
+
   return (
     <AbsoluteFill style={{ pointerEvents: "none" }}>
       <div
@@ -97,7 +132,7 @@ export const SpriteOverlay: React.FC<{
           transformOrigin: `${originX}% ${originY}%`,
           transform: `translateY(${bob.toFixed(2)}px) rotate(${swing.toFixed(2)}deg) scale(${breathe.toFixed(4)}) ${style.transform}`,
           opacity: style.opacity,
-          filter: style.filter,
+          filter: smear > 0.4 ? `blur(${smear.toFixed(1)}px) ${style.filter ?? ""}` : style.filter,
         }}
       >
         <Img src={resolveSrc(src)} style={{ width: "100%", height: "100%" }} />
