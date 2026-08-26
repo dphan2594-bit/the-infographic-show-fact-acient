@@ -1,0 +1,107 @@
+import { AbsoluteFill, Img, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import { useEntranceStyle } from "../../animation/useEntranceStyle";
+import type { Entrance, Idle } from "../../scenes/types";
+
+const resolveSrc = (src: string) => (src.startsWith("http") ? src : staticFile(src));
+
+/**
+ * A character cut out of the artwork with a real alpha channel.
+ *
+ * `cutout` lifts a *rectangle* of the picture — nudge it more than a couple of
+ * percent and the copy slides off its own outline and you see the original
+ * underneath. A sprite has no such ceiling: the background behind it has been
+ * patched (scripts/cut-sprite.py writes the plate), so it can bob, lean and
+ * swing as far as the shot wants.
+ *
+ * Split a limb into its own sprite and pivot it on the joint and the character
+ * genuinely acts: the hammer swings rather than the whole body tilting.
+ */
+export const SpriteOverlay: React.FC<{
+  /** the cut-out PNG — must have alpha */
+  src: string;
+  /** where the sprite's box sits in the artwork, in percent */
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  /** pivot for the swing, in percent of the sprite's own box — a shoulder for
+   *  an arm, the feet (the default) for a whole body */
+  originX?: number;
+  originY?: number;
+  /** rotation amplitude in degrees */
+  swingDeg?: number;
+  /** "strike" raises slowly and drops fast, the way a hammer is actually used */
+  swingShape?: "sine" | "strike";
+  /** vertical bob, in percent of the sprite's own height */
+  bobPercent?: number;
+  /** scale swell, in percent */
+  breathePercent?: number;
+  periodSeconds?: number;
+  phaseSeconds?: number;
+  entrance?: Entrance;
+  delayFrames?: number;
+  idle?: Idle;
+}> = ({
+  src,
+  x,
+  y,
+  width,
+  height,
+  originX = 50,
+  originY = 100,
+  swingDeg = 0,
+  swingShape = "sine",
+  bobPercent = 0,
+  breathePercent = 0,
+  periodSeconds = 2,
+  phaseSeconds = 0,
+  entrance = "none",
+  delayFrames = 0,
+  idle = "none",
+}) => {
+  const frame = useCurrentFrame();
+  const { width: frameWidth, height: frameHeight, fps } = useVideoConfig();
+  const style = useEntranceStyle(entrance, delayFrames, idle);
+
+  const phase = (((frame / fps + phaseSeconds) / periodSeconds) % 1 + 1) % 1;
+
+  // A hammer spends most of its cycle on the way up and almost none coming
+  // down. A sine wave gives it equal time either way, which reads as waving.
+  const strike = (p: number) => {
+    if (p < 0.62) {
+      const t = p / 0.62;
+      return 1 - (1 - t) * (1 - t); // ease-out on the lift
+    }
+    if (p < 0.76) {
+      const t = (p - 0.62) / 0.14;
+      return 1 - t * t; // snap down
+    }
+    const t = (p - 0.76) / 0.24;
+    return -0.14 * Math.sin(t * Math.PI) * (1 - t); // recoil, dying out
+  };
+
+  const wave = swingShape === "strike" ? strike(phase) : Math.sin(phase * Math.PI * 2);
+  const swing = swingDeg * wave;
+  const bob = (bobPercent / 100) * (height / 100) * frameHeight * Math.sin(phase * Math.PI * 2);
+  const breathe = 1 + (breathePercent / 100) * Math.sin(phase * Math.PI * 2);
+
+  return (
+    <AbsoluteFill style={{ pointerEvents: "none" }}>
+      <div
+        style={{
+          position: "absolute",
+          left: (x / 100) * frameWidth,
+          top: (y / 100) * frameHeight,
+          width: (width / 100) * frameWidth,
+          height: (height / 100) * frameHeight,
+          transformOrigin: `${originX}% ${originY}%`,
+          transform: `translateY(${bob.toFixed(2)}px) rotate(${swing.toFixed(2)}deg) scale(${breathe.toFixed(4)}) ${style.transform}`,
+          opacity: style.opacity,
+          filter: style.filter,
+        }}
+      >
+        <Img src={resolveSrc(src)} style={{ width: "100%", height: "100%" }} />
+      </div>
+    </AbsoluteFill>
+  );
+};

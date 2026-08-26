@@ -1,0 +1,203 @@
+{
+  "scenes": [
+    {
+      "id": "S03-sprite-test",
+      "motion": "static",
+      "archetype": "Thử nghiệm sprite — người thợ",
+      "durationInFrames": 360,
+      "background": {
+        "type": "image",
+        "src": "images/si-nong/sprites/S03-plate.png",
+        "kenBurns": "none"
+      },
+      "camera": {
+        "keyframes": [
+          {
+            "at": 0,
+            "zoom": 1.44,
+            "focusX": 40,
+            "focusY": 58
+          },
+          {
+            "at": 45,
+            "zoom": 1.42,
+            "focusX": 40,
+            "focusY": 58
+          },
+          {
+            "at": 60,
+            "zoom": 1.18,
+            "focusX": 44,
+            "focusY": 54
+          },
+          {
+            "at": 100,
+            "zoom": 1.12,
+            "focusX": 46,
+            "focusY": 52
+          }
+        ],
+        "driftPercent": 0.25,
+        "driftSeconds": 8
+      },
+      "overlays": [
+        {
+          "type": "sprite",
+          "src": "images/si-nong/sprites/S03-craft-body.png",
+          "x": 32.70348837209303,
+          "y": 44.27083333333333,
+          "width": 14.898255813953487,
+          "height": 27.994791666666668,
+          "originX": 50,
+          "originY": 100,
+          "bobPercent": 1.6,
+          "breathePercent": 1.2,
+          "periodSeconds": 1.6
+        },
+        {
+          "type": "sprite",
+          "src": "images/si-nong/sprites/S03-craft-arm.png",
+          "x": 40.3343023255814,
+          "y": 47.78645833333333,
+          "width": 6.686046511627906,
+          "height": 13.411458333333334,
+          "originX": 7.608695652173914,
+          "originY": 51.45631067961165,
+          "swingDeg": 12,
+          "swingShape": "strike",
+          "periodSeconds": 1.6
+        },
+        {
+          "type": "bigText",
+          "text": "BÚA VUNG THẬT",
+          "x": 50,
+          "y": 22,
+          "size": 86,
+          "color": "#FFD34D",
+          "subtitle": "cánh tay là lớp riêng, xoay quanh khớp vai 12°",
+          "entrance": "squash-pop",
+          "plate": true,
+          "startFrame": 8,
+          "endFrame": 175
+        },
+        {
+          "type": "bigText",
+          "text": "THÂN NGƯỜI THỞ VÀ NHÚN",
+          "x": 50,
+          "y": 22,
+          "size": 72,
+          "color": "#FFFFFF",
+          "subtitle": "biên độ 1,6 % — gấp 4 lần bản cutout cũ",
+          "entrance": "squash-pop",
+          "plate": true,
+          "startFrame": 190
+        },
+        {
+          "type": "sparkleBurst",
+          "x": 44,
+          "y": 53,
+          "atFrame": 0,
+          "count": 10,
+          "spread": 90,
+          "colors": [
+            "#FFFFFF",
+            "#FFD34D"
+          ],
+          "startFrame": 21,
+          "endFrame": 35,
+          "seed": "strike-0"
+        },
+        {
+          "type": "sparkleBurst",
+          "x": 44,
+          "y": 53,
+          "atFrame": 0,
+          "count": 10,
+          "spread": 90,
+          "colors": [
+            "#FFFFFF",
+            "#FFD34D"
+          ],
+          "startFrame": 69,
+          "endFrame": 83,
+          "seed": "strike-1"
+        },
+        {
+          "type": "sparkleBurst",
+          "x": 44,
+          "y": 53,
+          "atFrame": 0,
+          "count": 10,
+          "spread": 90,
+          "colors": [
+            "#FFFFFF",
+            "#FFD34D"
+          ],
+          "startFrame": 117,
+          "endFrame": 131,
+          "seed": "strike-2"
+        },
+        {
+          "type": "sparkleBurst",
+          "x": 44,
+          "y": 53,
+          "atFrame": 0,
+          "count": 10,
+          "spread": 90,
+          "colors": [
+            "#FFFFFF",
+            "#FFD34D"
+          ],
+          "startFrame": 165,
+          "endFrame": 179,
+          "seed": "strike-3"
+        },
+        {
+          "type": "sparkleBurst",
+          "x": 44,
+          "y": 53,
+          "atFrame": 0,
+          "count": 10,
+          "spread": 90,
+          "colors": [
+            "#FFFFFF",
+            "#FFD34D"
+          ],
+          "startFrame": 213,
+          "endFrame": 227,
+          "seed": "strike-4"
+        },
+        {
+          "type": "sparkleBurst",
+          "x": 44,
+          "y": 53,
+          "atFrame": 0,
+          "count": 10,
+          "spread": 90,
+          "colors": [
+            "#FFFFFF",
+            "#FFD34D"
+          ],
+          "startFrame": 261,
+          "endFrame": 275,
+          "seed": "strike-5"
+        },
+        {
+          "type": "sparkleBurst",
+          "x": 44,
+          "y": 53,
+          "atFrame": 0,
+          "count": 10,
+          "spread": 90,
+          "colors": [
+            "#FFFFFF",
+            "#FFD34D"
+          ],
+          "startFrame": 309,
+          "endFrame": 323,
+          "seed": "strike-6"
+        }
+      ]
+    }
+  ]
+}

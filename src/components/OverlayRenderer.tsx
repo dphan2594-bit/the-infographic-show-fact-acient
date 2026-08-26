@@ -15,6 +15,7 @@ import { ShootingStarsOverlay } from "./overlays/ShootingStarsOverlay";
 import { DriftParticlesOverlay } from "./overlays/DriftParticlesOverlay";
 import { EngineTrailOverlay } from "./overlays/EngineTrailOverlay";
 import { CutoutOverlay } from "./overlays/CutoutOverlay";
+import { SpriteOverlay } from "./overlays/SpriteOverlay";
 import { BlinkOverlay } from "./overlays/BlinkOverlay";
 import { SpotlightOverlay } from "./overlays/SpotlightOverlay";
 import { BigTextOverlay } from "./overlays/BigTextOverlay";
@@ -195,6 +196,27 @@ export const OverlayRenderer: React.FC<{ overlay: Overlay }> = ({ overlay }) => 
           feather={overlay.feather}
           originX={overlay.originX}
           originY={overlay.originY}
+          entrance={overlay.entrance}
+          delayFrames={overlay.delayFrames}
+          idle={overlay.idle}
+        />
+      );
+    case "sprite":
+      return (
+        <SpriteOverlay
+          src={overlay.src}
+          x={overlay.x}
+          y={overlay.y}
+          width={overlay.width}
+          height={overlay.height}
+          originX={overlay.originX}
+          originY={overlay.originY}
+          swingDeg={overlay.swingDeg}
+          swingShape={overlay.swingShape}
+          bobPercent={overlay.bobPercent}
+          breathePercent={overlay.breathePercent}
+          periodSeconds={overlay.periodSeconds}
+          phaseSeconds={overlay.phaseSeconds}
           entrance={overlay.entrance}
           delayFrames={overlay.delayFrames}
           idle={overlay.idle}

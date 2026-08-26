@@ -251,6 +251,30 @@ type OverlayVariant =
       originX?: number;
       originY?: number;
     } & EntranceProps)
+  | ({
+      /**
+       * A character cut out of the artwork with a real alpha channel, drawn
+       * over a background the character has been patched out of. Unlike
+       * `cutout` it is not stuck on its own outline, so the motion can be as
+       * large as the shot needs. See scripts/cut-sprite.py.
+       */
+      type: "sprite";
+      src: string;
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+      /** pivot, in percent of the sprite's own box — a shoulder for an arm */
+      originX?: number;
+      originY?: number;
+      swingDeg?: number;
+      /** "strike" raises slowly and drops fast, the way a hammer is used */
+      swingShape?: "sine" | "strike";
+      bobPercent?: number;
+      breathePercent?: number;
+      periodSeconds?: number;
+      phaseSeconds?: number;
+    } & EntranceProps)
   | {
       /** covers painted eyes with a patch of skin for a few frames — a blink */
       type: "blink";
