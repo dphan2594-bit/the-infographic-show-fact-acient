@@ -44,8 +44,18 @@ const cuts = async (file) => {
   return [...stderr.matchAll(/pts_time:([\d.]+)/g)].map((m) => Number(m[1]));
 };
 
-/** Mean absolute difference between consecutive frames, sampled — how much the
- *  picture is moving when it is not cutting. */
+/** Counts how often the picture becomes substantially different from the last
+ *  one that counted, rather than how often it hard-cuts.
+ *
+ *  Cut detection is the wrong instrument for this style: a Kurzgesagt piece
+ *  changes what is on screen by animating elements in and out and by moving
+ *  the camera, so 38 seconds of it registered four cuts while showing a dozen
+ *  different pictures. Read the threshold sweep, not any single number — the
+ *  absolute value is arbitrary, the comparison between two videos is not.
+ *
+ *  What it cannot tell you: whether the change carried new information. A
+ *  camera pan over a still scores the same as a redrawn subject. Use it to
+ *  disprove "the frame is static", never to prove "the content is rich". */
 const motion = async (file, fps) => {
   const dir = await mkdtemp(path.join(tmpdir(), "ref-"));
   try {
