@@ -1,3 +1,4 @@
+import { Audio, interpolate, staticFile } from "remotion";
 import type { Overlay } from "../scenes/types";
 import { ChapterTitleOverlay } from "./overlays/ChapterTitleOverlay";
 import { DataBadgeOverlay } from "./overlays/DataBadgeOverlay";
@@ -229,6 +230,19 @@ export const OverlayRenderer: React.FC<{ overlay: Overlay }> = ({ overlay }) => 
           entrance={overlay.entrance}
           delayFrames={overlay.delayFrames}
           idle={overlay.idle}
+        />
+      );
+    case "sfx":
+      return (
+        <Audio
+          src={overlay.src.startsWith("http") ? overlay.src : staticFile(overlay.src)}
+          // a callback rather than a constant: the last frames ramp out, so a
+          // sound cut short by its beat window does not click
+          volume={(f) =>
+            interpolate(f, [0, 1], [(overlay.volume ?? 0.7) * 0.85, overlay.volume ?? 0.7], {
+              extrapolateRight: "clamp",
+            })
+          }
         />
       );
     case "blink":

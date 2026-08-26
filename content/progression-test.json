@@ -314,6 +314,90 @@
           "color": "#E85D5D",
           "entrance": "stamp",
           "startFrame": 238
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/riser.wav",
+          "volume": 0.46,
+          "startFrame": 37
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/whoosh.wav",
+          "volume": 0.61,
+          "startFrame": 41
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/impact.wav",
+          "volume": 0.95,
+          "startFrame": 53
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/sparkle.wav",
+          "volume": 0.43,
+          "startFrame": 55
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/riser.wav",
+          "volume": 0.46,
+          "startFrame": 129
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/whoosh.wav",
+          "volume": 0.61,
+          "startFrame": 133
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/impact.wav",
+          "volume": 0.95,
+          "startFrame": 145
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/sparkle.wav",
+          "volume": 0.43,
+          "startFrame": 147
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/riser.wav",
+          "volume": 0.46,
+          "startFrame": 221
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/whoosh.wav",
+          "volume": 0.61,
+          "startFrame": 225
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/impact.wav",
+          "volume": 0.95,
+          "startFrame": 237
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/sparkle.wav",
+          "volume": 0.43,
+          "startFrame": 239
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/sub.wav",
+          "volume": 0.8,
+          "startFrame": 332
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/pop.wav",
+          "volume": 0.49,
+          "startFrame": 238
         }
       ]
     }

@@ -74,6 +74,29 @@ Still not done, all needing per-part rigging: anticipation (nothing winds up
 before it moves), arcs (drops are straight vertical), and follow-through on
 sub-parts (a held scroll does not lag the hand carrying it).
 
+## Sound
+
+`scripts/make-sfx.py` synthesises the kit in `public/audio/sfx` — whoosh,
+impact, pop, sparkle, riser, sub. Every sound library reachable from the
+sandbox is blocked by its egress policy, and these sounds are built from
+primitives anyway: a whoosh is noise through a sweeping bandpass, an impact is
+a sine falling off a cliff under a noise transient. Re-running the script
+reproduces the files byte for byte — the noise is seeded.
+
+Their spectral centroids sit in six separate bands (sub 51 Hz, impact 117,
+pop 420, riser 1.6k, sparkle 2.6k, whoosh 3.1k), which is what lets them
+overlap without turning to mud.
+
+Cue them with the `sfx` overlay and `startFrame`, against the frame the beat
+lands on. Check the result rather than assuming: extract the track, take a
+per-frame envelope, and confirm the peaks sit on the visual beats.
+
+    ffmpeg -i out.mp4 -ac 1 -ar 8000 -f s16le track.raw
+
+The riser belongs on the landing telegraph, not on the impact — warning the
+ear at the same moment the shadow warns the eye is most of why an impact feels
+placed rather than sprung.
+
 ## Type
 
 One family, shipped in the repo: `src/theme/fonts.ts` (Be Vietnam Pro, loaded

@@ -31,6 +31,8 @@ const FRAME_LOCKED: ReadonlySet<string> = new Set([
   "shootingStars",
   "bigText",
   "flash",
+  // a sound has no position, so keep it out of the camera's transformed tree
+  "sfx",
 ]);
 
 const isFrameLocked = (overlay: Overlay) =>

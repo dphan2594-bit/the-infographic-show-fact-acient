@@ -345,6 +345,18 @@ type OverlayVariant =
       pulse?: boolean;
     }
   | {
+      /**
+       * A one-shot sound effect, timed with `startFrame` like any other beat.
+       * The kit in public/audio/sfx is synthesised by scripts/make-sfx.py —
+       * every sound library reachable from the sandbox is blocked, and these
+       * sounds are built from primitives anyway.
+       */
+      type: "sfx";
+      src: string;
+      /** 0–1, default 0.7 */
+      volume?: number;
+    }
+  | {
       /** short flash of colour over the frame, for a cut or a stressed word */
       type: "flash";
       atFrame?: number;
