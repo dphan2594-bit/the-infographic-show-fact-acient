@@ -1,0 +1,151 @@
+{
+  "scenes": [
+    {
+      "id": "S03-progression",
+      "motion": "static",
+      "archetype": "Thử nghiệm: bức tranh tự tiến triển",
+      "durationInFrames": 360,
+      "background": {
+        "type": "image",
+        "src": "images/si-nong/sprites/S03-tiers.png",
+        "kenBurns": "none"
+      },
+      "camera": {
+        "keyframes": [
+          {
+            "at": 0,
+            "zoom": 1.1,
+            "focusX": 50,
+            "focusY": 46
+          },
+          {
+            "at": 55,
+            "zoom": 1.06,
+            "focusX": 50,
+            "focusY": 50
+          },
+          {
+            "at": 100,
+            "zoom": 1.02,
+            "focusX": 50,
+            "focusY": 52
+          }
+        ],
+        "driftPercent": 0.2,
+        "driftSeconds": 9
+      },
+      "overlays": [
+        {
+          "type": "sprite",
+          "src": "images/si-nong/sprites/S03-scholar.png",
+          "x": 41.424418604651166,
+          "y": 1.3020833333333335,
+          "width": 15.988372093023257,
+          "height": 29.947916666666668,
+          "entrance": "elastic-drop",
+          "delayFrames": 20,
+          "breathePercent": 1.0,
+          "periodSeconds": 3.4
+        },
+        {
+          "type": "sprite",
+          "src": "images/si-nong/sprites/S03-craft-body.png",
+          "x": 32.70348837209303,
+          "y": 44.27083333333333,
+          "width": 14.898255813953487,
+          "height": 27.994791666666668,
+          "entrance": "elastic-drop",
+          "delayFrames": 62,
+          "bobPercent": 1.4,
+          "breathePercent": 1.0,
+          "periodSeconds": 1.6
+        },
+        {
+          "type": "sprite",
+          "src": "images/si-nong/sprites/S03-craft-arm.png",
+          "x": 40.3343023255814,
+          "y": 47.78645833333333,
+          "width": 6.686046511627906,
+          "height": 13.411458333333334,
+          "entrance": "elastic-drop",
+          "delayFrames": 62,
+          "originX": 7.6,
+          "originY": 51.5,
+          "swingDeg": 12,
+          "swingShape": "strike",
+          "periodSeconds": 1.6
+        },
+        {
+          "type": "sprite",
+          "src": "images/si-nong/sprites/S03-merchant.png",
+          "x": 58.502906976744185,
+          "y": 62.5,
+          "width": 17.078488372093023,
+          "height": 34.50520833333333,
+          "entrance": "elastic-drop",
+          "delayFrames": 104,
+          "breathePercent": 1.2,
+          "periodSeconds": 3.0
+        },
+        {
+          "type": "sparkleBurst",
+          "x": 49,
+          "y": 29,
+          "atFrame": 42,
+          "count": 16,
+          "spread": 170,
+          "colors": [
+            "#FFD34D",
+            "#FFFFFF"
+          ]
+        },
+        {
+          "type": "sparkleBurst",
+          "x": 39,
+          "y": 71,
+          "atFrame": 84,
+          "count": 16,
+          "spread": 170,
+          "colors": [
+            "#FFFFFF",
+            "#FFD34D"
+          ]
+        },
+        {
+          "type": "sparkleBurst",
+          "x": 66,
+          "y": 95,
+          "atFrame": 126,
+          "count": 18,
+          "spread": 190,
+          "colors": [
+            "#E85D5D",
+            "#FFFFFF"
+          ]
+        },
+        {
+          "type": "bigText",
+          "text": "bốn bậc",
+          "x": 50,
+          "y": 88,
+          "size": 52,
+          "color": "#FFFFFF",
+          "entrance": "fade-up",
+          "startFrame": 8,
+          "endFrame": 150
+        },
+        {
+          "type": "bigText",
+          "text": "người buôn xếp chót",
+          "x": 50,
+          "y": 88,
+          "size": 52,
+          "color": "#E85D5D",
+          "entrance": "fade-up",
+          "startFrame": 160,
+          "endFrame": 300
+        }
+      ]
+    }
+  ]
+}

@@ -12,7 +12,7 @@ is the character. The hole is patched along each row from the nearest surviving
 pixel, which keeps the horizontal colour bands of the artwork intact.
 
   python3 scripts/cut-sprite.py <image> <x0> <y0> <x1> <y1> <out-prefix>
-                                [--arm x0 y0 x1 y1] [--drop x y]... [--tolerance N]
+                                [--arm x0 y0 x1 y1] [--drop x y]... [--keep x y]... [--tolerance N]
 """
 import subprocess, sys, os
 from collections import deque
@@ -35,6 +35,9 @@ def main():
     arm = None; tol = 16
     if "--arm" in a:
         i = a.index("--arm"); arm = [int(v) for v in a[i+1:i+5]]; del a[i:i+5]
+    keeps = []
+    while "--keep" in a:
+        i = a.index("--keep"); keeps.append((int(a[i+1]), int(a[i+2]))); del a[i:i+3]
     drops = []
     while "--drop" in a:
         i = a.index("--drop"); drops.append((int(a[i+1]), int(a[i+2]))); del a[i:i+3]
@@ -107,6 +110,24 @@ def main():
             if not bg[y*bw+x] and (x,y) not in keep:
                 bg[y*bw+x] = 1
 
+    # The mirror of --drop. A prop held clear of the body — a scroll past the
+    # scholar's hand — is its own island and the largest-island pass throws it
+    # away, so name it and flood it back in. This has to run after that pass,
+    # or it would just be discarded again.
+    for kx, ky in keeps:
+        sx, sy = kx-x0, ky-y0
+        if not (0 <= sx < bw and 0 <= sy < bh) or not bg[sy*bw+sx]: continue
+        st = [(sx,sy)]; bg[sy*bw+sx] = 0
+        i = at(kx,ky); r,g,b = px[i],px[i+1],px[i+2]
+        while st:
+            x,y = st.pop()
+            for ddx,ddy in ((1,0),(-1,0),(0,1),(0,-1)):
+                nx,ny = x+ddx, y+ddy
+                if not (0 <= nx < bw and 0 <= ny < bh) or not bg[ny*bw+nx]: continue
+                j = at(x0+nx, y0+ny)
+                if max(abs(px[j]-r), abs(px[j+1]-g), abs(px[j+2]-b)) <= tol:
+                    bg[ny*bw+nx] = 0; st.append((nx,ny))
+
     # sprite: the character on transparent
     sprite = bytearray(bw*bh*4)
     for y in range(bh):
@@ -132,24 +153,39 @@ def main():
 
     # plate: the artwork with the character gone, patched along each row so the
     # horizontal colour bands survive
+    # Sample outside the character on every row first. A row where it spans the
+    # whole box has nothing outside it to sample, so borrow from the nearest
+    # row that does rather than crashing on it.
+    samples = [None] * bh
     for y in range(bh):
         solid = [x for x in range(bw) if not bg[y*bw+x]]
         if not solid: continue
         lo, hi = solid[0], solid[-1]
         # Average a short run so a single JPEG-noisy pixel does not become the
-        # colour of a whole streak, and source from outside the span the
-        # character occupies — a pixel the flood leaked into is not background.
+        # colour of a whole streak.
         def sample(a, b):
             run = [at(x0+v, y0+y) for v in range(max(0,a), min(bw,b))]
             if not run: return None
             return tuple(sum(px[i+c] for i in run)//len(run) for c in range(3))
-        left  = sample(lo-6, lo)
-        right = sample(hi+1, hi+7)
+        samples[y] = (lo, hi, sample(lo-6, lo), sample(hi+1, hi+7), solid)
+
+    for y in range(bh):
+        if samples[y] is None: continue
+        lo, hi, left, right, solid = samples[y]
+        if left is None and right is None:
+            for dy in range(1, bh):
+                for ny in (y-dy, y+dy):
+                    if 0 <= ny < bh and samples[ny] and (samples[ny][2] or samples[ny][3]):
+                        left, right = samples[ny][2], samples[ny][3]
+                        break
+                if left is not None or right is not None: break
+        if left is None and right is None: continue
         for x in solid:
             src = left if right is None else right if left is None else (
                   left if x-lo <= hi-x else right)
             d = at(x0+x, y0+y)
             px[d], px[d+1], px[d+2] = src
+
     encode(px, W, H, "rgb24", f"{prefix}-plate.png")
 
     covered = sum(1 for v in bg if not v)
