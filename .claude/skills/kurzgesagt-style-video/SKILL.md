@@ -120,7 +120,28 @@ rotating mechanically — then break ties with the no-repeats rule.
 
 ## 4. The visual language
 
-Full detail in `references/visual-language.md`. The short version:
+### THE FLAT RULE — read this first
+
+This style is **bold flat colour blocking**. Every shape holds ONE saturated hue with
+a sharp boundary. Depth comes from stacking flat shapes in contrasting hues, never
+from tonal shading.
+
+That makes four things effectively banned:
+
+1. **Gradients on shapes.** A sky is the one sanctioned gradient in the whole style.
+   Oceans, discs, backgrounds, strokes and text are flat fills.
+2. **Soft glows, blurs, vignettes and grain.** They round off the very edges the style
+   depends on and drag the whole frame toward grey.
+3. **Tonal shading.** A terminator is a hard-edged crescent cut with a mask, not a
+   radial ramp. One flat shade block per object is the budget.
+4. **Softening a colour with `opacity`.** This is the subtlest of the four and the one
+   that keeps coming back — see the lessons below.
+
+Saturation is measurable, so check it rather than trusting your eye: convert a render
+to HLS and take the mean S. The first pass of this style scored 0.46; after the flat
+rebuild it scores 0.82.
+
+Full detail in `references/visual-language.md`. The rest of the short version:
 
 - **Draw things, not primitives.** This is the single biggest tell. A circle with a
   glow is not a planet; a blob with two dots is not a character. The template ships an
@@ -222,6 +243,25 @@ Every item below was hit while building `src/MilletKurzgesagt.tsx`.
 - **Never show a number the narration didn't say.** The quantity archetype only renders
   its big number when `unitLabel` is set, precisely so a decorative grid of 84 dots
   doesn't turn into a fabricated statistic on screen.
+
+### From the flat-colour rebuild
+
+- **Never use `opacity` to soften a colour over a contrasting field.** This is how you
+  get mud, and it hides everywhere: a warm ray at 16% over an indigo field, a 45%
+  amber ring over violet, a translucent scenery disc over navy. All three mixed to
+  grey or olive. If an element is too loud, pick a quieter FLAT hue and draw it at
+  full opacity.
+- **Keep a tint in the backdrop's own hue family.** Warm light over a cool field greys
+  out; warm light over a warm sky reads as light. Rays take the mood's ring colour on
+  cool beats, and amber only on the dawn beat.
+- **A hard crescent, not a radial ramp.** Mask an offset circle out of a flat night
+  block to get the planet's dark side. A radial gradient smears it into exactly the
+  tonal shading this style avoids.
+- **Depth without gradients** = flat field + one big flat accent disc behind the
+  subject + a crisp ring. That replaces both the soft radial backdrop and the blurred
+  glow, and it saturates the frame instead of dulling it.
+- **Legibility comes from a hard offset shadow**, not a blurred one. `4px 5px 0` in a
+  deep saturated hue keeps captions readable over a busy frame without adding haze.
 
 ### From the illustration rebuild
 

@@ -9,13 +9,18 @@
  *   3. Replace SCENES with your own list, and point each beat at its voiceover.
  *   4. Register it in src/Composition.tsx (see step 6 of SKILL.md).
  *
- * Everything here is drawn with SVG + CSS. There are NO image or video assets: this
- * style is 100% flat vector, so the whole video is code.
+ * Everything is drawn with SVG + CSS. There are NO image or video assets.
  *
- * The file has three layers, and they are worth keeping separate in your head:
- *   ILLUSTRATION KIT  — Planet, Bird, trees, hills: the things being drawn.
- *   ATMOSPHERE        — starfield, scenery, light rays, vignette, grain: the layers
- *                       that make a frame feel inhabited rather than empty.
+ * THE FLAT RULE — read this before adding anything.
+ * This style is bold flat colour blocking: every shape holds ONE saturated hue with a
+ * sharp boundary. Gradients are rare and deliberate (a sky, and nothing else); soft
+ * glows, blurs, grain and vignettes are NOT part of it — they round off the very
+ * edges the style depends on and desaturate the palette. Depth comes from stacking
+ * flat shapes in contrasting hues, not from tonal shading.
+ *
+ * Three layers, worth keeping separate in your head:
+ *   ILLUSTRATION KIT  — Planet, Bird, Tree: the things being drawn.
+ *   COMPOSITION       — colour fields, rings, rays, starfield, scenery.
  *   ARCHETYPES        — six scene compositions built from the two above.
  */
 
@@ -39,19 +44,33 @@ export const KG_CANVAS = { width: 1080, height: 1920, fps: 30 } as const;
 const FADE = 20;
 
 /* ------------------------------------------------------------------ *
- * Palette
+ * Palette — maximum chroma, warm against cool
  * ------------------------------------------------------------------ */
 
-const CORAL = "#FF5A5F";
-const AMBER = "#FFB43A";
-const SUN = "#FFE066";
-const MINT = "#3DDC97";
-const TEAL = "#2EC4E6";
-const VIOLET = "#8B5CF6";
-const PINK = "#FF7ECD";
+/*
+ * Every colour here is near-full saturation. The tension in a frame comes from
+ * putting a hot hue hard against a cool one with no transition between them, so
+ * avoid muted or greyed variants entirely — a desaturated colour in this palette
+ * reads as a mistake, not as subtlety.
+ */
 
-const TEXT = "#EEF2FF";
-const TEXT_DIM = "#9BA7C7";
+const NIGHT = "#141C7A"; // saturated indigo field
+const NIGHT_DEEP = "#0C1257";
+const ROYAL = "#2340E8";
+const VIOLET = "#7B2DFF";
+const PURPLE_DEEP = "#3B10A8";
+
+const CYAN = "#00D4FF";
+const TEAL = "#00C2A0";
+const LIME = "#9BE800";
+
+const AMBER = "#FFC000";
+const ORANGE = "#FF7A00";
+const CORAL = "#FF3355";
+const MAGENTA = "#FF2D95";
+
+const CREAM = "#FFF3D6";
+const TEXT = "#FFFFFF";
 
 /**
  * No webfont is bundled, so this resolves to whatever sans-serif the render machine
@@ -62,15 +81,15 @@ const TEXT_DIM = "#9BA7C7";
 const FONT = "'Inter', system-ui, sans-serif";
 
 /**
- * Backdrops. Not every beat is outer space — that was the single biggest thing
- * missing from the first pass of this style. `dawn` and `day` put the same shape
- * language over a horizon, which is half of what makes the look feel varied.
+ * Backdrops. `field` is a flat colour covering the frame; `accent` is one big flat
+ * disc behind the subject, which is how this style gets depth without gradients.
+ * `dawn` is the one place a gradient is allowed — a sky reads as a sky.
  */
 const MOODS = {
-  space: { inner: "#141B3D", outer: "#05070F", haze: "#2A3670" },
-  dusk: { inner: "#3A1E5C", outer: "#0C0820", haze: "#6B3FA0" },
-  dawn: { inner: "#FF9E5E", outer: "#241448", haze: "#FF7E5E" },
-  day: { inner: "#5CC8EE", outer: "#123E63", haze: "#9BE3FF" },
+  space: { field: NIGHT, accent: ROYAL, ring: CYAN },
+  dusk: { field: PURPLE_DEEP, accent: VIOLET, ring: MAGENTA },
+  dawn: { field: CORAL, accent: ORANGE, ring: AMBER },
+  day: { field: "#0093E8", accent: CYAN, ring: LIME },
 } as const;
 
 type Mood = keyof typeof MOODS;
@@ -90,7 +109,7 @@ const rand = (seed: number): number => {
   return x - Math.floor(x);
 };
 
-/** Smooth closed organic blob through seeded polar points. Continents, hills, rocks. */
+/** Smooth closed organic blob through seeded polar points. Continents, hills, foliage. */
 const blobPath = (
   cx: number,
   cy: number,
@@ -156,23 +175,23 @@ const cameraPush = (frame: number, durationInFrames: number, from = 1, to = 1.08
  * ================================================================== */
 
 /**
- * A planet, not a circle. The difference between this and a flat disc with a glow is
- * most of what separates this style from generic "flat vector on dark".
+ * A planet, not a circle — but built entirely from flat blocks.
  *
- * Built from: ocean gradient, seeded continents each with an inner bottom shadow,
- * optional trees, a soft terminator toward the lower-right, a bright rim, and an
- * atmosphere halo. Continents drift horizontally and wrap, which reads as rotation
- * without the flat-spinning-disc look of rotating the whole group.
+ * Ocean is ONE solid hue. Continents are one solid hue each, with a second solid
+ * shade clipped inside them. The night side is a hard-edged crescent made by an
+ * offset circle, not a radial gradient — a gradient would smear the terminator into
+ * a tonal ramp and break the flat rule. Atmosphere is a crisp stroked ring.
+ * Continents drift and wrap, which reads as rotation.
  */
 const Planet: React.FC<{
   size: number;
   ocean: string;
   land: string;
   landShade: string;
-  atmosphere: string;
+  night: string;
+  ring: string;
   seed?: number;
   spin?: number;
-  detail?: "none" | "trees";
   continents?: number;
   frame: number;
 }> = ({
@@ -180,10 +199,10 @@ const Planet: React.FC<{
   ocean,
   land,
   landShade,
-  atmosphere,
+  night,
+  ring,
   seed = 1,
   spin = 0.06,
-  detail = "trees",
   continents = 5,
   frame,
 }) => {
@@ -195,27 +214,18 @@ const Planet: React.FC<{
   return (
     <svg width={size} height={size} viewBox="0 0 200 200" style={{ overflow: "visible" }}>
       <defs>
-        <radialGradient id={`${uid}-ocean`} cx="34%" cy="28%">
-          <stop offset="0%" stopColor={ocean} stopOpacity={1} />
-          <stop offset="100%" stopColor={ocean} stopOpacity={0.72} />
-        </radialGradient>
-        <radialGradient id={`${uid}-term`} cx="34%" cy="28%">
-          <stop offset="70%" stopColor="#000" stopOpacity={0} />
-          <stop offset="100%" stopColor="#0A1024" stopOpacity={0.4} />
-        </radialGradient>
-        <radialGradient id={`${uid}-atmo`}>
-          <stop offset="70%" stopColor={atmosphere} stopOpacity={0} />
-          <stop offset="79%" stopColor={atmosphere} stopOpacity={0.34} />
-          <stop offset="86%" stopColor={atmosphere} stopOpacity={0.12} />
-          <stop offset="100%" stopColor={atmosphere} stopOpacity={0} />
-        </radialGradient>
         <clipPath id={`${uid}-clip`}>
           <circle cx="100" cy="100" r={R} />
         </clipPath>
+        {/* the lit side, used to cut a hard crescent out of the night block */}
+        <mask id={`${uid}-night`}>
+          <rect x="0" y="0" width="200" height="200" fill="#fff" />
+          <circle cx="72" cy="88" r={R} fill="#000" />
+        </mask>
       </defs>
 
-      <circle cx="100" cy="100" r="120" fill={`url(#${uid}-atmo)`} />
-      <circle cx="100" cy="100" r={R} fill={`url(#${uid}-ocean)`} />
+      {/* body: one flat hue */}
+      <circle cx="100" cy="100" r={R} fill={ocean} />
 
       <g clipPath={`url(#${uid}-clip)`}>
         {list.map((i) => {
@@ -229,10 +239,9 @@ const Planet: React.FC<{
             const cid = `${uid}-c${i}-${wrap}`;
             return (
               <g key={`${i}-${wrap}`}>
-                {/* The shaded edge is CLIPPED TO THE LANDMASS ITSELF. An offset
+                {/* The shaded block is CLIPPED TO THE LANDMASS ITSELF. An offset
                     darker blob drawn loose just looks like a second continent
-                    overlapping the first; clipping turns it into an inner shadow
-                    hugging the bottom edge, which is what the style actually does. */}
+                    overlapping the first. */}
                 <clipPath id={cid}>
                   <path d={landD} />
                 </clipPath>
@@ -243,61 +252,38 @@ const Planet: React.FC<{
                     fill={landShade}
                   />
                 </g>
-                {detail === "trees"
-                  ? [0, 1].map((t) => {
-                      const tx = x - r * 0.28 + rand(seed + i * 5 + t) * r * 0.55;
-                      const ty = y - r * 0.34 + rand(seed + i * 9 + t) * r * 0.3;
-                      return (
-                        <g key={t}>
-                          <rect x={tx - 1} y={ty} width={2} height={7} fill="#12513A" />
-                          <circle cx={tx} cy={ty - 1} r={5.5} fill="#1B7A4F" />
-                        </g>
-                      );
-                    })
-                  : null}
               </g>
             );
           });
         })}
+
+        {/* night side: one flat block with a hard crescent edge */}
+        <circle cx="100" cy="100" r={R} fill={night} mask={`url(#${uid}-night)`} />
       </g>
 
-      <circle
-        cx="100"
-        cy="100"
-        r={R}
-        fill={`url(#${uid}-term)`}
-        clipPath={`url(#${uid}-clip)`}
-      />
-      <circle
-        cx="100"
-        cy="100"
-        r={R - 1}
-        fill="none"
-        stroke={atmosphere}
-        strokeWidth="2.5"
-        opacity="0.5"
-      />
+      {/* atmosphere: a crisp ring, not a soft halo */}
+      <circle cx="100" cy="100" r={R + 7} fill="none" stroke={ring} strokeWidth="5" />
     </svg>
   );
 };
 
 /**
- * The recurring inhabitant. Body, belly, wing, tail, tuft, beak, eyes with
- * highlights, feet — a blob with two dots is not enough to carry this style.
- * Kept generic on purpose: emulate the register, don't reproduce a studio's
- * specific character design.
+ * The recurring inhabitant. Every part is one flat colour with a sharp edge: body,
+ * belly, wing, tail, tuft, beak, eyes with highlights, feet.
  */
 const Bird: React.FC<{
   size: number;
   body: string;
   belly: string;
+  wing: string;
   seed?: number;
   pose?: "stand" | "wave";
   flip?: boolean;
   frame: number;
-}> = ({ size, body, belly, seed = 1, pose = "stand", flip = false, frame }) => {
+}> = ({ size, body, belly, wing, seed = 1, pose = "stand", flip = false, frame }) => {
   const bob = Math.sin(frame / 12 + rand(seed) * 8) * 2.5;
-  const wing = pose === "wave" ? Math.sin(frame / 5) * 26 - 20 : Math.sin(frame / 18) * 5;
+  const wingAngle =
+    pose === "wave" ? Math.sin(frame / 5) * 26 - 20 : Math.sin(frame / 18) * 5;
 
   return (
     <svg
@@ -311,43 +297,41 @@ const Bird: React.FC<{
     >
       <path
         d="M40 108 l0 9 M40 117 l-7 5 M40 117 l7 5"
-        stroke="#F2A33C"
+        stroke={ORANGE}
         strokeWidth="4.5"
         strokeLinecap="round"
         fill="none"
       />
       <path
         d="M62 108 l0 9 M62 117 l-7 5 M62 117 l7 5"
-        stroke="#F2A33C"
+        stroke={ORANGE}
         strokeWidth="4.5"
         strokeLinecap="round"
         fill="none"
       />
 
-      <path d="M22 80 q-16 8 -19 20 q16 -3 27 -11 Z" fill={body} />
-      <path d="M22 80 q-16 8 -19 20 q16 -3 27 -11 Z" fill="#0B1026" opacity={0.2} />
+      <path d="M22 80 q-16 8 -19 20 q16 -3 27 -11 Z" fill={wing} />
 
       <ellipse cx="52" cy="66" rx="36" ry="44" fill={body} />
-      <ellipse cx="56" cy="78" rx="24" ry="28" fill={belly} opacity={0.9} />
+      <ellipse cx="56" cy="78" rx="24" ry="28" fill={belly} />
 
-      <g style={{ transform: `rotate(${wing}deg)`, transformOrigin: "44px 60px" }}>
-        <ellipse cx="36" cy="74" rx="12" ry="20" fill={body} />
-        <ellipse cx="36" cy="74" rx="12" ry="20" fill="#0B1026" opacity={0.18} />
+      <g style={{ transform: `rotate(${wingAngle}deg)`, transformOrigin: "44px 60px" }}>
+        <ellipse cx="36" cy="74" rx="12" ry="20" fill={wing} />
       </g>
 
       <path d="M52 24 q4 -12 12 -14 q-3 9 -5 14 Z" fill={body} />
 
-      <ellipse cx="42" cy="52" rx="6.5" ry="7.5" fill="#15182B" />
-      <circle cx="44" cy="49" r="2.2" fill="#fff" />
-      <ellipse cx="66" cy="52" rx="6.5" ry="7.5" fill="#15182B" />
-      <circle cx="68" cy="49" r="2.2" fill="#fff" />
+      <ellipse cx="42" cy="52" rx="6.5" ry="7.5" fill={NIGHT_DEEP} />
+      <circle cx="44" cy="49" r="2.2" fill={TEXT} />
+      <ellipse cx="66" cy="52" rx="6.5" ry="7.5" fill={NIGHT_DEEP} />
+      <circle cx="68" cy="49" r="2.2" fill={TEXT} />
 
-      <path d="M54 62 q10 4 0 11 q-6 -5 0 -11 Z" fill="#F2A33C" />
+      <path d="M54 62 q10 4 0 11 q-6 -5 0 -11 Z" fill={AMBER} />
     </svg>
   );
 };
 
-/** A stylised tree for ground scenes: trunk plus a stack of rounded blobs. */
+/** Trunk plus a leaf blob with one flat shade block clipped inside it. */
 const Tree: React.FC<{ size: number; leaf: string; leafShade: string; seed: number }> = ({
   size,
   leaf,
@@ -355,63 +339,112 @@ const Tree: React.FC<{ size: number; leaf: string; leafShade: string; seed: numb
   seed,
 }) => (
   <svg width={size} height={size * 1.4} viewBox="0 0 100 140" style={{ overflow: "visible" }}>
-    <rect x="44" y="78" width="12" height="60" rx="6" fill="#5A3B25" />
+    <rect x="44" y="78" width="12" height="60" rx="6" fill={ORANGE} />
     <path d={blobPath(50, 58, 40, seed, 9, 0.32)} fill={leaf} />
-    <g>
-      <clipPath id={`tr${seed}`}>
-        <path d={blobPath(50, 58, 40, seed, 9, 0.32)} />
-      </clipPath>
-      <g clipPath={`url(#tr${seed})`}>
-        <path d={blobPath(44, 82, 40, seed, 9, 0.32)} fill={leafShade} />
-      </g>
+    <clipPath id={`tr${seed}`}>
+      <path d={blobPath(50, 58, 40, seed, 9, 0.32)} />
+    </clipPath>
+    <g clipPath={`url(#tr${seed})`}>
+      <path d={blobPath(44, 84, 40, seed, 9, 0.32)} fill={leafShade} />
     </g>
   </svg>
 );
 
 /* ================================================================== *
- * ATMOSPHERE — the layers that make a frame feel inhabited
+ * COMPOSITION LAYERS
  * ================================================================== */
 
-/** Soft light bloom. A radial-gradient div, not a huge box-shadow blur (much cheaper). */
-const Glow: React.FC<{ size: number; color: string; opacity?: number }> = ({
-  size,
-  color,
-  opacity = 0.55,
-}) => (
-  <div
-    style={{
-      position: "absolute",
-      width: size,
-      height: size,
-      left: "50%",
-      top: "50%",
-      marginLeft: -size / 2,
-      marginTop: -size / 2,
-      borderRadius: "50%",
-      background: `radial-gradient(circle, ${color} 0%, ${color}00 68%)`,
-      opacity,
-      pointerEvents: "none",
-    }}
-  />
-);
-
-const Backdrop: React.FC<{ mood: Mood }> = ({ mood }) => {
+/**
+ * Depth without gradients: a flat colour field, one big flat accent disc behind the
+ * subject, and a crisp ring around it. This replaces the soft radial backdrop and
+ * the blurred glow — both of which desaturated the frame and softened its edges.
+ */
+const Field: React.FC<{ mood: Mood; discScale?: number }> = ({ mood, discScale = 1 }) => {
   const m = MOODS[mood];
-  const horizon = mood === "dawn" || mood === "day";
+  const sky = mood === "dawn";
   return (
-    <AbsoluteFill
-      style={{
-        background: horizon
-          ? `linear-gradient(180deg, ${m.outer} 0%, ${m.haze} 58%, ${m.inner} 100%)`
-          : `radial-gradient(120% 90% at 50% 32%, ${m.inner} 0%, ${m.outer} 100%)`,
-      }}
-    />
+    <AbsoluteFill style={{ backgroundColor: m.field }}>
+      {sky ? (
+        // The one sanctioned gradient in this style: a sky. Saturated stops the whole
+        // way down, with no muted midpoint.
+        <AbsoluteFill
+          style={{
+            background: `linear-gradient(180deg, ${PURPLE_DEEP} 0%, ${MAGENTA} 34%, ${CORAL} 62%, ${AMBER} 100%)`,
+          }}
+        />
+      ) : (
+        <>
+          <div
+            style={{
+              position: "absolute",
+              width: 1160 * discScale,
+              height: 1160 * discScale,
+              left: "50%",
+              top: "34%",
+              marginLeft: (-1160 * discScale) / 2,
+              marginTop: (-1160 * discScale) / 2,
+              borderRadius: "50%",
+              backgroundColor: m.accent,
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              width: 1320 * discScale,
+              height: 1320 * discScale,
+              left: "50%",
+              top: "34%",
+              marginLeft: (-1320 * discScale) / 2,
+              marginTop: (-1320 * discScale) / 2,
+              borderRadius: "50%",
+              border: `6px solid ${m.ring}`,
+            }}
+          />
+        </>
+      )}
+    </AbsoluteFill>
   );
 };
 
-/** Star field with a few 4-point sparkles among the dots, in three parallax tiers. */
+/**
+ * Flat concentric rings. Replaces the blurred glow — same emphasis, sharp edges.
+ *
+ * Drawn at FULL opacity. Fading a colour with `opacity` over a contrasting field is
+ * how you get mud: a warm ring at 45% over violet mixes to olive. If a ring is too
+ * loud, pick a quieter flat hue — never dial down the alpha.
+ */
+const Rings: React.FC<{ size: number; color: string; count?: number }> = ({
+  size,
+  color,
+  count = 2,
+}) => (
+  <>
+    {Array.from({ length: count }, (_, i) => {
+      const d = size + i * size * 0.22;
+      return (
+        <div
+          key={i}
+          style={{
+            position: "absolute",
+            width: d,
+            height: d,
+            left: "50%",
+            top: "50%",
+            marginLeft: -d / 2,
+            marginTop: -d / 2,
+            borderRadius: "50%",
+            border: `${5 - i}px solid ${color}`,
+            pointerEvents: "none",
+          }}
+        />
+      );
+    })}
+  </>
+);
+
+/** Star field: solid dots and 4-point sparkles, three parallax tiers. */
 const StarField: React.FC<{ count?: number; drift?: number; seed?: number }> = ({
-  count = 130,
+  count = 120,
   drift = 1,
   seed = 0,
 }) => {
@@ -420,31 +453,38 @@ const StarField: React.FC<{ count?: number; drift?: number; seed?: number }> = (
   for (let i = 0; i < count; i++) {
     const s = i + seed * 1000;
     const depth = 1 + Math.floor(rand(s + 500) * 3);
-    const twinkle =
-      0.35 + 0.65 * (0.5 + 0.5 * Math.sin(frame / (14 + depth * 7) + rand(s) * 9));
     const left = `${rand(s * 3.1) * 100}%`;
     const top = `${rand(s * 7.7 + 13) * 100}%`;
     const y = (frame / 30) * depth * drift * -6;
-    const sparkle = rand(s + 77) > 0.94;
+    // Twinkle STEPS between two flat opacities rather than fading continuously — a
+    // smooth ramp is tonal variation, which this style avoids.
+    const on = Math.sin(frame / (14 + depth * 7) + rand(s) * 9) > -0.3;
+    const sparkle = rand(s + 77) > 0.93;
 
     if (sparkle) {
-      const size = 16 + rand(s + 3) * 10;
+      const size = 18 + rand(s + 3) * 12;
       items.push(
         <svg
           key={i}
           width={size}
           height={size}
           viewBox="0 0 20 20"
-          style={{ position: "absolute", left, top, opacity: twinkle, transform: `translateY(${y}px)` }}
+          style={{
+            position: "absolute",
+            left,
+            top,
+            opacity: on ? 1 : 0.45,
+            transform: `translateY(${y}px)`,
+          }}
         >
           <path
             d="M10 0 Q11.6 8.4 20 10 Q11.6 11.6 10 20 Q8.4 11.6 0 10 Q8.4 8.4 10 0 Z"
-            fill={TEXT}
+            fill={CREAM}
           />
         </svg>,
       );
     } else {
-      const size = depth === 3 ? 4 : depth === 2 ? 3 : 2;
+      const size = depth === 3 ? 5 : depth === 2 ? 4 : 3;
       items.push(
         <div
           key={i}
@@ -455,8 +495,8 @@ const StarField: React.FC<{ count?: number; drift?: number; seed?: number }> = (
             width: size,
             height: size,
             borderRadius: "50%",
-            background: TEXT,
-            opacity: twinkle * (depth === 1 ? 0.45 : 0.9),
+            backgroundColor: CREAM,
+            opacity: on ? 0.95 : 0.5,
             transform: `translateY(${y}px)`,
           }}
         />,
@@ -467,113 +507,82 @@ const StarField: React.FC<{ count?: number; drift?: number; seed?: number }> = (
 };
 
 /**
- * Distant planets and drifting debris. This is the density layer — an empty field
- * behind the subject is the most common way this style comes out looking cheap.
+ * Distant worlds. Solid fills at full opacity — the earlier translucent version
+ * desaturated into grey smudges, which is exactly what this palette must not do.
+ * Kept to the outer thirds and upper half so nothing sits behind subject or text.
  */
 const Scenery: React.FC<{ seed: number; frame: number; count?: number }> = ({
   seed,
   frame,
   count = 5,
-}) => (
-  <AbsoluteFill>
-    {Array.from({ length: count }, (_, i) => {
-      const s = seed * 31 + i * 17;
-      const size = 26 + rand(s) * 74;
-      const drift = float(frame, s, 8, 0.4);
-      const colors = [VIOLET, TEAL, CORAL, AMBER, MINT];
-      const c = colors[Math.floor(rand(s + 5) * colors.length)];
-      return (
-        <div
-          key={i}
-          style={{
-            position: "absolute",
-            // Pushed into the outer thirds and the upper half. Scenery is background
-            // texture, so it must not drift behind the subject or any text — a disc
-            // sitting under a label reads as a mistake, not as depth.
-            left: `${rand(s + 1) > 0.5 ? 74 + rand(s + 3) * 24 : rand(s + 3) * 22 - 6}%`,
-            top: `${2 + rand(s + 2) * 44}%`,
-            width: size,
-            height: size,
-            borderRadius: "50%",
-            background: `radial-gradient(circle at 34% 30%, ${c} 0%, ${c}99 70%, ${c}44 100%)`,
-            // Higher than you would guess: below ~0.2 these desaturate into grey mud
-            // against a dark backdrop instead of reading as distant worlds.
-            opacity: 0.26 + rand(s + 9) * 0.2,
-            transform: `translate(${drift.x}px, ${drift.y}px)`,
-            filter: "blur(0.5px)",
-          }}
-        />
-      );
-    })}
-  </AbsoluteFill>
-);
-
-/** Slow god rays from a light source. Very low opacity — they should be felt, not seen. */
-const LightRays: React.FC<{ frame: number; color: string; x?: string; y?: string }> = ({
-  frame,
-  color,
-  x = "50%",
-  y = "26%",
-}) => (
-  <AbsoluteFill style={{ overflow: "hidden" }}>
-    <div
-      style={{
-        position: "absolute",
-        left: x,
-        top: y,
-        width: 2600,
-        height: 2600,
-        marginLeft: -1300,
-        marginTop: -1300,
-        transform: `rotate(${frame * 0.06}deg)`,
-        background: `repeating-conic-gradient(from 0deg, ${color}1A 0deg 7deg, transparent 7deg 26deg)`,
-        // Masked at BOTH ends: without the transparent centre every ray converges on
-        // one hard point that reads as a mechanical starburst rather than light. The
-        // blur softens the wedge edges for the same reason.
-        maskImage:
-          "radial-gradient(circle, transparent 0%, rgba(0,0,0,0.9) 20%, transparent 60%)",
-        WebkitMaskImage:
-          "radial-gradient(circle, transparent 0%, rgba(0,0,0,0.9) 20%, transparent 60%)",
-        filter: "blur(22px)",
-        opacity: 0.22,
-      }}
-    />
-  </AbsoluteFill>
-);
-
-/** Edge darkening. Cheap, and it focuses every frame toward the subject. */
-const Vignette: React.FC = () => (
-  <AbsoluteFill
-    style={{
-      background:
-        "radial-gradient(115% 78% at 50% 42%, rgba(0,0,0,0) 45%, rgba(0,0,0,0.5) 100%)",
-      pointerEvents: "none",
-    }}
-  />
-);
+}) => {
+  const colors = [VIOLET, CYAN, CORAL, AMBER, MAGENTA, LIME];
+  return (
+    <AbsoluteFill>
+      {Array.from({ length: count }, (_, i) => {
+        const s = seed * 31 + i * 17;
+        const size = 30 + rand(s) * 70;
+        const drift = float(frame, s, 8, 0.4);
+        const c = colors[Math.floor(rand(s + 5) * colors.length)];
+        return (
+          <div
+            key={i}
+            style={{
+              position: "absolute",
+              left: `${rand(s + 1) > 0.5 ? 74 + rand(s + 3) * 24 : rand(s + 3) * 22 - 6}%`,
+              top: `${2 + rand(s + 2) * 44}%`,
+              width: size,
+              height: size,
+              borderRadius: "50%",
+              backgroundColor: c,
+              transform: `translate(${drift.x}px, ${drift.y}px)`,
+            }}
+          />
+        );
+      })}
+    </AbsoluteFill>
+  );
+};
 
 /**
- * Film grain. Static (no frame dependency) so Chromium rasterises the turbulence
- * once instead of every frame — an animated seed here is a large render cost for a
- * texture nobody consciously notices.
+ * Hard-edged light wedges. The blurred conic-gradient version broke the flat rule;
+ * these are solid triangles at low opacity, so the boundaries stay sharp.
+ *
+ * Pick the colour from the SAME hue family as the field behind it. A warm ray at low
+ * opacity over a cool field mixes to grey and drops a band of mud across the frame —
+ * the one thing this palette must never do. Warm rays belong over a warm sky.
  */
-const Grain: React.FC<{ opacity?: number }> = ({ opacity = 0.045 }) => (
-  <AbsoluteFill style={{ pointerEvents: "none", opacity, mixBlendMode: "overlay" }}>
-    <svg width="100%" height="100%">
-      <filter id="kgGrain">
-        <feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="3" />
-      </filter>
-      <rect width="100%" height="100%" filter="url(#kgGrain)" />
+const Rays: React.FC<{ frame: number; color: string; count?: number }> = ({
+  frame,
+  color,
+  count = 12,
+}) => (
+  <AbsoluteFill style={{ overflow: "hidden" }}>
+    <svg
+      viewBox="-100 -100 200 200"
+      style={{
+        position: "absolute",
+        width: "260%",
+        height: "260%",
+        left: "-80%",
+        top: "-95%",
+        transform: `rotate(${frame * 0.05}deg)`,
+        opacity: 0.16,
+      }}
+    >
+      {Array.from({ length: count }, (_, i) => {
+        const a = (i / count) * 360;
+        return (
+          <path
+            key={i}
+            d="M0 0 L -4 -140 L 4 -140 Z"
+            fill={color}
+            transform={`rotate(${a})`}
+          />
+        );
+      })}
     </svg>
   </AbsoluteFill>
-);
-
-/** Everything that sits on top of every scene, in one place. */
-const Finish: React.FC = () => (
-  <>
-    <Vignette />
-    <Grain />
-  </>
 );
 
 /* ------------------------------------------------------------------ *
@@ -583,6 +592,9 @@ const Finish: React.FC = () => (
 /**
  * Narration caption. Sits in the lower-middle band — low enough to stay clear of the
  * artwork, high enough that a phone's UI chrome never covers it.
+ *
+ * The shadow is a HARD offset, not a blur: a soft drop shadow is tonal haze and
+ * fights the flat rule. Legibility over a busy frame comes from the offset block.
  */
 const Caption: React.FC<{ children: string; frame: number; delay?: number }> = ({
   children,
@@ -611,11 +623,11 @@ const Caption: React.FC<{ children: string; frame: number; delay?: number }> = (
           transform: `translateY(${interpolate(t, [0, 1], [22, 0])}px)`,
           color: TEXT,
           fontFamily: FONT,
-          fontWeight: 600,
+          fontWeight: 800,
           fontSize: 52,
           lineHeight: 1.35,
           textAlign: "center",
-          textShadow: "0 4px 24px rgba(0,0,0,0.75)",
+          textShadow: `4px 5px 0 ${NIGHT_DEEP}`,
         }}
       >
         {children}
@@ -624,7 +636,7 @@ const Caption: React.FC<{ children: string; frame: number; delay?: number }> = (
   );
 };
 
-/** Big luminous number — the one place this style raises its voice. */
+/** Big number — the one place this style raises its voice. Flat, with a hard shadow. */
 const BigNumber: React.FC<{ value: string; sub?: string; color: string }> = ({
   value,
   sub,
@@ -635,15 +647,23 @@ const BigNumber: React.FC<{ value: string; sub?: string; color: string }> = ({
       style={{
         color,
         fontWeight: 800,
-        fontSize: 96,
+        fontSize: 104,
         lineHeight: 1,
-        textShadow: `0 0 40px ${color}80`,
+        textShadow: `5px 6px 0 ${NIGHT_DEEP}`,
       }}
     >
       {value}
     </div>
     {sub ? (
-      <div style={{ color: TEXT_DIM, fontSize: 34, marginTop: 10, fontWeight: 500 }}>
+      <div
+        style={{
+          color: TEXT,
+          fontSize: 34,
+          marginTop: 10,
+          fontWeight: 700,
+          textShadow: `3px 3px 0 ${NIGHT_DEEP}`,
+        }}
+      >
         {sub}
       </div>
     ) : null}
@@ -707,7 +727,7 @@ const SCENES: SceneSpec[] = [
     caption: "Lúa nước cần 150 ngày. Giống nhanh nhất chỉ mất 45 ngày.",
     durationInFrames: 240,
     mood: "dusk",
-    left: { label: "Lúa nước", value: "150", weight: 150, color: TEAL },
+    left: { label: "Lúa nước", value: "150", weight: 150, color: CYAN },
     right: { label: "Kê", value: "45", weight: 45, color: AMBER },
   },
   {
@@ -716,7 +736,7 @@ const SCENES: SceneSpec[] = [
     caption: "Người du mục vừa gieo hạt, vừa tiếp tục di chuyển.",
     durationInFrames: 240,
     mood: "dawn",
-    accent: MINT,
+    accent: LIME,
   },
   {
     id: "quantity",
@@ -724,7 +744,7 @@ const SCENES: SceneSpec[] = [
     caption: "Mỗi mùa, một gia đình mang theo hàng ngàn hạt giống.",
     durationInFrames: 210,
     mood: "space",
-    accent: SUN,
+    accent: AMBER,
     count: 84,
     unitLabel: "hạt giống",
   },
@@ -734,7 +754,7 @@ const SCENES: SceneSpec[] = [
     caption: "Từ Trung Á, hạt kê lan tới tận Lưỡng Hà.",
     durationInFrames: 270,
     mood: "dusk",
-    accent: PINK,
+    accent: MAGENTA,
     stops: ["Trung Á", "Cao nguyên Iran", "Lưỡng Hà"],
   },
   {
@@ -747,7 +767,7 @@ const SCENES: SceneSpec[] = [
     rings: [
       { label: "Vỏ trấu", color: VIOLET },
       { label: "Cám", color: CORAL },
-      { label: "Phôi", color: SUN },
+      { label: "Phôi", color: AMBER },
     ],
   },
 ];
@@ -758,7 +778,7 @@ export const KG_TOTAL_FRAMES = SCENES.reduce((t, s) => t + s.durationInFrames, 0
  * ARCHETYPES
  * ================================================================== */
 
-/* --- 1. cosmic hero: a planet, a moon, rays, and a populated field --- */
+/* --- 1. cosmic hero --- */
 
 const SceneCosmicHero: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
   const frame = useCurrentFrame();
@@ -772,8 +792,8 @@ const SceneCosmicHero: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
 
   return (
     <AbsoluteFill>
-      <Backdrop mood={mood} />
-      <LightRays frame={frame} color={accent} />
+      <Field mood={mood} />
+      <Rays frame={frame} color={MOODS[mood].ring} />
       <Scenery seed={2} frame={frame} count={5} />
       <StarField seed={1} />
       <AbsoluteFill style={{ transform: `scale(${push})` }}>
@@ -796,17 +816,17 @@ const SceneCosmicHero: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
               transform: `translate(${drift.x}px, ${drift.y}px) scale(${grow})`,
             }}
           >
-            <Glow size={860} color={accent} opacity={0.26} />
+            <Rings size={560} color={CYAN} />
             <Planet
               size={440}
-              ocean={TEAL}
-              land={MINT}
-              landShade="#1E9E6E"
-              atmosphere="#9BE3FF"
+              ocean={CYAN}
+              land={LIME}
+              landShade={TEAL}
+              night={ROYAL}
+              ring={CREAM}
               seed={3}
               frame={frame}
             />
-            {/* a moon on a visible orbit */}
             <div
               style={{
                 position: "absolute",
@@ -819,12 +839,12 @@ const SceneCosmicHero: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
             >
               <Planet
                 size={84}
-                ocean="#C9D2E8"
-                land="#9AA6C4"
-                landShade="#7C88A8"
-                atmosphere="#E3ECFF"
+                ocean={MAGENTA}
+                land={CORAL}
+                landShade={VIOLET}
+                night={PURPLE_DEEP}
+                ring={CREAM}
                 seed={12}
-                detail="none"
                 continents={3}
                 spin={0.03}
                 frame={frame}
@@ -838,10 +858,11 @@ const SceneCosmicHero: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
                 opacity: labelT,
                 fontFamily: FONT,
                 fontSize: 38,
-                fontWeight: 600,
-                color: TEXT_DIM,
+                fontWeight: 800,
+                color: accent,
                 letterSpacing: 3,
                 textTransform: "uppercase",
+                textShadow: `3px 4px 0 ${NIGHT_DEEP}`,
               }}
             >
               {scene.label}
@@ -850,12 +871,11 @@ const SceneCosmicHero: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
         </AbsoluteFill>
       </AbsoluteFill>
       <Caption frame={frame}>{scene.caption}</Caption>
-      <Finish />
     </AbsoluteFill>
   );
 };
 
-/* --- 2. crowd: a landscape, not a bare curve --- */
+/* --- 2. crowd: a flat-blocked landscape --- */
 
 const CROWD_SIZE = 7;
 const CROWD = Array.from({ length: CROWD_SIZE }, (_, i) => i);
@@ -863,32 +883,45 @@ const HILL_TREES = Array.from({ length: 9 }, (_, i) => i);
 
 const SceneCrowd: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
   const frame = useCurrentFrame();
-  const accent = scene.accent ?? MINT;
+  const accent = scene.accent ?? LIME;
   const mood = scene.mood ?? "dawn";
   const push = cameraPush(frame, scene.durationInFrames, 1.04, 1);
-  const bodies = [TEAL, VIOLET, CORAL, SUN, MINT, PINK, AMBER];
+  const bodies = [CYAN, VIOLET, CORAL, AMBER, TEAL, MAGENTA, ORANGE];
 
   return (
     <AbsoluteFill>
-      <Backdrop mood={mood} />
-      <LightRays frame={frame} color="#FFD9A0" y="18%" />
-      {/* distant hills, two parallax layers behind the ground */}
+      <Field mood={mood} />
+      {/* a flat sun disc, hard edged */}
+      <div
+        style={{
+          position: "absolute",
+          width: 420,
+          height: 420,
+          left: "50%",
+          marginLeft: -210,
+          top: "24%",
+          borderRadius: "50%",
+          backgroundColor: AMBER,
+        }}
+      />
+      <Rays frame={frame} color={AMBER} />
       <AbsoluteFill style={{ transform: `scale(${push})` }}>
+        {/* two parallax hill ranges, each one flat saturated hue */}
         <svg
           viewBox="0 0 1080 1920"
           style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
         >
           <path
             d="M-40 940 q160 -130 330 -40 q150 80 300 -20 q170 -110 340 10 q90 60 190 20 l0 1040 l-1160 0 Z"
-            fill="#2D2350"
-            opacity={0.75}
+            fill={VIOLET}
           />
           <path
             d="M-40 1060 q220 -120 430 -20 q190 90 380 -30 q160 -100 350 30 l0 940 l-1160 0 Z"
-            fill="#231C42"
+            fill={PURPLE_DEEP}
           />
         </svg>
-        {/* ground */}
+        {/* ground: two flat bands, no gradient. It sits high enough that the birds
+            standing on it finish well above the caption band. */}
         <div
           style={{
             position: "absolute",
@@ -896,17 +929,23 @@ const SceneCrowd: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
             height: 2600,
             left: "50%",
             marginLeft: -1300,
-            // The ground sits high enough that the birds standing on it finish well
-            // above the caption band. At 70% they landed right on top of the text.
             top: "56%",
             borderRadius: "50%",
-            // Stops bunched near 0%: the circle is 2600px tall but only its top
-            // ~800px is on screen, so gentle stops leave the whole lower frame
-            // bright and white captions stop being readable.
-            background: `linear-gradient(180deg, ${accent} 0%, #14603F 5%, #0C2E24 11%, #060B12 19%)`,
+            backgroundColor: accent,
           }}
         />
-        {/* trees along the ridge */}
+        <div
+          style={{
+            position: "absolute",
+            width: 2600,
+            height: 2600,
+            left: "50%",
+            marginLeft: -1300,
+            top: "63%",
+            borderRadius: "50%",
+            backgroundColor: TEAL,
+          }}
+        />
         {HILL_TREES.map((i) => {
           const x = (i / HILL_TREES.length) * 112 - 6 + rand(i * 3) * 5;
           const dip = Math.abs(x - 50) / 50;
@@ -920,11 +959,10 @@ const SceneCrowd: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
                 opacity: ease(frame, 4 + i * 2, 30),
               }}
             >
-              <Tree size={74 + rand(i) * 40} leaf="#1E9E6E" leafShade="#146B4B" seed={i + 4} />
+              <Tree size={74 + rand(i) * 40} leaf={TEAL} leafShade={ROYAL} seed={i + 4} />
             </div>
           );
         })}
-        {/* the flock, walking */}
         {CROWD.map((i) => {
           const t = ease(frame, 8 + i * 4, 30);
           // Evenly spaced with a small jitter: purely random x clumps two or three
@@ -947,7 +985,8 @@ const SceneCrowd: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
               <Bird
                 size={size}
                 body={bodies[i % bodies.length]}
-                belly="#F4F7FF"
+                belly={CREAM}
+                wing={ROYAL}
                 seed={i}
                 pose={i === 3 ? "wave" : "stand"}
                 frame={frame}
@@ -957,7 +996,6 @@ const SceneCrowd: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
         })}
       </AbsoluteFill>
       <Caption frame={frame}>{scene.caption}</Caption>
-      <Finish />
     </AbsoluteFill>
   );
 };
@@ -968,14 +1006,13 @@ const SceneCutaway: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
   const frame = useCurrentFrame();
   const rings = scene.rings ?? [];
   const mood = scene.mood ?? "space";
-  const accent = scene.accent ?? VIOLET;
   const push = cameraPush(frame, scene.durationInFrames, 1, 1.06);
   const drift = float(frame, 21, 10);
 
   return (
     <AbsoluteFill>
-      <Backdrop mood={mood} />
-      <LightRays frame={frame} color={accent} />
+      <Field mood={mood} />
+      <Rays frame={frame} color={MOODS[mood].ring} />
       <Scenery seed={7} frame={frame} count={4} />
       <StarField count={90} seed={4} />
       <AbsoluteFill style={{ transform: `scale(${push})` }}>
@@ -996,7 +1033,6 @@ const SceneCutaway: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
               transform: `translate(${drift.x}px, ${drift.y}px)`,
             }}
           >
-            <Glow size={820} color={accent} opacity={0.22} />
             {rings.map((ring, i) => {
               const outer = 560 - i * 150;
               const t = ease(frame, 10 + i * 12, 40);
@@ -1010,7 +1046,7 @@ const SceneCutaway: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
                     left: 310 - outer / 2,
                     top: 310 - outer / 2,
                     borderRadius: "50%",
-                    background: `radial-gradient(circle at 34% 28%, ${ring.color} 0%, ${ring.color}D9 68%, ${ring.color}8C 100%)`,
+                    backgroundColor: ring.color,
                     opacity: t,
                     transform: `scale(${interpolate(t, [0, 1], [0.86, 1])})`,
                   }}
@@ -1029,12 +1065,12 @@ const SceneCutaway: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
                   key={i}
                   style={{
                     position: "absolute",
-                    width: 4,
-                    height: 22,
-                    left: 308,
-                    top: 8,
-                    background: `${TEXT}55`,
-                    transformOrigin: "2px 302px",
+                    width: 6,
+                    height: 26,
+                    left: 307,
+                    top: 4,
+                    backgroundColor: CREAM,
+                    transformOrigin: "3px 306px",
                     transform: `rotate(${i * 45}deg)`,
                   }}
                 />
@@ -1052,15 +1088,17 @@ const SceneCutaway: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
                   gap: 12,
                   fontFamily: FONT,
                   fontSize: 30,
-                  color: TEXT_DIM,
+                  fontWeight: 700,
+                  color: TEXT,
+                  textShadow: `3px 3px 0 ${NIGHT_DEEP}`,
                 }}
               >
                 <span
                   style={{
-                    width: 18,
-                    height: 18,
+                    width: 20,
+                    height: 20,
                     borderRadius: "50%",
-                    background: ring.color,
+                    backgroundColor: ring.color,
                     display: "inline-block",
                   }}
                 />
@@ -1071,16 +1109,15 @@ const SceneCutaway: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
         </AbsoluteFill>
       </AbsoluteFill>
       <Caption frame={frame}>{scene.caption}</Caption>
-      <Finish />
     </AbsoluteFill>
   );
 };
 
-/* --- 4. quantity field, with a bird carrying one --- */
+/* --- 4. quantity field --- */
 
 const SceneQuantity: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
   const frame = useCurrentFrame();
-  const accent = scene.accent ?? SUN;
+  const accent = scene.accent ?? AMBER;
   const mood = scene.mood ?? "space";
   const count = scene.count ?? 60;
   const push = cameraPush(frame, scene.durationInFrames, 1.05, 1);
@@ -1089,7 +1126,7 @@ const SceneQuantity: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
 
   return (
     <AbsoluteFill>
-      <Backdrop mood={mood} />
+      <Field mood={mood} />
       <Scenery seed={11} frame={frame} count={4} />
       <StarField count={70} drift={0.4} seed={6} />
       <AbsoluteFill style={{ transform: `scale(${push})` }}>
@@ -1120,20 +1157,26 @@ const SceneQuantity: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
                     width: 42,
                     height: 42,
                     borderRadius: "50% 50% 50% 14%",
-                    background: `radial-gradient(circle at 35% 30%, ${
-                      i % 7 === 0 ? CORAL : accent
-                    } 0%, ${i % 7 === 0 ? "#D93A3F" : "#E09A22"} 100%)`,
+                    backgroundColor: i % 7 === 0 ? CORAL : accent,
                     opacity: t,
                     transform: `scale(${interpolate(t, [0, 1], [0.2, 1])}) rotate(${wob}deg)`,
-                    boxShadow: `0 0 16px ${accent}55`,
                   }}
                 />
               );
             })}
           </div>
-          {/* a bird holding one of them, so the quantity has a scale reference */}
           <div style={{ display: "flex", alignItems: "flex-end", gap: 18 }}>
-            <Bird size={150} body={TEAL} belly="#DFF6FF" seed={31} pose="wave" frame={frame} />
+            <Bird
+              size={150}
+              body={CYAN}
+              belly={CREAM}
+              wing={ROYAL}
+              seed={31}
+              pose="wave"
+              frame={frame}
+            />
+            {/* Only label the field when the count means something the narration
+                actually claims — a big number nobody said is a fabricated statistic. */}
             {scene.unitLabel ? (
               <BigNumber value={String(count)} sub={scene.unitLabel} color={accent} />
             ) : null}
@@ -1141,7 +1184,6 @@ const SceneQuantity: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
         </AbsoluteFill>
       </AbsoluteFill>
       <Caption frame={frame}>{scene.caption}</Caption>
-      <Finish />
     </AbsoluteFill>
   );
 };
@@ -1150,7 +1192,7 @@ const SceneQuantity: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
 
 const SceneFlowMap: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
   const frame = useCurrentFrame();
-  const accent = scene.accent ?? PINK;
+  const accent = scene.accent ?? MAGENTA;
   const mood = scene.mood ?? "dusk";
   const stops = scene.stops ?? [];
   const push = cameraPush(frame, scene.durationInFrames, 1, 1.05);
@@ -1180,28 +1222,19 @@ const SceneFlowMap: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
 
   return (
     <AbsoluteFill>
-      <Backdrop mood={mood} />
-      <LightRays frame={frame} color={accent} />
+      <Field mood={mood} />
+      <Rays frame={frame} color={MOODS[mood].ring} />
       <Scenery seed={19} frame={frame} count={4} />
       <StarField count={80} seed={8} />
       <AbsoluteFill style={{ transform: `scale(${push})` }}>
         <AbsoluteFill style={{ top: "16%", height: "42%" }}>
           <svg viewBox="0 0 1080 500" style={{ width: "100%", height: "100%" }}>
-            <defs>
-              <linearGradient id="kgFlowGrad" x1="0" x2="1">
-                <stop offset="0%" stopColor={TEAL} />
-                <stop offset="100%" stopColor={accent} />
-              </linearGradient>
-              <radialGradient id="kgTravellerGlow">
-                <stop offset="0%" stopColor={SUN} stopOpacity={0.55} />
-                <stop offset="100%" stopColor={SUN} stopOpacity={0} />
-              </radialGradient>
-            </defs>
+            {/* One flat stroke colour — no gradient along the route. */}
             <path
               d={pathD}
               fill="none"
-              stroke="url(#kgFlowGrad)"
-              strokeWidth={10}
+              stroke={CREAM}
+              strokeWidth={12}
               strokeLinecap="round"
               strokeDasharray={2400}
               strokeDashoffset={2400 * (1 - draw)}
@@ -1213,45 +1246,49 @@ const SceneFlowMap: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
                   <circle
                     cx={nodeX(i)}
                     cy={nodeY(i)}
-                    r={lit ? 26 : 18}
-                    fill={lit ? accent : `${TEXT}33`}
+                    r={lit ? 28 : 18}
+                    fill={lit ? accent : CREAM}
                   />
                   <text
                     x={nodeX(i)}
-                    y={nodeY(i) - 48}
+                    y={nodeY(i) - 50}
                     // The first and last labels are wide enough to run off the
                     // canvas if they stay centred on their node.
                     textAnchor={i === 0 ? "start" : i === stops.length - 1 ? "end" : "middle"}
-                    fill={lit ? TEXT : TEXT_DIM}
-                    fontSize={32}
+                    fill={TEXT}
+                    fontSize={34}
                     fontFamily={FONT}
-                    fontWeight={600}
+                    fontWeight={800}
                   >
                     {stop}
                   </text>
                 </g>
               );
             })}
-            {/* Halo is a radial gradient: a flat translucent circle over a dark
-                backdrop just reads as a grey smudge. */}
-            <circle cx={travX} cy={travY} r={40} fill="url(#kgTravellerGlow)" />
-            <circle cx={travX} cy={travY} r={17} fill={SUN} />
+            {/* traveller: two flat discs, sharp edges */}
+            <circle cx={travX} cy={travY} r={30} fill={ORANGE} />
+            <circle cx={travX} cy={travY} r={18} fill={AMBER} />
           </svg>
         </AbsoluteFill>
-        {/* a traveller carrying the cargo, under the route */}
         <AbsoluteFill style={{ top: "52%", alignItems: "center" }}>
           <div style={{ opacity: ease(frame, 30, 40) }}>
-            <Bird size={190} body={AMBER} belly="#FFF0D0" seed={44} frame={frame} />
+            <Bird
+              size={190}
+              body={AMBER}
+              belly={CREAM}
+              wing={ORANGE}
+              seed={44}
+              frame={frame}
+            />
           </div>
         </AbsoluteFill>
       </AbsoluteFill>
       <Caption frame={frame}>{scene.caption}</Caption>
-      <Finish />
     </AbsoluteFill>
   );
 };
 
-/* --- 6. comparison, as two planets --- */
+/* --- 6. comparison --- */
 
 const SceneCompare: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
   const frame = useCurrentFrame();
@@ -1271,7 +1308,7 @@ const SceneCompare: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
 
   return (
     <AbsoluteFill>
-      <Backdrop mood={mood} />
+      <Field mood={mood} />
       <Scenery seed={23} frame={frame} count={4} />
       <StarField count={80} seed={9} />
       <AbsoluteFill style={{ transform: `scale(${push})` }}>
@@ -1294,6 +1331,7 @@ const SceneCompare: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
             const t = ease(frame, delay, 40);
             const drift = float(frame, seed, 10);
             const size = sizeFor(side.weight);
+            const warm = side.color === AMBER;
             return (
               <div
                 key={side.label}
@@ -1320,16 +1358,16 @@ const SceneCompare: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
                     justifyContent: "center",
                   }}
                 >
-                  <Glow size={size * 2} color={side.color} opacity={0.3} />
+                  <Rings size={size * 1.34} color={MOODS[mood].ring} count={1} />
                   <Planet
                     size={size}
                     ocean={side.color}
-                    land={side.color === TEAL ? MINT : "#FF7A45"}
-                    landShade={side.color === TEAL ? "#1E9E6E" : "#D9542E"}
-                    atmosphere={side.color === TEAL ? "#9BE3FF" : "#FFD79A"}
+                    land={warm ? ORANGE : LIME}
+                    landShade={warm ? CORAL : TEAL}
+                    night={warm ? CORAL : ROYAL}
+                    ring={CREAM}
                     seed={seed}
                     continents={4}
-                    detail={side.color === TEAL ? "trees" : "none"}
                     frame={frame}
                   />
                 </div>
@@ -1340,7 +1378,6 @@ const SceneCompare: React.FC<{ scene: SceneSpec }> = ({ scene }) => {
         </AbsoluteFill>
       </AbsoluteFill>
       <Caption frame={frame}>{scene.caption}</Caption>
-      <Finish />
     </AbsoluteFill>
   );
 };
@@ -1410,7 +1447,7 @@ export const KgExample: React.FC = () => {
   });
 
   return (
-    <AbsoluteFill style={{ backgroundColor: MOODS.space.outer }}>
+    <AbsoluteFill style={{ backgroundColor: NIGHT_DEEP }}>
       {SCENES.map((scene, i) => {
         const isFirst = i === 0;
         const isLast = i === SCENES.length - 1;

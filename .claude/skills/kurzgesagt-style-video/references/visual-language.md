@@ -6,30 +6,34 @@ style without breaking it.
 
 ## Palette
 
-A near-black field with a violet or navy cast, and objects that look lit from within.
+Near-full saturation throughout. The tension in a frame comes from putting a hot hue
+hard against a cool one with no transition between them.
 
 | Token | Hex | Use |
 |---|---|---|
-| `SPACE` | `#0B1026` | cool backdrop centre |
-| `SPACE_DEEP` | `#070A1A` | backdrop edge, and the composition's base colour |
-| `SPACE_WARM` | `#1B1040` | violet backdrop centre, for warmer beats |
-| `CORAL` | `#FF5A5F` | alert, contrast accent, "the problem" |
-| `AMBER` | `#FFB43A` | primary warm subject |
-| `SUN` | `#FFE066` | highlights, the travelling dot, the chosen creature |
-| `MINT` | `#3DDC97` | life, growth, planets |
-| `TEAL` | `#2EC4E6` | water, the "slow"/baseline side of a comparison |
-| `VIOLET` | `#8B5CF6` | outer layers, structure |
-| `PINK` | `#FF7ECD` | routes, movement |
-| `TEXT` | `#EEF2FF` | captions |
-| `TEXT_DIM` | `#9BA7C7` | labels, legends |
+| `NIGHT` | `#141C7A` | saturated indigo field |
+| `NIGHT_DEEP` | `#0C1257` | composition base, hard text shadows |
+| `ROYAL` | `#2340E8` | accent disc, night sides, wings |
+| `VIOLET` | `#7B2DFF` | hills, outer layers |
+| `PURPLE_DEEP` | `#3B10A8` | dusk field, far hills |
+| `CYAN` | `#00D4FF` | water, the cool side of a comparison |
+| `TEAL` | `#00C2A0` | ground, foliage shade |
+| `LIME` | `#9BE800` | land, growth |
+| `AMBER` | `#FFC000` | sun, seeds, the warm side |
+| `ORANGE` | `#FF7A00` | beaks, trunks, warm mid |
+| `CORAL` | `#FF3355` | alert, dawn field |
+| `MAGENTA` | `#FF2D95` | routes, sky, rings |
+| `CREAM` | `#FFF3D6` | stars, planet rims, route strokes |
 
 Rules:
 
-- **Two accents per beat, three at most.** More and it stops reading as one system.
-- **Backdrop stays dark.** If a large object needs to be bright, make it small and let
-  the glow do the work.
-- **Never put a mid-tone object behind a caption.** White text on mid-green or
-  mid-amber is unreadable — darken the object's gradient in that band instead.
+- **Two or three hues per beat.** More and the colour blocking stops reading as a
+  system.
+- **Every fill is flat and fully opaque.** Softening with `opacity` over a contrasting
+  field mixes to grey — pick a quieter hue instead.
+- **Warm against cool, hard edge between them.** That contrast is the whole point; a
+  transition zone throws it away.
+- **Never put a mid-tone shape behind a caption.** Move the shape or change its hue.
 
 ## Moods
 
