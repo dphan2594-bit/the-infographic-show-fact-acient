@@ -99,16 +99,19 @@ the caption must still match what is actually being said.
 All implemented in `references/example-scene.tsx`. Rotate them; never repeat one
 back-to-back.
 
-1. **cosmicHero** — a single glowing body, orbit rings and motes riding them, star
-   field, slow camera push. For hooks and for "here is the thing this video is about".
-2. **compare** — two discs sized by the quantities they represent, big numbers beneath.
-   For "150 days vs 45 days" moments.
-3. **crowd** — a curved planet horizon with tiny creatures walking across it, one
-   highlighted. For anything about people, populations, or migration.
-4. **quantity** — a grid of small units showing scale. Label it with a big number
-   **only if the narration actually claims that number**.
-5. **flowMap** — a drawn path with milestone nodes lighting up in sequence and a
-   traveller riding the line. For routes, spread, and timelines.
+1. **cosmicHero** — a full `Planet` with a moon on a visible orbit, god rays, distant
+   worlds and a star field. For hooks and for "here is the thing this video is about".
+2. **compare** — two `Planet`s sized by the quantities they represent, big numbers
+   beneath. For "150 days vs 45 days" moments.
+3. **crowd** — a landscape: sunset sky, two parallax hill ranges, a ground curve with
+   trees, and a flock of `Bird`s walking across it. For anything about people,
+   populations, or migration.
+4. **quantity** — a grid of small units showing scale, with a bird beside it for a
+   size reference. Label it with a big number **only if the narration actually claims
+   that number**.
+5. **flowMap** — a drawn path with milestone nodes lighting up in sequence, a
+   traveller riding the line, and a bird carrying the cargo below it. For routes,
+   spread, and timelines.
 6. **cutaway** — concentric rings with a legend, slowly rotating tick marks. For
    anatomy, layers, and "look closer at this".
 
@@ -119,14 +122,37 @@ rotating mechanically — then break ties with the no-repeats rule.
 
 Full detail in `references/visual-language.md`. The short version:
 
-- **Deep field, luminous objects.** Backgrounds are near-black navy/violet radial
-  gradients. Objects are high-chroma and appear lit from within.
-- **Nothing is ever still.** Every scene has a slow camera push; every object has a
-  seeded drift or bob; diagrams rotate slightly. A frozen element reads as a bug.
+- **Draw things, not primitives.** This is the single biggest tell. A circle with a
+  glow is not a planet; a blob with two dots is not a character. The template ships an
+  ILLUSTRATION KIT for exactly this reason — use it and extend it rather than reaching
+  for a bare `<div>` with a border-radius.
+- **Fill the frame.** An empty field around a lone centred object is the most common
+  way this style comes out looking cheap. Every beat gets a backdrop, a scenery layer,
+  a star field or landscape, the subject, then vignette and grain.
+- **Not everything is space.** `mood` picks the backdrop: `space`, `dusk`, `dawn`,
+  `day`. The dawn/day horizons carry as much of the style's range as the cosmic ones.
+- **Nothing is ever still.** Every beat has a slow camera push; every object has a
+  seeded drift or bob; planets rotate; diagrams turn. A frozen element reads as a bug.
 - **Ease, never spring.** Springs overshoot and bounce, which is the mascot style's
   register. Use `Easing.out(Easing.cubic)`.
 - **Long dissolves, never hard cuts.** `FADE = 20` frames.
 - **Text is small and quiet**, except one big number per comparison.
+
+### The illustration kit
+
+| Piece | What it is |
+|---|---|
+| `Planet` | Ocean gradient, seeded continents each with a clipped inner shadow, optional trees, terminator, bright rim, atmosphere halo. Continents drift and wrap so it reads as rotating. |
+| `Bird` | The recurring inhabitant: body, belly, wing, tail, tuft, beak, eyes with highlights, feet. `pose="wave"` animates the wing. |
+| `Tree` | Trunk plus a leaf blob with a clipped shade, for ground scenes. |
+| `blobPath` | Smooth seeded organic outline — continents, hills, foliage, rocks. |
+| `StarField` | Three parallax tiers of dots with occasional 4-point sparkles. |
+| `Scenery` | Distant planets and debris. This is the density layer. |
+| `LightRays` | Slow god rays, masked at both ends and blurred. |
+| `Vignette` / `Grain` | Applied together as `Finish` at the top of every beat. |
+
+Keep characters generic. Emulate the register — flat vector, cosmic palette,
+optimistic science — never reproduce a specific studio's character designs or assets.
 
 ## 5. Build the video file
 
@@ -196,3 +222,33 @@ Every item below was hit while building `src/MilletKurzgesagt.tsx`.
 - **Never show a number the narration didn't say.** The quantity archetype only renders
   its big number when `unitLabel` is set, precisely so a decorative grid of 84 dots
   doesn't turn into a fabricated statistic on screen.
+
+### From the illustration rebuild
+
+The first version of this skill produced "flat vector shapes on a dark background",
+which is not the same thing as this style. These are what closed the gap:
+
+- **A glowing circle is not a planet, and a blob with two dots is not a character.**
+  Most of the distance to the real style is in the drawing, not the palette. Build
+  the subject out of parts (continents, atmosphere, terminator, rim / beak, wing,
+  eye highlight, feet) or it will keep reading as generic flat design.
+- **Clip a landmass's shading to the landmass.** An offset darker blob drawn loose
+  looks like a second continent overlapping the first. Clipped, the same blob becomes
+  an inner shadow hugging the bottom edge — which is what the style actually does.
+- **Empty space reads as unfinished, not as calm.** Add the scenery layer before
+  concluding a beat looks wrong; more often than not the composition was fine and the
+  frame was just bare.
+- **Background scenery must stay out of the subject column and every text band**, and
+  needs opacity above ~0.2. Dimmer than that, over a dark backdrop, it desaturates
+  into grey smudges rather than reading as distant worlds.
+- **God rays need masking at BOTH ends plus a blur.** Masked only at the outside, every
+  ray converges on one hard point and the result is a mechanical starburst. They should
+  be felt, not seen — opacity around 0.2.
+- **In a landscape beat, put the ground high enough that characters finish above the
+  caption band.** Birds standing at 71% collided with a caption starting at 72%; the
+  ground had to come up to 56%. Check this whenever a beat has a horizon.
+- **A moon's orbit radius must clear the planet's radius by a real margin**, or it
+  spends most of its orbit glued to the limb.
+- **Keep the grain frame-independent.** A turbulence seed that changes per frame is a
+  large render cost for a texture nobody consciously notices; static, Chromium
+  rasterises it once.

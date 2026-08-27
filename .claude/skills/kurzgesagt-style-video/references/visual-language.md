@@ -31,15 +31,46 @@ Rules:
 - **Never put a mid-tone object behind a caption.** White text on mid-green or
   mid-amber is unreadable — darken the object's gradient in that band instead.
 
+## Moods
+
+Not every beat is outer space — that was the biggest thing missing from the first pass
+of this style. `mood` selects the backdrop:
+
+| Mood | Backdrop | Use |
+|---|---|---|
+| `space` | deep navy radial | cosmic scale, hooks, diagrams |
+| `dusk` | violet radial | routes, comparisons, anything reflective |
+| `dawn` | warm orange horizon over violet | landscapes, people, journeys |
+| `day` | bright teal horizon | daylight ground scenes |
+
+`dawn` and `day` are linear top-to-bottom gradients, so they read as a sky with a
+horizon rather than as a void.
+
 ## Depth
 
-Four layers, back to front:
+Six layers, back to front. Skipping the middle ones is what makes a frame look bare:
 
-1. **Backdrop** — a radial gradient, lighter in the middle, so the frame has a centre.
-2. **Star field** — three depth tiers drifting at different rates. Far stars are
-   smaller, dimmer and slower. This is the whole parallax budget; it is enough.
-3. **Subject** — the archetype's own artwork, with a glow behind it.
-4. **Text** — captions and labels, always on top, always with a shadow.
+1. **Backdrop** — the mood gradient.
+2. **Light rays** — slow god rays from the light source. Masked at both ends and
+   blurred, opacity ~0.2. Felt, not seen.
+3. **Scenery** — distant planets and debris in the outer thirds and upper half. This is
+   the density layer, and the most commonly skipped one.
+4. **Star field / landscape** — three parallax tiers of stars, or hills and ground.
+5. **Subject** — the archetype's artwork, with a glow behind it.
+6. **Text**, then **vignette + grain** over everything.
+
+## The illustration kit
+
+The style lives here more than in the palette. `Planet` is a body with an ocean
+gradient, seeded continents (each with its shading *clipped to the landmass*, so it
+reads as an inner shadow rather than a second overlapping continent), optional trees,
+a terminator, a bright rim and an atmosphere halo — its continents drift and wrap,
+which reads as rotation without the flat-spinning-disc look. `Bird` has a body, belly,
+wing, tail, tuft, beak, eyes with highlights and feet; two dots on a blob is not
+enough to carry a scene. `Tree` and `blobPath` cover ground scenery.
+
+Extend the kit rather than dropping in bare primitives. A `<div>` with
+`border-radius: 50%` is the fastest way back to generic flat design.
 
 ## Motion
 
