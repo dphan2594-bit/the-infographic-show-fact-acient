@@ -1,10 +1,14 @@
 import "./index.css";
-import { InfographicComposition } from "./Composition";
+import {
+  InfographicComposition,
+  MilletKurzgesagtComposition,
+} from "./Composition";
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
       <InfographicComposition />
+      <MilletKurzgesagtComposition />
     </>
   );
 };
