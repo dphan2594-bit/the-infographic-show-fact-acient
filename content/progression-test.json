@@ -1,9 +1,9 @@
 {
   "scenes": [
     {
-      "id": "S03-rigged",
+      "id": "S03-rigged-live",
       "motion": "static",
-      "archetype": "S03 — rig đủ 12 nguyên tắc",
+      "archetype": "S03 — rig sprite + lớp vẽ bằng code",
       "durationInFrames": 420,
       "background": {
         "type": "image",
@@ -87,6 +87,127 @@
         ]
       },
       "overlays": [
+        {
+          "type": "orbitSystem",
+          "x": 48,
+          "y": 15,
+          "showCore": false,
+          "startFrame": 53,
+          "rings": [
+            {
+              "radius": 74,
+              "flatten": 0.34,
+              "tiltDeg": -20,
+              "color": "#FFD34D",
+              "opacity": 0.2,
+              "satelliteColor": "#FFD34D",
+              "satelliteSize": 7,
+              "secondsPerRevolution": 6.5,
+              "pulse": true,
+              "pulseColor": "#FFFFFF",
+              "pulseArcPercent": 16
+            },
+            {
+              "radius": 52,
+              "flatten": 0.3,
+              "tiltDeg": 14,
+              "color": "#FFFFFF",
+              "opacity": 0.14,
+              "satelliteColor": "#FFFFFF",
+              "satelliteSize": 5,
+              "secondsPerRevolution": 4.4,
+              "direction": "ccw",
+              "phase": 2.1
+            }
+          ]
+        },
+        {
+          "type": "orbitSystem",
+          "x": 66,
+          "y": 84,
+          "showCore": false,
+          "startFrame": 237,
+          "rings": [
+            {
+              "radius": 96,
+              "flatten": 0.32,
+              "tiltDeg": -16,
+              "color": "#FFD34D",
+              "opacity": 0.22,
+              "satelliteColor": "#FFD34D",
+              "satelliteSize": 9,
+              "secondsPerRevolution": 5.2,
+              "pulse": true,
+              "pulseColor": "#FFD34D",
+              "pulseArcPercent": 18
+            },
+            {
+              "radius": 66,
+              "flatten": 0.28,
+              "tiltDeg": 8,
+              "color": "#E85D5D",
+              "opacity": 0.16,
+              "satelliteColor": "#FFB05A",
+              "satelliteSize": 6,
+              "secondsPerRevolution": 3.6,
+              "direction": "ccw",
+              "phase": 1.2
+            }
+          ]
+        },
+        {
+          "type": "engineTrail",
+          "x": 44,
+          "y": 56,
+          "angleDeg": -38,
+          "length": 16,
+          "spread": 7,
+          "count": 14,
+          "color": "#FFE08A",
+          "travelSeconds": 0.8,
+          "seed": "s03-spark",
+          "startFrame": 145
+        },
+        {
+          "type": "glowPulse",
+          "x": 48,
+          "y": 16,
+          "radius": 210,
+          "color": "#FFD34D",
+          "periodSeconds": 3.1,
+          "minOpacity": 0.05,
+          "maxOpacity": 0.2,
+          "startFrame": 53
+        },
+        {
+          "type": "glowPulse",
+          "x": 39,
+          "y": 60,
+          "radius": 190,
+          "color": "#FFFFFF",
+          "periodSeconds": 4.3,
+          "minOpacity": 0.04,
+          "maxOpacity": 0.16,
+          "startFrame": 145
+        },
+        {
+          "type": "glowPulse",
+          "x": 66,
+          "y": 84,
+          "radius": 230,
+          "color": "#E85D5D",
+          "periodSeconds": 2.7,
+          "minOpacity": 0.05,
+          "maxOpacity": 0.22,
+          "startFrame": 237
+        },
+        {
+          "type": "starLayer",
+          "density": 0.3,
+          "opacity": 0.34,
+          "driftSpeed": 5,
+          "seed": "s03-field"
+        },
         {
           "type": "glowPulse",
           "x": 49,

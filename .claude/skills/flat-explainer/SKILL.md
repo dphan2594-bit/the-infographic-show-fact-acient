@@ -74,6 +74,32 @@ Still not done, all needing per-part rigging: anticipation (nothing winds up
 before it moves), arcs (drops are straight vertical), and follow-through on
 sub-parts (a held scroll does not lag the hand carrying it).
 
+## Two layers, and why the frame needs both
+
+Measured with the same per-frame energy sampling:
+
+                                  median   p10    p90   near-still
+  Kurzgesagt                        0.69   0.00   5.50      39%
+  the orbit scene, drawn in code    1.26   0.80   1.88       0%
+  a sprite rig alone                0.35   0.09   9.19      47%
+  both together                     0.41   0.18   9.21      35%
+
+They are opposites, and each is missing what the other has. Anything drawn in
+code — `orbitSystem`, `starLayer`, `glowPulse`, `engineTrail`, `driftParticles`
+— is recomputed every frame, so it never stops: p10 0.80 means the orbit scene
+does not contain a single still frame. But it has no accents at all, p90 1.88.
+The sprite rig is the mirror image: accents that hit harder than the reference,
+holds that are dead.
+
+So carry the beats on sprites and carry the life on code-drawn overlays. The
+combination is what puts the near-still figure below the reference's while the
+accent stays above it.
+
+This is also why the very first solar-system test in this repo reads better
+than a carefully rigged flat scene, which is worth remembering before deciding
+a scene needs more artwork: it may only need something on it that is drawn
+rather than photographed.
+
 ## Sound
 
 `scripts/make-sfx.py` synthesises the kit in `public/audio/sfx` — whoosh,
