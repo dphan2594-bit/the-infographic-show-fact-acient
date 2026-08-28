@@ -1,0 +1,214 @@
+{
+  "scenes": [
+    {
+      "id": "S32-tam-khoi",
+      "motion": "static",
+      "archetype": "S32 — Trạng Nguyên, Bảng Nhãn, Thám Hoa",
+      "durationInFrames": 300,
+      "background": {
+        "type": "image",
+        "src": "images/si-nong/S32.jpg",
+        "kenBurns": "none"
+      },
+      "transitionIn": {
+        "type": "whip",
+        "direction": "from-left",
+        "durationInFrames": 16
+      },
+      "camera": {
+        "keyframes": [
+          { "at": 0.0, "zoom": 1.05, "focusX": 50, "focusY": 50 },
+          { "at": 23.33, "zoom": 1.05, "focusX": 50, "focusY": 50 },
+          { "at": 30.0, "zoom": 1.5, "focusX": 50, "focusY": 46 },
+          { "at": 50.0, "zoom": 1.48, "focusX": 50, "focusY": 46 },
+          { "at": 56.67, "zoom": 1.25, "focusX": 50, "focusY": 60 },
+          { "at": 74.67, "zoom": 1.23, "focusX": 50, "focusY": 60 },
+          { "at": 81.33, "zoom": 1.05, "focusX": 50, "focusY": 48 },
+          { "at": 100.0, "zoom": 1.06, "focusX": 50, "focusY": 48 }
+        ],
+        "continueFromPrevious": true
+      },
+      "overlays": [
+        {
+          "type": "glowPulse",
+          "x": 50,
+          "y": 40,
+          "radius": 140,
+          "color": "#E85D5D",
+          "periodSeconds": 2.2,
+          "minOpacity": 0.1,
+          "maxOpacity": 0.3
+        },
+        {
+          "type": "driftParticles",
+          "count": 16,
+          "angleDeg": 90,
+          "speed": 4,
+          "opacity": 0.16,
+          "colors": ["#FFD34D", "#FFFFFF"],
+          "seed": "s32-dust"
+        },
+        {
+          "type": "spotlight",
+          "x": 50,
+          "y": 46,
+          "radiusX": 44,
+          "radiusY": 32,
+          "darkness": 0.36,
+          "softness": 0.5,
+          "startFrame": 0,
+          "endFrame": 74
+        },
+        {
+          "type": "bigText",
+          "text": "BA DANH HIỆU CAO QUÝ NHẤT",
+          "x": 50,
+          "y": 8,
+          "size": 48,
+          "color": "#FFFFFF",
+          "entrance": "squash-pop",
+          "plate": true,
+          "startFrame": 6,
+          "endFrame": 72
+        },
+        {
+          "type": "flash",
+          "atFrame": 82,
+          "color": "#E85D5D",
+          "intensity": 0.26,
+          "releaseFrames": 8
+        },
+        {
+          "type": "calloutRing",
+          "x": 50,
+          "y": 46,
+          "radiusX": 12,
+          "radiusY": 24,
+          "color": "#E85D5D",
+          "strokeWidth": 5,
+          "drawFrames": 13,
+          "pulse": true,
+          "startFrame": 86,
+          "endFrame": 150
+        },
+        {
+          "type": "bigText",
+          "text": "TRẠNG NGUYÊN — VỊ TRÍ SỐ 1",
+          "x": 50,
+          "y": 8,
+          "size": 50,
+          "color": "#E85D5D",
+          "entrance": "stamp",
+          "plate": true,
+          "startFrame": 90,
+          "endFrame": 148
+        },
+        {
+          "type": "flash",
+          "atFrame": 158,
+          "color": "#5AD7E8",
+          "intensity": 0.3,
+          "releaseFrames": 9
+        },
+        {
+          "type": "calloutRing",
+          "x": 38,
+          "y": 62,
+          "radiusX": 10,
+          "radiusY": 15,
+          "color": "#5AD7E8",
+          "strokeWidth": 5,
+          "drawFrames": 12,
+          "dashed": true,
+          "startFrame": 162,
+          "endFrame": 226
+        },
+        {
+          "type": "calloutRing",
+          "x": 62,
+          "y": 62,
+          "radiusX": 10,
+          "radiusY": 15,
+          "color": "#5AD7E8",
+          "strokeWidth": 5,
+          "drawFrames": 12,
+          "dashed": true,
+          "startFrame": 168,
+          "endFrame": 226
+        },
+        {
+          "type": "bigText",
+          "text": "BẢNG NHÃN, THÁM HOA — NHÌ, BA",
+          "x": 50,
+          "y": 8,
+          "size": 42,
+          "color": "#5AD7E8",
+          "entrance": "squash-pop",
+          "plate": true,
+          "startFrame": 166,
+          "endFrame": 224
+        },
+        {
+          "type": "flash",
+          "atFrame": 234,
+          "color": "#FFFFFF",
+          "intensity": 0.3,
+          "releaseFrames": 9
+        },
+        {
+          "type": "bigText",
+          "text": "GỌI CHUNG LÀ TAM KHÔI",
+          "x": 50,
+          "y": 8,
+          "size": 54,
+          "color": "#FFD34D",
+          "entrance": "stamp",
+          "plate": true,
+          "startFrame": 238
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/whoosh.wav",
+          "volume": 0.3,
+          "startFrame": 2
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/pop.wav",
+          "volume": 0.34,
+          "startFrame": 84
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/riser.wav",
+          "volume": 0.3,
+          "startFrame": 148
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/impact.wav",
+          "volume": 0.62,
+          "startFrame": 160
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/riser.wav",
+          "volume": 0.3,
+          "startFrame": 224
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/impact.wav",
+          "volume": 0.76,
+          "startFrame": 236
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/sparkle.wav",
+          "volume": 0.3,
+          "startFrame": 238
+        }
+      ]
+    }
+  ]
+}
