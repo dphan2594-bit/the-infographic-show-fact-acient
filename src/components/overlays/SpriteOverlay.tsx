@@ -78,6 +78,15 @@ export const SpriteOverlay: React.FC<{
   followThrough?: number;
   /** Seconds for the follow-through to die away, default 0.9. */
   followSeconds?: number;
+  /** Carries the sprite across the frame, in percent of the frame, over
+   *  `travelFrames`. A character that has to cross a distance — climbing a
+   *  staircase, stepping out of a doorway — needs to actually go somewhere;
+   *  an entrance preset only puts it in place. */
+  travelXPercent?: number;
+  travelYPercent?: number;
+  travelFrames?: number;
+  /** Scale reached at the end of the travel, for a figure walking into depth. */
+  travelScale?: number;
   /** vertical bob, in percent of the sprite's own height */
   bobPercent?: number;
   /** scale swell, in percent */
@@ -110,6 +119,10 @@ export const SpriteOverlay: React.FC<{
   arcPercent = 0,
   followThrough = 0,
   followSeconds = 0.9,
+  travelXPercent = 0,
+  travelYPercent = 0,
+  travelFrames = 0,
+  travelScale = 1,
   entrance = "none",
   delayFrames = 0,
   idle = "none",
@@ -180,6 +193,16 @@ export const SpriteOverlay: React.FC<{
       : 0;
   const windUpY = -windUp * (anticipatePercent / 100) * spriteHeight;
 
+  // TRAVEL — the sprite actually crosses ground, eased at both ends so it
+  // starts and stops like a body rather than a slide
+  const trip = travelFrames > 0
+    ? Math.min(1, Math.max(0, (frame - delayFrames) / travelFrames))
+    : 0;
+  const tripEased = trip < 0.5 ? 2 * trip * trip : 1 - 2 * (1 - trip) * (1 - trip);
+  const tripX = (travelXPercent / 100) * frameWidth * tripEased;
+  const tripY = (travelYPercent / 100) * frameHeight * tripEased;
+  const tripScale = 1 + (travelScale - 1) * tripEased;
+
   // ARCS — bow the path sideways, widest at the middle of the travel
   const arc =
     arcPercent !== 0 && travel > 0 && travel < 1
@@ -211,8 +234,10 @@ export const SpriteOverlay: React.FC<{
       0.38 * Math.sin((seconds / 3.7) * Math.PI * 2 + 1.1));
 
   // the wind-up compresses along the axis it is about to travel
-  const scaleX = breathe * (1 + life * 0.030 - stretch * 0.62 + squash * 0.70 + windUp * 0.06);
-  const scaleY = breathe * (1 - life * 0.026 + stretch - squash - windUp * 0.07);
+  const scaleX =
+    breathe * tripScale * (1 + life * 0.030 - stretch * 0.62 + squash * 0.70 + windUp * 0.06);
+  const scaleY =
+    breathe * tripScale * (1 - life * 0.026 + stretch - squash - windUp * 0.07);
   const skew = life * 1.5;
 
   return (
@@ -226,7 +251,7 @@ export const SpriteOverlay: React.FC<{
           height: (height / 100) * frameHeight,
           transformOrigin: `${originX}% ${originY}%`,
           transform:
-            `translate(${arc.toFixed(2)}px, ${(bob + windUpY).toFixed(2)}px) ` +
+            `translate(${(arc + tripX).toFixed(2)}px, ${(bob + windUpY + tripY).toFixed(2)}px) ` +
             `rotate(${(swing + follow).toFixed(2)}deg) ` +
             `skewX(${skew.toFixed(3)}deg) scale(${scaleX.toFixed(4)}, ${scaleY.toFixed(4)}) ` +
             style.transform,

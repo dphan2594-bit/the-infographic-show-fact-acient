@@ -287,6 +287,12 @@ type OverlayVariant =
       /** degrees of damped wobble after the entrance settles */
       followThrough?: number;
       followSeconds?: number;
+      /** carries the sprite across the frame, percent of frame, over travelFrames */
+      travelXPercent?: number;
+      travelYPercent?: number;
+      travelFrames?: number;
+      /** scale reached at the end of the travel, for walking into depth */
+      travelScale?: number;
       bobPercent?: number;
       breathePercent?: number;
       periodSeconds?: number;

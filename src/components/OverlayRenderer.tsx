@@ -223,6 +223,10 @@ export const OverlayRenderer: React.FC<{ overlay: Overlay }> = ({ overlay }) => 
           arcPercent={overlay.arcPercent}
           followThrough={overlay.followThrough}
           followSeconds={overlay.followSeconds}
+          travelXPercent={overlay.travelXPercent}
+          travelYPercent={overlay.travelYPercent}
+          travelFrames={overlay.travelFrames}
+          travelScale={overlay.travelScale}
           bobPercent={overlay.bobPercent}
           breathePercent={overlay.breathePercent}
           periodSeconds={overlay.periodSeconds}
