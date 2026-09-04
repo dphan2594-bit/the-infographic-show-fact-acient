@@ -1,34 +1,44 @@
-import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
+import { BODY_FONT } from "../../theme/fonts";
+import { AbsoluteFill } from "remotion";
+import { useEntranceStyle } from "../../animation/useEntranceStyle";
+import type { Entrance, Idle } from "../../scenes/types";
+import { useFrameScale } from "../../animation/useFrameScale";
 
-export const DateHudOverlay: React.FC<{ date: string }> = ({ date }) => {
-  const frame = useCurrentFrame();
-  const translateX = interpolate(frame, [0, 12], [-40, 0], { extrapolateRight: "clamp" });
-  const opacity = interpolate(frame, [0, 12], [0, 1], { extrapolateRight: "clamp" });
+export const DateHudOverlay: React.FC<{
+  date: string;
+  entrance?: Entrance;
+  delayFrames?: number;
+  idle?: Idle;
+}> = ({ date, entrance = "slideRight", delayFrames = 0, idle = "none" }) => {
+  const { opacity, transform, filter, clipPath } = useEntranceStyle(entrance, delayFrames, idle);
+  const scale = useFrameScale();
 
   return (
     <AbsoluteFill>
       <div
         style={{
           position: "absolute",
-          top: 32,
-          left: 32,
-          transform: `translateX(${translateX}px)`,
+          top: 34 * scale,
+          left: 34 * scale,
+          transform,
+          filter,
+          clipPath,
           opacity,
           display: "flex",
           alignItems: "center",
           gap: 10,
-          padding: "10px 18px",
+          padding: `${11 * scale}px ${20 * scale}px`,
           borderRadius: 12,
           backgroundColor: "rgba(255,255,255,0.95)",
           boxShadow: "0 6px 16px rgba(0,0,0,0.25)",
         }}
       >
-        <div style={{ fontSize: 20 }}>📅</div>
+        <div style={{ fontSize: 22 * scale }}>📅</div>
         <div
           style={{
-            fontFamily: "Arial, sans-serif",
+            fontFamily: BODY_FONT,
             fontWeight: 800,
-            fontSize: 20,
+            fontSize: 22 * scale,
             color: "#222",
           }}
         >

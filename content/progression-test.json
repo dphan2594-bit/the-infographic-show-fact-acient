@@ -1,0 +1,526 @@
+{
+  "scenes": [
+    {
+      "id": "S03-rigged-live",
+      "motion": "static",
+      "archetype": "S03 — rig sprite + lớp vẽ bằng code",
+      "durationInFrames": 420,
+      "background": {
+        "type": "image",
+        "src": "images/si-nong/sprites/S03-tiers.png",
+        "kenBurns": "none"
+      },
+      "camera": {
+        "keyframes": [
+          {
+            "at": 0.0,
+            "zoom": 1.2,
+            "focusX": 50,
+            "focusY": 32
+          },
+          {
+            "at": 8.57,
+            "zoom": 1.2,
+            "focusX": 50,
+            "focusY": 32
+          },
+          {
+            "at": 12.62,
+            "zoom": 1.44,
+            "focusX": 50,
+            "focusY": 30
+          },
+          {
+            "at": 26.67,
+            "zoom": 1.42,
+            "focusX": 50,
+            "focusY": 30
+          },
+          {
+            "at": 30.48,
+            "zoom": 1.4,
+            "focusX": 42,
+            "focusY": 58
+          },
+          {
+            "at": 34.52,
+            "zoom": 1.46,
+            "focusX": 40,
+            "focusY": 60
+          },
+          {
+            "at": 47.62,
+            "zoom": 1.44,
+            "focusX": 40,
+            "focusY": 60
+          },
+          {
+            "at": 51.9,
+            "zoom": 1.42,
+            "focusX": 60,
+            "focusY": 76
+          },
+          {
+            "at": 56.43,
+            "zoom": 1.48,
+            "focusX": 62,
+            "focusY": 78
+          },
+          {
+            "at": 71.43,
+            "zoom": 1.46,
+            "focusX": 62,
+            "focusY": 78
+          },
+          {
+            "at": 79.05,
+            "zoom": 1.02,
+            "focusX": 50,
+            "focusY": 52
+          },
+          {
+            "at": 100.0,
+            "zoom": 1.02,
+            "focusX": 50,
+            "focusY": 52
+          }
+        ]
+      },
+      "overlays": [
+        {
+          "type": "orbitSystem",
+          "x": 48,
+          "y": 15,
+          "showCore": false,
+          "startFrame": 53,
+          "rings": [
+            {
+              "radius": 74,
+              "flatten": 0.34,
+              "tiltDeg": -20,
+              "color": "#FFD34D",
+              "opacity": 0.2,
+              "satelliteColor": "#FFD34D",
+              "satelliteSize": 7,
+              "secondsPerRevolution": 6.5,
+              "pulse": true,
+              "pulseColor": "#FFFFFF",
+              "pulseArcPercent": 16
+            },
+            {
+              "radius": 52,
+              "flatten": 0.3,
+              "tiltDeg": 14,
+              "color": "#FFFFFF",
+              "opacity": 0.14,
+              "satelliteColor": "#FFFFFF",
+              "satelliteSize": 5,
+              "secondsPerRevolution": 4.4,
+              "direction": "ccw",
+              "phase": 2.1
+            }
+          ]
+        },
+        {
+          "type": "orbitSystem",
+          "x": 66,
+          "y": 84,
+          "showCore": false,
+          "startFrame": 237,
+          "rings": [
+            {
+              "radius": 96,
+              "flatten": 0.32,
+              "tiltDeg": -16,
+              "color": "#FFD34D",
+              "opacity": 0.22,
+              "satelliteColor": "#FFD34D",
+              "satelliteSize": 9,
+              "secondsPerRevolution": 5.2,
+              "pulse": true,
+              "pulseColor": "#FFD34D",
+              "pulseArcPercent": 18
+            },
+            {
+              "radius": 66,
+              "flatten": 0.28,
+              "tiltDeg": 8,
+              "color": "#E85D5D",
+              "opacity": 0.16,
+              "satelliteColor": "#FFB05A",
+              "satelliteSize": 6,
+              "secondsPerRevolution": 3.6,
+              "direction": "ccw",
+              "phase": 1.2
+            }
+          ]
+        },
+        {
+          "type": "engineTrail",
+          "x": 44,
+          "y": 56,
+          "angleDeg": -38,
+          "length": 16,
+          "spread": 7,
+          "count": 14,
+          "color": "#FFE08A",
+          "travelSeconds": 0.8,
+          "seed": "s03-spark",
+          "startFrame": 145
+        },
+        {
+          "type": "glowPulse",
+          "x": 48,
+          "y": 16,
+          "radius": 210,
+          "color": "#FFD34D",
+          "periodSeconds": 3.1,
+          "minOpacity": 0.05,
+          "maxOpacity": 0.2,
+          "startFrame": 53
+        },
+        {
+          "type": "glowPulse",
+          "x": 39,
+          "y": 60,
+          "radius": 190,
+          "color": "#FFFFFF",
+          "periodSeconds": 4.3,
+          "minOpacity": 0.04,
+          "maxOpacity": 0.16,
+          "startFrame": 145
+        },
+        {
+          "type": "glowPulse",
+          "x": 66,
+          "y": 84,
+          "radius": 230,
+          "color": "#E85D5D",
+          "periodSeconds": 2.7,
+          "minOpacity": 0.05,
+          "maxOpacity": 0.22,
+          "startFrame": 237
+        },
+        {
+          "type": "starLayer",
+          "density": 0.3,
+          "opacity": 0.34,
+          "driftSpeed": 5,
+          "seed": "s03-field"
+        },
+        {
+          "type": "glowPulse",
+          "x": 49,
+          "y": 32,
+          "radius": 120,
+          "color": "#101A4A",
+          "periodSeconds": 0.75,
+          "minOpacity": 0.1,
+          "maxOpacity": 0.46,
+          "startFrame": 37,
+          "endFrame": 55
+        },
+        {
+          "type": "glowPulse",
+          "x": 39,
+          "y": 74,
+          "radius": 120,
+          "color": "#101A4A",
+          "periodSeconds": 0.75,
+          "minOpacity": 0.1,
+          "maxOpacity": 0.46,
+          "startFrame": 129,
+          "endFrame": 147
+        },
+        {
+          "type": "glowPulse",
+          "x": 66,
+          "y": 98,
+          "radius": 120,
+          "color": "#101A4A",
+          "periodSeconds": 0.75,
+          "minOpacity": 0.1,
+          "maxOpacity": 0.46,
+          "startFrame": 221,
+          "endFrame": 239
+        },
+        {
+          "type": "sprite",
+          "src": "images/si-nong/sprites/S03-scholar.png",
+          "x": 41.424418604651166,
+          "y": 1.3020833333333335,
+          "width": 16.71511627906977,
+          "height": 29.947916666666668,
+          "entrance": "elastic-drop",
+          "delayFrames": 40,
+          "entranceSpeed": 2.1,
+          "motionBlur": 22,
+          "weight": 1.0,
+          "alive": 0.85,
+          "arcPercent": 5,
+          "anticipateFrames": 9,
+          "anticipatePercent": 7
+        },
+        {
+          "type": "sprite",
+          "src": "images/si-nong/sprites/S03-scroll.png",
+          "x": 51.30813953488372,
+          "y": 2.864583333333333,
+          "width": 6.831395348837209,
+          "height": 19.53125,
+          "entrance": "elastic-drop",
+          "delayFrames": 40,
+          "entranceSpeed": 2.1,
+          "motionBlur": 22,
+          "weight": 0.7,
+          "alive": 0.6,
+          "arcPercent": 5,
+          "originX": 19,
+          "originY": 70,
+          "followThrough": 11,
+          "followSeconds": 1.1,
+          "anticipateFrames": 9,
+          "anticipatePercent": 7
+        },
+        {
+          "type": "sprite",
+          "src": "images/si-nong/sprites/S03-craft-body.png",
+          "x": 32.70348837209303,
+          "y": 44.27083333333333,
+          "width": 14.898255813953487,
+          "height": 27.994791666666668,
+          "entrance": "elastic-drop",
+          "delayFrames": 132,
+          "entranceSpeed": 2.1,
+          "motionBlur": 22,
+          "weight": 1.0,
+          "alive": 0.9,
+          "arcPercent": -5,
+          "phaseSeconds": 0.9,
+          "anticipateFrames": 9,
+          "anticipatePercent": 7
+        },
+        {
+          "type": "sprite",
+          "src": "images/si-nong/sprites/S03-craft-arm.png",
+          "x": 40.3343023255814,
+          "y": 47.78645833333333,
+          "width": 6.686046511627906,
+          "height": 13.411458333333334,
+          "entrance": "elastic-drop",
+          "delayFrames": 135,
+          "entranceSpeed": 1.85,
+          "motionBlur": 22,
+          "weight": 0.8,
+          "alive": 0.75,
+          "arcPercent": -6,
+          "originX": 7.6,
+          "originY": 51.5,
+          "swingDeg": 14,
+          "swingShape": "strike",
+          "periodSeconds": 1.45,
+          "phaseSeconds": 0.55,
+          "followThrough": 8,
+          "followSeconds": 0.8,
+          "anticipateFrames": 9,
+          "anticipatePercent": 7
+        },
+        {
+          "type": "sprite",
+          "src": "images/si-nong/sprites/S03-merchant.png",
+          "x": 58.502906976744185,
+          "y": 62.5,
+          "width": 17.078488372093023,
+          "height": 34.50520833333333,
+          "entrance": "elastic-drop",
+          "delayFrames": 224,
+          "entranceSpeed": 2.1,
+          "motionBlur": 22,
+          "weight": 1.0,
+          "alive": 1.0,
+          "arcPercent": 6,
+          "phaseSeconds": 1.7,
+          "followThrough": 6,
+          "followSeconds": 0.9,
+          "anticipateFrames": 9,
+          "anticipatePercent": 7
+        },
+        {
+          "type": "driftParticles",
+          "count": 26,
+          "angleDeg": 258,
+          "speed": 13,
+          "opacity": 0.34,
+          "colors": [
+            "#5AD7E8",
+            "#FFFFFF",
+            "#FFD34D"
+          ],
+          "seed": "s03-air"
+        },
+        {
+          "type": "sparkleBurst",
+          "x": 49,
+          "y": 29,
+          "atFrame": 53,
+          "count": 24,
+          "spread": 300,
+          "colors": [
+            "#FFD34D",
+            "#FFFFFF"
+          ]
+        },
+        {
+          "type": "flash",
+          "atFrame": 53,
+          "color": "#FFD34D",
+          "intensity": 0.28,
+          "releaseFrames": 6
+        },
+        {
+          "type": "sparkleBurst",
+          "x": 39,
+          "y": 71,
+          "atFrame": 145,
+          "count": 24,
+          "spread": 300,
+          "colors": [
+            "#FFFFFF",
+            "#FFD34D"
+          ]
+        },
+        {
+          "type": "flash",
+          "atFrame": 145,
+          "color": "#FFFFFF",
+          "intensity": 0.28,
+          "releaseFrames": 6
+        },
+        {
+          "type": "sparkleBurst",
+          "x": 66,
+          "y": 95,
+          "atFrame": 237,
+          "count": 24,
+          "spread": 300,
+          "colors": [
+            "#E85D5D",
+            "#FFFFFF"
+          ]
+        },
+        {
+          "type": "flash",
+          "atFrame": 237,
+          "color": "#E85D5D",
+          "intensity": 0.28,
+          "releaseFrames": 6
+        },
+        {
+          "type": "bigText",
+          "text": "bốn bậc",
+          "x": 50,
+          "y": 88,
+          "size": 54,
+          "color": "#FFFFFF",
+          "entrance": "fade-up",
+          "startFrame": 6,
+          "endFrame": 214
+        },
+        {
+          "type": "bigText",
+          "text": "người buôn xếp chót",
+          "x": 50,
+          "y": 88,
+          "size": 54,
+          "color": "#E85D5D",
+          "entrance": "stamp",
+          "startFrame": 238
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/riser.wav",
+          "volume": 0.46,
+          "startFrame": 37
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/whoosh.wav",
+          "volume": 0.61,
+          "startFrame": 41
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/impact.wav",
+          "volume": 0.95,
+          "startFrame": 53
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/sparkle.wav",
+          "volume": 0.43,
+          "startFrame": 55
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/riser.wav",
+          "volume": 0.46,
+          "startFrame": 129
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/whoosh.wav",
+          "volume": 0.61,
+          "startFrame": 133
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/impact.wav",
+          "volume": 0.95,
+          "startFrame": 145
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/sparkle.wav",
+          "volume": 0.43,
+          "startFrame": 147
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/riser.wav",
+          "volume": 0.46,
+          "startFrame": 221
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/whoosh.wav",
+          "volume": 0.61,
+          "startFrame": 225
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/impact.wav",
+          "volume": 0.95,
+          "startFrame": 237
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/sparkle.wav",
+          "volume": 0.43,
+          "startFrame": 239
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/sub.wav",
+          "volume": 0.8,
+          "startFrame": 332
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/pop.wav",
+          "volume": 0.49,
+          "startFrame": 238
+        }
+      ]
+    }
+  ]
+}

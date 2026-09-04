@@ -1,6 +1,8 @@
+import { BODY_FONT } from "../../theme/fonts";
 import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { useEntranceStyle } from "../../animation/useEntranceStyle";
-import type { Entrance } from "../../scenes/types";
+import type { Entrance, Idle } from "../../scenes/types";
+import { useFrameScale } from "../../animation/useFrameScale";
 
 export const DataBadgeOverlay: React.FC<{
   value: string;
@@ -11,10 +13,22 @@ export const DataBadgeOverlay: React.FC<{
   calloutTo?: { x: number; y: number };
   entrance?: Entrance;
   delayFrames?: number;
-}> = ({ value, label, x, y, accentColor, calloutTo, entrance = "pop", delayFrames = 0 }) => {
+  idle?: Idle;
+}> = ({
+  value,
+  label,
+  x,
+  y,
+  accentColor,
+  calloutTo,
+  entrance = "pop",
+  delayFrames = 0,
+  idle = "none",
+}) => {
   const frame = useCurrentFrame();
   const { width, height } = useVideoConfig();
-  const badge = useEntranceStyle(entrance, delayFrames);
+  const badge = useEntranceStyle(entrance, delayFrames, idle);
+  const scale = useFrameScale();
   const lineProgress = interpolate(frame - delayFrames, [4, 16], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
@@ -48,15 +62,17 @@ export const DataBadgeOverlay: React.FC<{
           top: `${y}%`,
           transform: `translate(-50%, -50%) ${badge.transform}`,
           opacity: badge.opacity,
+          filter: badge.filter,
+          clipPath: badge.clipPath,
         }}
       >
         <div
           style={{
-            width: 150,
-            height: 150,
+            width: 170 * scale,
+            height: 170 * scale,
             borderRadius: "50%",
             backgroundColor: accentColor,
-            border: "6px solid white",
+            border: `${6 * scale}px solid white`,
             boxShadow: "0 8px 20px rgba(0,0,0,0.3)",
             display: "flex",
             flexDirection: "column",
@@ -66,9 +82,9 @@ export const DataBadgeOverlay: React.FC<{
         >
           <div
             style={{
-              fontFamily: "Arial, sans-serif",
+              fontFamily: BODY_FONT,
               fontWeight: 900,
-              fontSize: 34,
+              fontSize: 38 * scale,
               color: "white",
               lineHeight: 1,
             }}
@@ -79,9 +95,9 @@ export const DataBadgeOverlay: React.FC<{
             <div
               style={{
                 marginTop: 6,
-                fontFamily: "Arial, sans-serif",
+                fontFamily: BODY_FONT,
                 fontWeight: 700,
-                fontSize: 13,
+                fontSize: 15 * scale,
                 color: "white",
                 textTransform: "uppercase",
                 letterSpacing: 1,

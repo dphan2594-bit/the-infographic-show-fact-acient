@@ -1,0 +1,158 @@
+{
+  "scenes": [
+    {
+      "id": "S05-suc-nang-2-thien-nien-ky",
+      "motion": "static",
+      "archetype": "S05 — Sức nặng 2 thiên niên kỷ (Scale-reveal zoom-out)",
+      "durationInFrames": 250,
+      "background": { "type": "image", "src": "images/si-nong/shot-01.jpg", "kenBurns": "none" },
+      "camera": {
+        "keyframes": [
+          { "at": 0, "zoom": 1.3, "focusX": 66, "focusY": 40 },
+          { "at": 60, "zoom": 1.18, "focusX": 58, "focusY": 45 },
+          { "at": 100, "zoom": 1.02, "focusX": 50, "focusY": 50 }
+        ],
+        "driftPercent": 0.45,
+        "driftSeconds": 10
+      },
+      "overlays": [
+        { "type": "glowPulse", "x": 28, "y": 34, "radius": 260, "color": "#FF9A3C",
+          "periodSeconds": 4.2, "minOpacity": 0.16, "maxOpacity": 0.44 },
+        { "type": "glowPulse", "x": 66, "y": 26, "radius": 150, "color": "#FFD08A",
+          "periodSeconds": 3.1, "minOpacity": 0.1, "maxOpacity": 0.34 },
+        { "type": "driftParticles", "count": 30, "angleDeg": 285, "speed": 12, "opacity": 0.45,
+          "colors": ["#FFC46B", "#FF8A5B"], "seed": "s05-dust" },
+        { "type": "engineTrail", "x": 30, "y": 40, "angleDeg": -8, "length": 30, "spread": 3,
+          "count": 9, "color": "#FFE3A8", "travelSeconds": 2.2, "startFrame": 96, "endFrame": 190 },
+        { "type": "sparkleBurst", "x": 64, "y": 34, "atFrame": 172, "count": 20, "spread": 260,
+          "colors": ["#FFD08A", "#FFF0C4"] },
+        { "type": "caption", "text": "Hai nghìn năm, cả một dân tộc xếp hàng dưới cùng một cái tháp.",
+          "entrance": "rise-float", "startFrame": 26 }
+      ]
+    },
+    {
+      "id": "S06-doi-chieu-nghe-hien-dai",
+      "motion": "static",
+      "archetype": "S06 — Đối chiếu nghề hiện đại (Split-screen slide)",
+      "durationInFrames": 330,
+      "background": { "type": "image", "src": "images/si-nong/shot-02.jpg", "kenBurns": "none" },
+      "camera": {
+        "keyframes": [
+          { "at": 0, "zoom": 1.12, "focusX": 30, "focusY": 45 },
+          { "at": 45, "zoom": 1.08, "focusX": 50, "focusY": 42 },
+          { "at": 100, "zoom": 1.14, "focusX": 70, "focusY": 48 }
+        ],
+        "driftPercent": 0.35,
+        "driftSeconds": 8
+      },
+      "overlays": [
+        { "type": "engineTrail", "x": 26, "y": 20, "angleDeg": 8, "length": 34, "spread": 2,
+          "count": 8, "color": "#5FE3F5", "travelSeconds": 1.1, "startFrame": 20, "endFrame": 120 },
+        { "type": "engineTrail", "x": 29, "y": 33, "angleDeg": 6, "length": 32, "spread": 2,
+          "count": 8, "color": "#FFE066", "travelSeconds": 1.1, "startFrame": 110, "endFrame": 210 },
+        { "type": "engineTrail", "x": 28, "y": 45, "angleDeg": 5, "length": 33, "spread": 2,
+          "count": 8, "color": "#FF6BD6", "travelSeconds": 1.1, "startFrame": 200, "endFrame": 300 },
+        { "type": "glowPulse", "x": 50, "y": 40, "radius": 130, "color": "#FF8A3C",
+          "periodSeconds": 2.2, "minOpacity": 0.14, "maxOpacity": 0.4 },
+        { "type": "caption", "text": "Bác sĩ, kỹ sư, giáo viên — nghề nào cũng từng có bản gốc thời cổ đại.",
+          "entrance": "rise-float", "startFrame": 24 }
+      ]
+    },
+    {
+      "id": "S07-khong-co-nghe-luat-su",
+      "motion": "static",
+      "archetype": "S07 — Không có nghề luật sư (Flat lateral pan)",
+      "durationInFrames": 330,
+      "background": { "type": "image", "src": "images/si-nong/shot-03.jpg", "kenBurns": "none" },
+      "camera": {
+        "keyframes": [
+          { "at": 0, "zoom": 1.2, "focusX": 22, "focusY": 45 },
+          { "at": 50, "zoom": 1.14, "focusX": 45, "focusY": 50 },
+          { "at": 100, "zoom": 1.18, "focusX": 70, "focusY": 50 }
+        ],
+        "driftPercent": 0.3,
+        "driftSeconds": 9
+      },
+      "overlays": [
+        { "type": "cutout", "src": "images/si-nong/shot-03.jpg",
+          "x": 10, "y": 16, "width": 18, "height": 42, "feather": 18, "idle": "breathe-still" },
+        { "type": "blink", "x": 18.3, "y": 24.1, "width": 1.7, "height": 1.0, "color": "#fd8e3c",
+          "periodSeconds": 4.1, "closedFrames": 3 },
+        { "type": "blink", "x": 20.0, "y": 24.1, "width": 1.7, "height": 1.0, "color": "#fd8e3c",
+          "periodSeconds": 4.1, "closedFrames": 3 },
+        { "type": "glowPulse", "x": 43, "y": 22, "radius": 120, "color": "#FFE8B0",
+          "periodSeconds": 3.6, "minOpacity": 0.12, "maxOpacity": 0.38 },
+        { "type": "cutout", "src": "images/si-nong/shot-03.jpg",
+          "x": 60, "y": 24, "width": 22, "height": 56, "feather": 20, "idle": "breathe-still" },
+        { "type": "engineTrail", "x": 70, "y": 55, "angleDeg": 152, "length": 28, "spread": 2,
+          "count": 10, "color": "#7FE8FF", "travelSeconds": 1.4, "startFrame": 150 },
+        { "type": "glowPulse", "x": 36, "y": 78, "radius": 90, "color": "#B9D4FF",
+          "periodSeconds": 2.4, "minOpacity": 0.08, "maxOpacity": 0.3, "startFrame": 200 },
+        { "type": "caption", "text": "Không có luật sư. Chỉ có quan xử án — và người chép lời cho ông ta.",
+          "entrance": "rise-float", "startFrame": 30 }
+      ]
+    },
+    {
+      "id": "S10-dai-thuong-gia",
+      "motion": "static",
+      "archetype": "S10 — Đại thương gia giàu khủng khiếp (Scale-reveal zoom-out)",
+      "durationInFrames": 260,
+      "background": { "type": "image", "src": "images/si-nong/shot-04.jpg", "kenBurns": "none" },
+      "camera": {
+        "keyframes": [
+          { "at": 0, "zoom": 1.22, "focusX": 67, "focusY": 66 },
+          { "at": 55, "zoom": 1.16, "focusX": 62, "focusY": 58 },
+          { "at": 100, "zoom": 1.02, "focusX": 50, "focusY": 50 }
+        ],
+        "driftPercent": 0.4,
+        "driftSeconds": 9
+      },
+      "overlays": [
+        { "type": "cutout", "src": "images/si-nong/shot-04.jpg",
+          "x": 61.5, "y": 50, "width": 14, "height": 42, "feather": 16, "idle": "breathe-still" },
+        { "type": "blink", "x": 66.9, "y": 59.2, "width": 1.9, "height": 1.1, "color": "#fd8b62",
+          "periodSeconds": 3.4, "closedFrames": 3 },
+        { "type": "blink", "x": 68.9, "y": 59.0, "width": 1.9, "height": 1.1, "color": "#fd8b62",
+          "periodSeconds": 3.4, "closedFrames": 3 },
+        { "type": "driftParticles", "count": 26, "angleDeg": 250, "speed": 14, "opacity": 0.5,
+          "colors": ["#FFD34D", "#FFB020"], "seed": "s10-coins" },
+        { "type": "glowPulse", "x": 44, "y": 34, "radius": 150, "color": "#FFE08A",
+          "periodSeconds": 2.6, "minOpacity": 0.12, "maxOpacity": 0.42 },
+        { "type": "sparkleBurst", "x": 45, "y": 30, "atFrame": 34, "count": 16, "spread": 190,
+          "colors": ["#FFD34D", "#FFF0B0"] },
+        { "type": "dataBadge", "value": "×100", "label": "so với quan lại", "x": 20, "y": 30,
+          "accentColor": "#E0503A", "entrance": "elastic-drop", "idle": "float",
+          "delayFrames": 10, "startFrame": 96, "endFrame": 230 },
+        { "type": "caption", "text": "Một đại thương gia có thể giàu gấp trăm lần quan lại triều đình.",
+          "entrance": "rise-float", "startFrame": 20 }
+      ]
+    },
+    {
+      "id": "S04-ly-tuong-khong-phai-luat",
+      "motion": "static",
+      "archetype": "S04 — Lý tưởng, không phải luật (Static hold)",
+      "durationInFrames": 360,
+      "background": { "type": "image", "src": "images/si-nong/shot-05.jpg", "kenBurns": "none" },
+      "camera": {
+        "keyframes": [
+          { "at": 0, "zoom": 1.04, "focusX": 50, "focusY": 50 },
+          { "at": 100, "zoom": 1.22, "focusX": 60, "focusY": 42 }
+        ],
+        "driftPercent": 0.4,
+        "driftSeconds": 11
+      },
+      "overlays": [
+        { "type": "cutout", "src": "images/si-nong/shot-05.jpg",
+          "x": 11, "y": 29, "width": 36, "height": 71, "feather": 14, "idle": "breathe-still" },
+        { "type": "glowPulse", "x": 60, "y": 40, "radius": 230, "color": "#FFC46B",
+          "periodSeconds": 3.8, "minOpacity": 0.14, "maxOpacity": 0.44 },
+        { "type": "driftParticles", "count": 22, "angleDeg": 260, "speed": 10, "opacity": 0.4,
+          "colors": ["#FFD9A0", "#FFF0C4"], "seed": "s04-dust" },
+        { "type": "sparkleBurst", "x": 60, "y": 40, "atFrame": 250, "count": 18, "spread": 240,
+          "colors": ["#FFD9A0", "#FFF0C4"] },
+        { "type": "caption", "text": "Thứ bậc ấy là lý tưởng do sử gia viết ra — không phải luật pháp.",
+          "entrance": "rise-float", "startFrame": 28 }
+      ]
+    }
+  ]
+}

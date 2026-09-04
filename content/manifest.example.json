@@ -17,6 +17,8 @@
     "chapterSubtitle": "Kỳ quan cổ đại cuối cùng còn tồn tại",
     "backgroundColor": "#6B5CE0",
     "audio": "audio/scene-02-chapter.mp3",
+    "entrance": "stamp",
+    "captionEntrance": "fade-up",
     "transitionIn": { "type": "wipe", "direction": "from-left" }
   },
   {
@@ -26,7 +28,21 @@
     "image": "images/scene-03-builder.png",
     "audio": "audio/scene-03-builder.mp3",
     "caption": "Hơn 100.000 công nhân đã tham gia xây dựng công trình này.",
+    "captionEntrance": "fade-up",
     "kenBurns": "zoom-in",
+    "overlays": [
+      {
+        "type": "dataBadge",
+        "value": "100K+",
+        "label": "Công nhân",
+        "x": 72,
+        "y": 30,
+        "accentColor": "#F2A93B",
+        "entrance": "elastic-drop",
+        "idle": "float",
+        "delayFrames": 18
+      }
+    ],
     "transitionIn": { "type": "fade" }
   },
   {
@@ -40,6 +56,49 @@
     "fit": "contain",
     "letterboxColor": "#F3EEE1",
     "captionBar": { "color": "#F3EEE1", "heightPercent": 14, "position": "bottom" },
+    "transitionIn": { "type": "fade" }
+  },
+  {
+    "id": "space-example",
+    "motion": "animate",
+    "archetype": "Kurzgesagt space shot — không cần ảnh",
+    "space": { "variant": "starfield", "density": 1.1 },
+    "audio": "audio/scene-06-space.mp3",
+    "caption": "Backdrop vũ trụ vẽ hoàn toàn bằng code — sao nhấp nháy, tinh vân trôi.",
+    "captionEntrance": "rise-float",
+    "overlays": [
+      {
+        "type": "orbitSystem",
+        "x": 50,
+        "y": 34,
+        "coreRadius": 88,
+        "entrance": "squash-pop",
+        "idle": "breathe",
+        "rings": [
+          { "radius": 300, "secondsPerRevolution": 7 },
+          { "radius": 420, "flatten": 0.3, "tiltDeg": 14, "direction": "ccw", "phase": 1.9 }
+        ]
+      },
+      { "type": "sparkleBurst", "x": 50, "y": 34, "atFrame": 30 }
+    ],
+    "transitionIn": { "type": "fade" }
+  },
+  {
+    "id": "batch-example",
+    "episode": "01",
+    "motion": "static",
+    "archetype": "Mẫu cho pipeline hàng loạt — xem docs/BATCH-PIPELINE.md",
+    "image": "images/scene-07-space.png",
+    "audio": "audio/scene-07.mp3",
+    "caption": "Camera đẩy vào điểm nhấn, hiệu ứng khai báo bằng tên.",
+    "captionEntrance": "rise-float",
+    "camera": { "preset": "push-in", "focusX": 50, "focusY": 34 },
+    "cameraVertical": { "preset": "push-in-fast", "focusX": 50, "focusY": 42, "intensity": 1.2 },
+    "fx": [
+      "stars",
+      "dust",
+      { "type": "glow", "x": 50, "y": 34, "radius": 210, "color": "#FFF0B0" }
+    ],
     "transitionIn": { "type": "fade" }
   }
 ]

@@ -1,18 +1,36 @@
+import { BODY_FONT } from "../../theme/fonts";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { useEntranceStyle } from "../../animation/useEntranceStyle";
-import type { Entrance } from "../../scenes/types";
+import type { Entrance, Idle } from "../../scenes/types";
+import { useFrameScale } from "../../animation/useFrameScale";
 
 export const ChapterTitleOverlay: React.FC<{
   title: string;
   subtitle?: string;
   accentColor: string;
+  /**
+   * Dark scrim + diagonal pattern behind the text. On by default (it is what
+   * makes a solid-colour chapter card look like a card); turn it off over
+   * artwork or an animated backdrop that should stay visible.
+   */
+  plate?: boolean;
   entrance?: Entrance;
   delayFrames?: number;
-}> = ({ title, subtitle, accentColor, entrance = "pop", delayFrames = 0 }) => {
+  idle?: Idle;
+}> = ({
+  title,
+  subtitle,
+  accentColor,
+  plate = true,
+  entrance = "pop",
+  delayFrames = 0,
+  idle = "none",
+}) => {
   const frame = useCurrentFrame();
   const badge = useEntranceStyle("slideDown", delayFrames);
-  const titleStyle = useEntranceStyle(entrance, delayFrames + 4);
-  const subtitleStyle = useEntranceStyle("slideUp", delayFrames + 10);
+  const titleStyle = useEntranceStyle(entrance, delayFrames + 4, idle);
+  const subtitleStyle = useEntranceStyle("fade-up", delayFrames + 10);
+  const scale = useFrameScale();
   const patternShift = (frame * 0.6) % 80;
 
   return (
@@ -20,51 +38,58 @@ export const ChapterTitleOverlay: React.FC<{
       style={{
         alignItems: "center",
         justifyContent: "center",
-        background:
-          "radial-gradient(circle at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.45) 100%)",
+        background: plate
+          ? "radial-gradient(circle at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.45) 100%)"
+          : undefined,
         overflow: "hidden",
       }}
     >
-      <div
-        style={{
-          position: "absolute",
-          inset: -80,
-          backgroundImage:
-            "repeating-linear-gradient(45deg, rgba(255,255,255,0.07) 0, rgba(255,255,255,0.07) 2px, transparent 2px, transparent 40px)",
-          transform: `translate(${patternShift}px, ${patternShift}px)`,
-        }}
-      />
+      {plate ? (
+        <div
+          style={{
+            position: "absolute",
+            inset: -80,
+            backgroundImage:
+              "repeating-linear-gradient(45deg, rgba(255,255,255,0.07) 0, rgba(255,255,255,0.07) 2px, transparent 2px, transparent 40px)",
+            transform: `translate(${patternShift}px, ${patternShift}px)`,
+          }}
+        />
+      ) : null}
       <div style={{ textAlign: "center", padding: "0 8%", position: "relative" }}>
         <div
           style={{
             display: "inline-block",
-            padding: "6px 24px",
+            padding: `${7 * scale}px ${26 * scale}px`,
             borderRadius: 999,
             backgroundColor: accentColor,
             color: "white",
-            fontFamily: "Arial, sans-serif",
+            fontFamily: BODY_FONT,
             fontWeight: 700,
-            fontSize: 22,
+            fontSize: 24 * scale,
             letterSpacing: 2,
-            marginBottom: 24,
+            marginBottom: 26 * scale,
             textTransform: "uppercase",
             opacity: badge.opacity,
             transform: badge.transform,
+            filter: badge.filter,
+            clipPath: badge.clipPath,
           }}
         >
           Chapter
         </div>
         <div
           style={{
-            fontFamily: "Arial, sans-serif",
+            fontFamily: BODY_FONT,
             fontWeight: 900,
-            fontSize: 64,
+            fontSize: 68 * scale,
             color: "white",
             textShadow: "0 6px 0 rgba(0,0,0,0.25)",
             textTransform: "uppercase",
             lineHeight: 1.1,
             opacity: titleStyle.opacity,
             transform: titleStyle.transform,
+            filter: titleStyle.filter,
+            clipPath: titleStyle.clipPath,
           }}
         >
           {title}
@@ -72,13 +97,15 @@ export const ChapterTitleOverlay: React.FC<{
         {subtitle ? (
           <div
             style={{
-              marginTop: 20,
-              fontFamily: "Arial, sans-serif",
+              marginTop: 22 * scale,
+              fontFamily: BODY_FONT,
               fontWeight: 500,
-              fontSize: 28,
+              fontSize: 30 * scale,
               color: "rgba(255,255,255,0.9)",
               opacity: subtitleStyle.opacity,
               transform: subtitleStyle.transform,
+              filter: subtitleStyle.filter,
+              clipPath: subtitleStyle.clipPath,
             }}
           >
             {subtitle}

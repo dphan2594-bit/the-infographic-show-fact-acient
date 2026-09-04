@@ -1,0 +1,286 @@
+{
+  "scenes": [
+    {
+      "id": "S37-cta",
+      "motion": "static",
+      "archetype": "S37 — CTA",
+      "durationInFrames": 300,
+      "background": {
+        "type": "image",
+        "src": "images/si-nong/S37.jpg",
+        "kenBurns": "none"
+      },
+      "transitionIn": {
+        "type": "flash",
+        "color": "#FFD34D",
+        "intensity": 0.5,
+        "durationInFrames": 16
+      },
+      "camera": {
+        "keyframes": [
+          {
+            "at": 0.0,
+            "zoom": 1.05,
+            "focusX": 50,
+            "focusY": 48
+          },
+          {
+            "at": 23.33,
+            "zoom": 1.05,
+            "focusX": 50,
+            "focusY": 48
+          },
+          {
+            "at": 27.33,
+            "zoom": 1.2,
+            "focusX": 35,
+            "focusY": 32
+          },
+          {
+            "at": 50.0,
+            "zoom": 1.2,
+            "focusX": 35,
+            "focusY": 32
+          },
+          {
+            "at": 54.0,
+            "zoom": 1.35,
+            "focusX": 80,
+            "focusY": 35
+          },
+          {
+            "at": 74.67,
+            "zoom": 1.35,
+            "focusX": 80,
+            "focusY": 35
+          },
+          {
+            "at": 78.67,
+            "zoom": 1.05,
+            "focusX": 50,
+            "focusY": 48
+          },
+          {
+            "at": 100.0,
+            "zoom": 1.05,
+            "focusX": 50,
+            "focusY": 48
+          }
+        ],
+        "continueFromPrevious": true
+      },
+      "overlays": [
+        {
+          "type": "starLayer",
+          "density": 0.3,
+          "seed": "s37-stars",
+          "driftSpeed": 0,
+          "opacity": 0.2
+        },
+        {
+          "type": "glowPulse",
+          "x": 19,
+          "y": 20,
+          "radius": 100,
+          "color": "#FFD34D",
+          "periodSeconds": 2.2,
+          "minOpacity": 0.14,
+          "maxOpacity": 0.34
+        },
+        {
+          "type": "glowPulse",
+          "x": 48,
+          "y": 16,
+          "radius": 100,
+          "color": "#FFB84D",
+          "periodSeconds": 2.4,
+          "minOpacity": 0.14,
+          "maxOpacity": 0.34
+        },
+        {
+          "type": "glowPulse",
+          "x": 80,
+          "y": 20,
+          "radius": 100,
+          "color": "#5AD7E8",
+          "periodSeconds": 2.6,
+          "minOpacity": 0.14,
+          "maxOpacity": 0.34
+        },
+        {
+          "type": "driftParticles",
+          "count": 16,
+          "angleDeg": 90,
+          "speed": 3,
+          "opacity": 0.16,
+          "colors": [
+            "#FFFFFF",
+            "#5AD7E8"
+          ],
+          "seed": "s37-dust"
+        },
+        {
+          "type": "spotlight",
+          "x": 50,
+          "y": 40,
+          "radiusX": 48,
+          "radiusY": 34,
+          "darkness": 0.34,
+          "softness": 0.5,
+          "startFrame": 0,
+          "endFrame": 74
+        },
+        {
+          "type": "bigText",
+          "text": "CÒN NHỮNG NỀN VĂN MINH KHÁC THÌ SAO?",
+          "x": 50,
+          "y": 8,
+          "size": 40,
+          "color": "#FFFFFF",
+          "entrance": "squash-pop",
+          "plate": true,
+          "startFrame": 6,
+          "endFrame": 72
+        },
+        {
+          "type": "flash",
+          "atFrame": 82,
+          "color": "#FFD34D",
+          "intensity": 0.26,
+          "releaseFrames": 8
+        },
+        {
+          "type": "calloutRing",
+          "x": 35,
+          "y": 30,
+          "radiusX": 32,
+          "radiusY": 26,
+          "color": "#FFD34D",
+          "strokeWidth": 5,
+          "drawFrames": 13,
+          "pulse": true,
+          "startFrame": 86,
+          "endFrame": 150
+        },
+        {
+          "type": "bigText",
+          "text": "AI CẬP, LA MÃ CỔ ĐẠI...",
+          "x": 50,
+          "y": 8,
+          "size": 46,
+          "color": "#FFD34D",
+          "entrance": "stamp",
+          "plate": true,
+          "startFrame": 90,
+          "endFrame": 148
+        },
+        {
+          "type": "flash",
+          "atFrame": 158,
+          "color": "#5AD7E8",
+          "intensity": 0.3,
+          "releaseFrames": 9
+        },
+        {
+          "type": "calloutRing",
+          "x": 80,
+          "y": 35,
+          "radiusX": 18,
+          "radiusY": 32,
+          "color": "#5AD7E8",
+          "strokeWidth": 6,
+          "drawFrames": 14,
+          "dashed": true,
+          "startFrame": 162,
+          "endFrame": 226
+        },
+        {
+          "type": "bigText",
+          "text": "...VÀ NỀN VĂN MINH MAYA?",
+          "x": 50,
+          "y": 8,
+          "size": 46,
+          "color": "#5AD7E8",
+          "entrance": "squash-pop",
+          "plate": true,
+          "startFrame": 166,
+          "endFrame": 224
+        },
+        {
+          "type": "flash",
+          "atFrame": 234,
+          "color": "#FFFFFF",
+          "intensity": 0.3,
+          "releaseFrames": 9
+        },
+        {
+          "type": "sparkleBurst",
+          "x": 50,
+          "y": 40,
+          "atFrame": 6,
+          "count": 24,
+          "spread": 320,
+          "colors": [
+            "#FFD34D",
+            "#5AD7E8",
+            "#FFFFFF"
+          ],
+          "startFrame": 238
+        },
+        {
+          "type": "bigText",
+          "text": "HẸN GẶP LẠI Ở TẬP SAU",
+          "x": 50,
+          "y": 8,
+          "size": 54,
+          "color": "#FFD34D",
+          "entrance": "stamp",
+          "plate": true,
+          "startFrame": 240
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/whoosh.wav",
+          "volume": 0.3,
+          "startFrame": 2
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/pop.wav",
+          "volume": 0.34,
+          "startFrame": 84
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/riser.wav",
+          "volume": 0.3,
+          "startFrame": 148
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/impact.wav",
+          "volume": 0.6,
+          "startFrame": 160
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/riser.wav",
+          "volume": 0.3,
+          "startFrame": 224
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/impact.wav",
+          "volume": 0.7,
+          "startFrame": 236
+        },
+        {
+          "type": "sfx",
+          "src": "audio/sfx/sparkle.wav",
+          "volume": 0.34,
+          "startFrame": 240
+        }
+      ]
+    }
+  ]
+}

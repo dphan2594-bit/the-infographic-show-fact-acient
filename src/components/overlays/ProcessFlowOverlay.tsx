@@ -1,5 +1,7 @@
+import { BODY_FONT } from "../../theme/fonts";
 import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { useEntranceStyle } from "../../animation/useEntranceStyle";
+import type { Entrance, Idle } from "../../scenes/types";
 
 const BOX_SIZE = 160;
 
@@ -13,7 +15,18 @@ export const ProcessFlowOverlay: React.FC<{
   accentColor: string;
   y: number;
   staggerFrames?: number;
-}> = ({ steps, accentColor, y, staggerFrames = 12 }) => {
+  entrance?: Entrance;
+  delayFrames?: number;
+  idle?: Idle;
+}> = ({
+  steps,
+  accentColor,
+  y,
+  staggerFrames = 12,
+  entrance = "pop",
+  delayFrames = 0,
+  idle = "none",
+}) => {
   const frame = useCurrentFrame();
   const { width, height } = useVideoConfig();
   const centerY = (y / 100) * height;
@@ -31,7 +44,7 @@ export const ProcessFlowOverlay: React.FC<{
           const nextCx = centers[i + 1];
           const startX = cx + BOX_SIZE / 2;
           const endX = nextCx - BOX_SIZE / 2;
-          const delay = (i + 1) * staggerFrames;
+          const delay = delayFrames + (i + 1) * staggerFrames;
           const reveal = interpolate(frame - delay, [0, 12], [0, 1], {
             extrapolateLeft: "clamp",
             extrapolateRight: "clamp",
@@ -52,7 +65,9 @@ export const ProcessFlowOverlay: React.FC<{
                 <polygon
                   points={`${endX - 4},${centerY - 16} ${endX + 14},${centerY} ${endX - 4},${centerY + 16}`}
                   fill="white"
-                  opacity={interpolate(reveal, [0.85, 1], [0, 1], { extrapolateLeft: "clamp" })}
+                  opacity={interpolate(reveal, [0.85, 1], [0, 1], {
+                    extrapolateLeft: "clamp",
+                  })}
                 />
               ) : null}
             </g>
@@ -66,7 +81,9 @@ export const ProcessFlowOverlay: React.FC<{
           x={centers[i]}
           y={centerY}
           accentColor={accentColor}
-          delayFrames={i * staggerFrames}
+          entrance={entrance}
+          delayFrames={delayFrames + i * staggerFrames}
+          idle={idle}
         />
       ))}
     </AbsoluteFill>
@@ -78,9 +95,11 @@ const ProcessFlowNode: React.FC<{
   x: number;
   y: number;
   accentColor: string;
+  entrance: Entrance;
   delayFrames: number;
-}> = ({ label, x, y, accentColor, delayFrames }) => {
-  const { opacity, transform } = useEntranceStyle("pop", delayFrames);
+  idle: Idle;
+}> = ({ label, x, y, accentColor, entrance, delayFrames, idle }) => {
+  const { opacity, transform, filter, clipPath } = useEntranceStyle(entrance, delayFrames, idle);
 
   return (
     <div
@@ -90,6 +109,8 @@ const ProcessFlowNode: React.FC<{
         top: y,
         transform: `translate(-50%, -50%) ${transform}`,
         opacity,
+        filter,
+        clipPath,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -123,7 +144,7 @@ const ProcessFlowNode: React.FC<{
           borderRadius: 8,
           backgroundColor: "rgba(0,0,0,0.65)",
           color: "white",
-          fontFamily: "Arial, sans-serif",
+          fontFamily: BODY_FONT,
           fontWeight: 700,
           fontSize: 16,
           textTransform: "uppercase",

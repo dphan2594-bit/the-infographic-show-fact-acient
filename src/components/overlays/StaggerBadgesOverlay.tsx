@@ -1,6 +1,8 @@
+import { BODY_FONT } from "../../theme/fonts";
 import { AbsoluteFill } from "remotion";
 import { useEntranceStyle } from "../../animation/useEntranceStyle";
-import type { Entrance } from "../../scenes/types";
+import type { Entrance, Idle } from "../../scenes/types";
+import { useFrameScale } from "../../animation/useFrameScale";
 
 const StaggerItem: React.FC<{
   icon: string;
@@ -8,10 +10,12 @@ const StaggerItem: React.FC<{
   x: number;
   y: number;
   accentColor: string;
-  entrance: Extract<Entrance, "pop" | "slideUp" | "fade">;
+  entrance: Entrance;
   delayFrames: number;
-}> = ({ icon, label, x, y, accentColor, entrance, delayFrames }) => {
-  const { opacity, transform } = useEntranceStyle(entrance, delayFrames);
+  idle: Idle;
+}> = ({ icon, label, x, y, accentColor, entrance, delayFrames, idle }) => {
+  const { opacity, transform, filter, clipPath } = useEntranceStyle(entrance, delayFrames, idle);
+  const scale = useFrameScale();
 
   return (
     <div
@@ -21,6 +25,8 @@ const StaggerItem: React.FC<{
         top: `${y}%`,
         transform: `translate(-50%, -50%) ${transform}`,
         opacity,
+        filter,
+        clipPath,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -29,16 +35,16 @@ const StaggerItem: React.FC<{
     >
       <div
         style={{
-          width: 110,
-          height: 110,
+          width: 120 * scale,
+          height: 120 * scale,
           borderRadius: "50%",
           backgroundColor: accentColor,
-          border: "6px solid white",
+          border: `${6 * scale}px solid white`,
           boxShadow: "0 6px 16px rgba(0,0,0,0.25)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontSize: 46,
+          fontSize: 50 * scale,
         }}
       >
         {icon}
@@ -49,9 +55,9 @@ const StaggerItem: React.FC<{
           borderRadius: 8,
           backgroundColor: "rgba(0,0,0,0.65)",
           color: "white",
-          fontFamily: "Arial, sans-serif",
+          fontFamily: BODY_FONT,
           fontWeight: 700,
-          fontSize: 15,
+          fontSize: 17 * scale,
           textTransform: "uppercase",
           letterSpacing: 1,
           whiteSpace: "nowrap",
@@ -71,8 +77,17 @@ export const StaggerBadgesOverlay: React.FC<{
   items: { icon: string; label: string; x: number; y: number }[];
   accentColor: string;
   staggerFrames?: number;
-  entrance?: Extract<Entrance, "pop" | "slideUp" | "fade">;
-}> = ({ items, accentColor, staggerFrames = 8, entrance = "pop" }) => {
+  entrance?: Entrance;
+  delayFrames?: number;
+  idle?: Idle;
+}> = ({
+  items,
+  accentColor,
+  staggerFrames = 8,
+  entrance = "pop",
+  delayFrames = 0,
+  idle = "none",
+}) => {
   return (
     <AbsoluteFill>
       {items.map((item, i) => (
@@ -81,7 +96,8 @@ export const StaggerBadgesOverlay: React.FC<{
           {...item}
           accentColor={accentColor}
           entrance={entrance}
-          delayFrames={i * staggerFrames}
+          delayFrames={delayFrames + i * staggerFrames}
+          idle={idle}
         />
       ))}
     </AbsoluteFill>

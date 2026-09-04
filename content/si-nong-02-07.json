@@ -1,0 +1,1830 @@
+{
+  "scenes": [
+    {
+      "id": "S02-he-thong-xep-hang-dao-duc",
+      "motion": "static",
+      "archetype": "S02 — Hệ thống xếp hạng đạo đức",
+      "durationInFrames": 1032,
+      "background": {
+        "type": "image",
+        "src": "images/si-nong/S02.jpg",
+        "kenBurns": "none"
+      },
+      "camera": {
+        "driftPercent": 0.3,
+        "driftSeconds": 9,
+        "keyframes": [
+          {
+            "at": 0.0,
+            "zoom": 1.24,
+            "focusX": 30,
+            "focusY": 64
+          },
+          {
+            "at": 13.57,
+            "zoom": 1.22,
+            "focusX": 30,
+            "focusY": 64
+          },
+          {
+            "at": 17.44,
+            "zoom": 1.06,
+            "focusX": 50,
+            "focusY": 48
+          },
+          {
+            "at": 31.01,
+            "zoom": 1.08,
+            "focusX": 50,
+            "focusY": 48
+          },
+          {
+            "at": 34.4,
+            "zoom": 1.26,
+            "focusX": 29,
+            "focusY": 43
+          },
+          {
+            "at": 50.87,
+            "zoom": 1.24,
+            "focusX": 29,
+            "focusY": 43
+          },
+          {
+            "at": 54.26,
+            "zoom": 1.1,
+            "focusX": 50,
+            "focusY": 50
+          },
+          {
+            "at": 65.89,
+            "zoom": 1.12,
+            "focusX": 50,
+            "focusY": 50
+          },
+          {
+            "at": 69.28,
+            "zoom": 1.26,
+            "focusX": 26,
+            "focusY": 68
+          },
+          {
+            "at": 82.36,
+            "zoom": 1.24,
+            "focusX": 26,
+            "focusY": 68
+          },
+          {
+            "at": 85.47,
+            "zoom": 1.06,
+            "focusX": 50,
+            "focusY": 52
+          },
+          {
+            "at": 92.83,
+            "zoom": 1.05,
+            "focusX": 50,
+            "focusY": 52
+          },
+          {
+            "at": 100.0,
+            "zoom": 1.18,
+            "focusX": 38,
+            "focusY": 66
+          }
+        ]
+      },
+      "overlays": [
+        {
+          "type": "spotlight",
+          "x": 30,
+          "y": 66,
+          "radiusX": 17,
+          "radiusY": 24,
+          "darkness": 0.66,
+          "softness": 0.5,
+          "startFrame": 0,
+          "endFrame": 160
+        },
+        {
+          "type": "calloutRing",
+          "x": 30,
+          "y": 66,
+          "radiusX": 6,
+          "radiusY": 13,
+          "color": "#FFFFFF",
+          "strokeWidth": 5,
+          "drawFrames": 16,
+          "dashed": true,
+          "pulse": true,
+          "startFrame": 10,
+          "endFrame": 160
+        },
+        {
+          "type": "cutout",
+          "src": "images/si-nong/S02.jpg",
+          "x": 25,
+          "y": 58,
+          "width": 10,
+          "height": 24,
+          "feather": 16,
+          "idle": "breathe-still",
+          "startFrame": 0,
+          "endFrame": 160
+        },
+        {
+          "type": "bigText",
+          "text": "AI XẾP HẠNG\nCẢ XÃ HỘI?",
+          "x": 50,
+          "y": 22,
+          "size": 86,
+          "color": "#FFFFFF",
+          "entrance": "squash-pop",
+          "plate": true,
+          "startFrame": 8,
+          "endFrame": 158
+        },
+        {
+          "type": "driftParticles",
+          "count": 46,
+          "angleDeg": 268,
+          "speed": 22,
+          "opacity": 0.55,
+          "colors": [
+            "#FFD34D",
+            "#FFE08A",
+            "#FFFFFF"
+          ],
+          "seed": "s02-time",
+          "startFrame": 168,
+          "endFrame": 330
+        },
+        {
+          "type": "bigText",
+          "text": "2000 NĂM",
+          "x": 50,
+          "y": 22,
+          "size": 104,
+          "color": "#FFD34D",
+          "subtitle": "triều đại nào cũng giữ nguyên thứ bậc",
+          "entrance": "squash-pop",
+          "plate": true,
+          "startFrame": 176,
+          "endFrame": 328
+        },
+        {
+          "type": "cutout",
+          "src": "images/si-nong/S02.jpg",
+          "x": 17,
+          "y": 31,
+          "width": 25,
+          "height": 27,
+          "feather": 15,
+          "idle": "float",
+          "startFrame": 336,
+          "endFrame": 540
+        },
+        {
+          "type": "cutout",
+          "src": "images/si-nong/S02.jpg",
+          "x": 58,
+          "y": 57,
+          "width": 29,
+          "height": 29,
+          "feather": 15,
+          "idle": "sway",
+          "startFrame": 336,
+          "endFrame": 540
+        },
+        {
+          "type": "calloutRing",
+          "x": 29,
+          "y": 43,
+          "radiusX": 14,
+          "radiusY": 15,
+          "color": "#FFD34D",
+          "strokeWidth": 6,
+          "drawFrames": 18,
+          "pulse": true,
+          "startFrame": 346,
+          "endFrame": 540
+        },
+        {
+          "type": "bigText",
+          "text": "TIỀN NẶNG NHẤT",
+          "x": 50,
+          "y": 20,
+          "size": 90,
+          "color": "#FFD34D",
+          "entrance": "squash-pop",
+          "plate": true,
+          "startFrame": 352,
+          "endFrame": 538
+        },
+        {
+          "type": "flash",
+          "atFrame": 548,
+          "color": "#FFE9C7",
+          "intensity": 0.55,
+          "releaseFrames": 10
+        },
+        {
+          "type": "bigText",
+          "text": "NHƯNG ĐẠO ĐỨC\nMỚI ĐỊNH THỨ BẬC",
+          "x": 50,
+          "y": 50,
+          "size": 84,
+          "color": "#FFFFFF",
+          "entrance": "stamp",
+          "plate": true,
+          "startFrame": 552,
+          "endFrame": 690
+        },
+        {
+          "type": "spotlight",
+          "x": 26,
+          "y": 68,
+          "radiusX": 22,
+          "radiusY": 26,
+          "darkness": 0.62,
+          "softness": 0.5,
+          "startFrame": 700,
+          "endFrame": 860
+        },
+        {
+          "type": "calloutRing",
+          "x": 19,
+          "y": 66,
+          "radiusX": 4.5,
+          "radiusY": 11,
+          "color": "#FFFFFF",
+          "strokeWidth": 4,
+          "drawFrames": 12,
+          "startFrame": 706,
+          "endFrame": 860
+        },
+        {
+          "type": "calloutRing",
+          "x": 27,
+          "y": 67,
+          "radiusX": 4.5,
+          "radiusY": 11,
+          "color": "#FFFFFF",
+          "strokeWidth": 4,
+          "drawFrames": 12,
+          "startFrame": 722,
+          "endFrame": 860
+        },
+        {
+          "type": "calloutRing",
+          "x": 37,
+          "y": 66,
+          "radiusX": 4.5,
+          "radiusY": 11,
+          "color": "#FFFFFF",
+          "strokeWidth": 4,
+          "drawFrames": 12,
+          "startFrame": 738,
+          "endFrame": 860
+        },
+        {
+          "type": "bigText",
+          "text": "NGHỀ NÀO CŨNG\nCÓ CHỖ CỦA NÓ",
+          "x": 50,
+          "y": 22,
+          "size": 80,
+          "color": "#FFFFFF",
+          "entrance": "squash-pop",
+          "plate": true,
+          "startFrame": 712,
+          "endFrame": 858
+        },
+        {
+          "type": "glowPulse",
+          "x": 50,
+          "y": 50,
+          "radius": 420,
+          "color": "#8FD8FF",
+          "periodSeconds": 2.8,
+          "minOpacity": 0.1,
+          "maxOpacity": 0.3,
+          "startFrame": 870,
+          "endFrame": 960
+        },
+        {
+          "type": "bigText",
+          "text": "TRỪ MỘT NGHỀ",
+          "x": 50,
+          "y": 22,
+          "size": 98,
+          "color": "#E85D5D",
+          "entrance": "stamp",
+          "plate": true,
+          "startFrame": 876,
+          "endFrame": 958
+        },
+        {
+          "type": "sparkleBurst",
+          "x": 37,
+          "y": 68,
+          "atFrame": 8,
+          "count": 28,
+          "spread": 300,
+          "colors": [
+            "#E85D5D",
+            "#FFFFFF"
+          ],
+          "startFrame": 968
+        },
+        {
+          "type": "driftParticles",
+          "count": 40,
+          "angleDeg": 92,
+          "speed": 26,
+          "opacity": 0.6,
+          "colors": [
+            "#E85D5D",
+            "#FFFFFF"
+          ],
+          "seed": "s02-dissolve",
+          "startFrame": 968
+        }
+      ]
+    },
+    {
+      "id": "S03-bon-tang-lop",
+      "motion": "static",
+      "archetype": "S03 — Bốn tầng lớp",
+      "durationInFrames": 1320,
+      "background": {
+        "type": "image",
+        "src": "images/si-nong/S03.jpg",
+        "kenBurns": "none"
+      },
+      "transitionIn": {
+        "type": "flash",
+        "color": "#FFF4D6",
+        "durationInFrames": 10
+      },
+      "camera": {
+        "driftPercent": 0.25,
+        "driftSeconds": 8,
+        "keyframes": [
+          {
+            "at": 0.0,
+            "zoom": 1.5,
+            "focusX": 50,
+            "focusY": 18
+          },
+          {
+            "at": 14.02,
+            "zoom": 1.46,
+            "focusX": 50,
+            "focusY": 18
+          },
+          {
+            "at": 16.82,
+            "zoom": 1.44,
+            "focusX": 58,
+            "focusY": 38
+          },
+          {
+            "at": 30.68,
+            "zoom": 1.42,
+            "focusX": 58,
+            "focusY": 38
+          },
+          {
+            "at": 33.48,
+            "zoom": 1.44,
+            "focusX": 40,
+            "focusY": 58
+          },
+          {
+            "at": 48.11,
+            "zoom": 1.42,
+            "focusX": 40,
+            "focusY": 58
+          },
+          {
+            "at": 50.91,
+            "zoom": 1.46,
+            "focusX": 64,
+            "focusY": 80
+          },
+          {
+            "at": 66.06,
+            "zoom": 1.44,
+            "focusX": 64,
+            "focusY": 80
+          },
+          {
+            "at": 68.03,
+            "zoom": 1.04,
+            "focusX": 50,
+            "focusY": 52
+          },
+          {
+            "at": 100.0,
+            "zoom": 1.02,
+            "focusX": 50,
+            "focusY": 52
+          }
+        ]
+      },
+      "overlays": [
+        {
+          "type": "spotlight",
+          "x": 48,
+          "y": 16,
+          "radiusX": 15,
+          "radiusY": 18,
+          "darkness": 0.58,
+          "softness": 0.5,
+          "startFrame": 0,
+          "endFrame": 200
+        },
+        {
+          "type": "cutout",
+          "src": "images/si-nong/S03.jpg",
+          "x": 42,
+          "y": 3,
+          "width": 13,
+          "height": 27,
+          "feather": 16,
+          "idle": "breathe-still",
+          "startFrame": 0,
+          "endFrame": 200
+        },
+        {
+          "type": "calloutRing",
+          "x": 48,
+          "y": 15,
+          "radiusX": 7.5,
+          "radiusY": 15,
+          "color": "#FFD34D",
+          "strokeWidth": 5,
+          "drawFrames": 16,
+          "startFrame": 12,
+          "endFrame": 200
+        },
+        {
+          "type": "bigText",
+          "text": "SĨ",
+          "x": 50,
+          "y": 76,
+          "size": 132,
+          "color": "#FFD34D",
+          "subtitle": "bậc 1 — người đọc sách",
+          "entrance": "squash-pop",
+          "plate": true,
+          "startFrame": 14,
+          "endFrame": 198
+        },
+        {
+          "type": "sparkleBurst",
+          "x": 48,
+          "y": 16,
+          "atFrame": 16,
+          "count": 22,
+          "spread": 220,
+          "colors": [
+            "#FFD34D",
+            "#FFFFFF"
+          ],
+          "startFrame": 0,
+          "endFrame": 200
+        },
+        {
+          "type": "flash",
+          "atFrame": 206,
+          "color": "#FFE9C7",
+          "intensity": 0.45,
+          "releaseFrames": 9
+        },
+        {
+          "type": "spotlight",
+          "x": 62,
+          "y": 38,
+          "radiusX": 16,
+          "radiusY": 18,
+          "darkness": 0.58,
+          "softness": 0.5,
+          "startFrame": 210,
+          "endFrame": 420
+        },
+        {
+          "type": "cutout",
+          "src": "images/si-nong/S03.jpg",
+          "x": 56,
+          "y": 22,
+          "width": 16,
+          "height": 31,
+          "feather": 16,
+          "idle": "sway",
+          "startFrame": 210,
+          "endFrame": 420
+        },
+        {
+          "type": "calloutRing",
+          "x": 62,
+          "y": 38,
+          "radiusX": 8.6,
+          "radiusY": 17,
+          "color": "#FFD34D",
+          "strokeWidth": 5,
+          "drawFrames": 16,
+          "startFrame": 222,
+          "endFrame": 420
+        },
+        {
+          "type": "bigText",
+          "text": "NÔNG",
+          "x": 50,
+          "y": 78,
+          "size": 124,
+          "color": "#FFFFFF",
+          "subtitle": "bậc 2 — người trồng lúa",
+          "entrance": "squash-pop",
+          "plate": true,
+          "startFrame": 224,
+          "endFrame": 418
+        },
+        {
+          "type": "flash",
+          "atFrame": 426,
+          "color": "#FFE9C7",
+          "intensity": 0.45,
+          "releaseFrames": 9
+        },
+        {
+          "type": "spotlight",
+          "x": 39,
+          "y": 60,
+          "radiusX": 16,
+          "radiusY": 18,
+          "darkness": 0.58,
+          "softness": 0.5,
+          "startFrame": 430,
+          "endFrame": 650
+        },
+        {
+          "type": "cutout",
+          "src": "images/si-nong/S03.jpg",
+          "x": 32,
+          "y": 44,
+          "width": 16,
+          "height": 31,
+          "feather": 16,
+          "idle": "breathe-still",
+          "startFrame": 430,
+          "endFrame": 650
+        },
+        {
+          "type": "calloutRing",
+          "x": 39,
+          "y": 60,
+          "radiusX": 8.6,
+          "radiusY": 17,
+          "color": "#FFD34D",
+          "strokeWidth": 5,
+          "drawFrames": 16,
+          "startFrame": 442,
+          "endFrame": 650
+        },
+        {
+          "type": "sparkleBurst",
+          "x": 45,
+          "y": 55,
+          "atFrame": 26,
+          "count": 18,
+          "spread": 180,
+          "colors": [
+            "#FFFFFF",
+            "#FFD34D"
+          ],
+          "startFrame": 430,
+          "endFrame": 650
+        },
+        {
+          "type": "bigText",
+          "text": "CÔNG",
+          "x": 50,
+          "y": 24,
+          "size": 124,
+          "color": "#FFFFFF",
+          "subtitle": "bậc 3 — thợ thủ công",
+          "entrance": "squash-pop",
+          "plate": true,
+          "startFrame": 444,
+          "endFrame": 648
+        },
+        {
+          "type": "flash",
+          "atFrame": 656,
+          "color": "#FFD9D9",
+          "intensity": 0.5,
+          "releaseFrames": 10
+        },
+        {
+          "type": "spotlight",
+          "x": 65,
+          "y": 82,
+          "radiusX": 16,
+          "radiusY": 18,
+          "darkness": 0.62,
+          "softness": 0.5,
+          "startFrame": 660,
+          "endFrame": 890
+        },
+        {
+          "type": "cutout",
+          "src": "images/si-nong/S03.jpg",
+          "x": 59,
+          "y": 66,
+          "width": 16,
+          "height": 30,
+          "feather": 16,
+          "idle": "breathe-still",
+          "startFrame": 660,
+          "endFrame": 890
+        },
+        {
+          "type": "calloutRing",
+          "x": 65,
+          "y": 82,
+          "radiusX": 8.6,
+          "radiusY": 16,
+          "color": "#E85D5D",
+          "strokeWidth": 6,
+          "drawFrames": 16,
+          "dashed": true,
+          "startFrame": 672,
+          "endFrame": 890
+        },
+        {
+          "type": "bigText",
+          "text": "THƯƠNG",
+          "x": 50,
+          "y": 24,
+          "size": 118,
+          "color": "#E85D5D",
+          "subtitle": "bậc 4 — người buôn bán",
+          "entrance": "stamp",
+          "plate": true,
+          "startFrame": 674,
+          "endFrame": 888
+        },
+        {
+          "type": "dataBadge",
+          "value": "1",
+          "label": "SĨ",
+          "x": 60,
+          "y": 16,
+          "accentColor": "#FFD34D",
+          "entrance": "pop",
+          "startFrame": 900
+        },
+        {
+          "type": "dataBadge",
+          "value": "2",
+          "label": "NÔNG",
+          "x": 36,
+          "y": 38,
+          "accentColor": "#FFD34D",
+          "entrance": "pop",
+          "delayFrames": 10,
+          "startFrame": 900
+        },
+        {
+          "type": "dataBadge",
+          "value": "3",
+          "label": "CÔNG",
+          "x": 62,
+          "y": 60,
+          "accentColor": "#FFD34D",
+          "entrance": "pop",
+          "delayFrames": 20,
+          "startFrame": 900
+        },
+        {
+          "type": "dataBadge",
+          "value": "4",
+          "label": "THƯƠNG",
+          "x": 30,
+          "y": 82,
+          "accentColor": "#E85D5D",
+          "entrance": "pop",
+          "delayFrames": 30,
+          "startFrame": 900
+        },
+        {
+          "type": "bigText",
+          "text": "BỐN BẬC — MỘT TRẬT TỰ",
+          "x": 50,
+          "y": 90,
+          "size": 62,
+          "color": "#FFFFFF",
+          "entrance": "fade-up",
+          "plate": true,
+          "startFrame": 950
+        }
+      ]
+    },
+    {
+      "id": "S04-ly-tuong-khong-phai-luat",
+      "motion": "static",
+      "archetype": "S04 — Lý tưởng, không phải luật",
+      "durationInFrames": 1212,
+      "background": {
+        "type": "image",
+        "src": "images/si-nong/S04.jpg",
+        "kenBurns": "none"
+      },
+      "transitionIn": {
+        "type": "dissolve",
+        "durationInFrames": 16
+      },
+      "camera": {
+        "driftPercent": 0.28,
+        "driftSeconds": 10,
+        "keyframes": [
+          {
+            "at": 0.0,
+            "zoom": 1.16,
+            "focusX": 62,
+            "focusY": 42
+          },
+          {
+            "at": 12.79,
+            "zoom": 1.14,
+            "focusX": 62,
+            "focusY": 42
+          },
+          {
+            "at": 15.84,
+            "zoom": 1.3,
+            "focusX": 44,
+            "focusY": 38
+          },
+          {
+            "at": 30.94,
+            "zoom": 1.28,
+            "focusX": 44,
+            "focusY": 38
+          },
+          {
+            "at": 33.83,
+            "zoom": 1.1,
+            "focusX": 50,
+            "focusY": 46
+          },
+          {
+            "at": 44.97,
+            "zoom": 1.12,
+            "focusX": 50,
+            "focusY": 46
+          },
+          {
+            "at": 47.85,
+            "zoom": 1.32,
+            "focusX": 52,
+            "focusY": 42
+          },
+          {
+            "at": 58.99,
+            "zoom": 1.3,
+            "focusX": 52,
+            "focusY": 42
+          },
+          {
+            "at": 62.05,
+            "zoom": 1.2,
+            "focusX": 64,
+            "focusY": 42
+          },
+          {
+            "at": 87.87,
+            "zoom": 1.28,
+            "focusX": 65,
+            "focusY": 42
+          },
+          {
+            "at": 100.0,
+            "zoom": 1.5,
+            "focusX": 65,
+            "focusY": 40
+          }
+        ]
+      },
+      "overlays": [
+        {
+          "type": "calloutRing",
+          "x": 65,
+          "y": 42,
+          "radiusX": 15,
+          "radiusY": 33,
+          "color": "#FFD34D",
+          "strokeWidth": 5,
+          "drawFrames": 22,
+          "dashed": true,
+          "pulse": true,
+          "startFrame": 6,
+          "endFrame": 170
+        },
+        {
+          "type": "bigText",
+          "text": "LÝ TƯỞNG",
+          "x": 50,
+          "y": 80,
+          "size": 92,
+          "color": "#FFD34D",
+          "subtitle": "được viết ra, không được ban hành",
+          "entrance": "squash-pop",
+          "plate": true,
+          "startFrame": 12,
+          "endFrame": 168
+        },
+        {
+          "type": "spotlight",
+          "x": 47,
+          "y": 40,
+          "radiusX": 22,
+          "radiusY": 26,
+          "darkness": 0.6,
+          "softness": 0.5,
+          "startFrame": 180,
+          "endFrame": 390
+        },
+        {
+          "type": "cutout",
+          "src": "images/si-nong/S04.jpg",
+          "x": 42,
+          "y": 35,
+          "width": 21,
+          "height": 24,
+          "feather": 18,
+          "idle": "sway",
+          "startFrame": 180,
+          "endFrame": 390
+        },
+        {
+          "type": "bigText",
+          "text": "NGƯỜI CHÉP SỬ",
+          "x": 50,
+          "y": 20,
+          "size": 86,
+          "color": "#FFFFFF",
+          "entrance": "squash-pop",
+          "plate": true,
+          "startFrame": 190,
+          "endFrame": 388
+        },
+        {
+          "type": "driftParticles",
+          "count": 42,
+          "angleDeg": 248,
+          "speed": 15,
+          "opacity": 0.5,
+          "colors": [
+            "#8FD8FF",
+            "#FFFFFF"
+          ],
+          "seed": "s04-cold",
+          "startFrame": 400,
+          "endFrame": 560
+        },
+        {
+          "type": "bigText",
+          "text": "KHÔNG PHẢI LUẬT",
+          "x": 50,
+          "y": 80,
+          "size": 88,
+          "color": "#FFFFFF",
+          "subtitle": "không ai bị phạt vì đi buôn",
+          "entrance": "stamp",
+          "plate": true,
+          "startFrame": 410,
+          "endFrame": 558
+        },
+        {
+          "type": "flash",
+          "atFrame": 568,
+          "color": "#FFE9C7",
+          "intensity": 0.5,
+          "releaseFrames": 10
+        },
+        {
+          "type": "cutout",
+          "src": "images/si-nong/S04.jpg",
+          "x": 42,
+          "y": 35,
+          "width": 21,
+          "height": 24,
+          "feather": 18,
+          "idle": "wiggle",
+          "startFrame": 572,
+          "endFrame": 730
+        },
+        {
+          "type": "sparkleBurst",
+          "x": 56,
+          "y": 42,
+          "atFrame": 10,
+          "count": 20,
+          "spread": 190,
+          "colors": [
+            "#FFD34D",
+            "#FFFFFF"
+          ],
+          "startFrame": 572,
+          "endFrame": 730
+        },
+        {
+          "type": "bigText",
+          "text": "NHƯNG AI CŨNG TIN",
+          "x": 50,
+          "y": 20,
+          "size": 84,
+          "color": "#FFD34D",
+          "entrance": "squash-pop",
+          "plate": true,
+          "startFrame": 580,
+          "endFrame": 728
+        },
+        {
+          "type": "glowPulse",
+          "x": 65,
+          "y": 42,
+          "radius": 300,
+          "color": "#FFD34D",
+          "periodSeconds": 2.6,
+          "minOpacity": 0.14,
+          "maxOpacity": 0.42,
+          "startFrame": 740,
+          "endFrame": 1080
+        },
+        {
+          "type": "spotlight",
+          "x": 65,
+          "y": 42,
+          "radiusX": 18,
+          "radiusY": 32,
+          "darkness": 0.68,
+          "softness": 0.52,
+          "startFrame": 900,
+          "endFrame": 1080
+        },
+        {
+          "type": "bigText",
+          "text": "VIẾT MỘT LẦN\nGIỮ HAI NGHÌN NĂM",
+          "x": 50,
+          "y": 78,
+          "size": 76,
+          "color": "#FFD34D",
+          "entrance": "fade-up",
+          "plate": true,
+          "startFrame": 910,
+          "endFrame": 1078
+        },
+        {
+          "type": "sparkleBurst",
+          "x": 65,
+          "y": 42,
+          "atFrame": 8,
+          "count": 34,
+          "spread": 340,
+          "colors": [
+            "#FFD34D",
+            "#FFFFFF"
+          ],
+          "startFrame": 1090
+        },
+        {
+          "type": "driftParticles",
+          "count": 46,
+          "angleDeg": 90,
+          "speed": 30,
+          "opacity": 0.65,
+          "colors": [
+            "#FFD34D",
+            "#FFFFFF"
+          ],
+          "seed": "s04-light",
+          "startFrame": 1090
+        }
+      ]
+    },
+    {
+      "id": "S05-suc-nang-hai-thien-nien-ky",
+      "motion": "static",
+      "archetype": "S05 — Sức nặng 2 thiên niên kỷ",
+      "durationInFrames": 624,
+      "background": {
+        "type": "image",
+        "src": "images/si-nong/S05.jpg",
+        "kenBurns": "none"
+      },
+      "transitionIn": {
+        "type": "zoom-through",
+        "durationInFrames": 18
+      },
+      "camera": {
+        "driftPercent": 0.3,
+        "driftSeconds": 9,
+        "keyframes": [
+          {
+            "at": 24.04,
+            "zoom": 1.38,
+            "focusX": 66,
+            "focusY": 34
+          },
+          {
+            "at": 56.89,
+            "zoom": 1.1,
+            "focusX": 54,
+            "focusY": 52
+          },
+          {
+            "at": 82.53,
+            "zoom": 1.04,
+            "focusX": 56,
+            "focusY": 54
+          },
+          {
+            "at": 100.0,
+            "zoom": 1.16,
+            "focusX": 64,
+            "focusY": 52
+          }
+        ],
+        "continueFromPrevious": true
+      },
+      "overlays": [
+        {
+          "type": "glowPulse",
+          "x": 66,
+          "y": 28,
+          "radius": 260,
+          "color": "#FFB05A",
+          "periodSeconds": 2.4,
+          "minOpacity": 0.12,
+          "maxOpacity": 0.38,
+          "startFrame": 0,
+          "endFrame": 150
+        },
+        {
+          "type": "glowPulse",
+          "x": 28,
+          "y": 32,
+          "radius": 230,
+          "color": "#FF8A4D",
+          "periodSeconds": 3.7,
+          "minOpacity": 0.1,
+          "maxOpacity": 0.34,
+          "startFrame": 0,
+          "endFrame": 150
+        },
+        {
+          "type": "bigText",
+          "text": "2000 NĂM",
+          "x": 50,
+          "y": 78,
+          "size": 106,
+          "color": "#FFD34D",
+          "entrance": "squash-pop",
+          "plate": true,
+          "startFrame": 8,
+          "endFrame": 148
+        },
+        {
+          "type": "bigText",
+          "text": "HÀNG TRIỆU NGƯỜI",
+          "x": 50,
+          "y": 22,
+          "size": 92,
+          "color": "#FFFFFF",
+          "subtitle": "sống trọn đời trong thứ bậc đó",
+          "entrance": "fade-up",
+          "plate": true,
+          "startFrame": 166,
+          "endFrame": 360
+        },
+        {
+          "type": "engineTrail",
+          "x": 30,
+          "y": 72,
+          "angleDeg": -16,
+          "length": 38,
+          "spread": 4,
+          "count": 20,
+          "color": "#FFFFFF",
+          "travelSeconds": 2.2,
+          "seed": "s05-travel",
+          "startFrame": 370,
+          "endFrame": 520
+        },
+        {
+          "type": "calloutRing",
+          "x": 66,
+          "y": 54,
+          "radiusX": 11.5,
+          "radiusY": 9,
+          "color": "#FFFFFF",
+          "strokeWidth": 5,
+          "drawFrames": 16,
+          "pulse": true,
+          "startFrame": 400,
+          "endFrame": 520
+        },
+        {
+          "type": "flash",
+          "atFrame": 530,
+          "color": "#FFE9C7",
+          "intensity": 0.55,
+          "releaseFrames": 10
+        },
+        {
+          "type": "sparkleBurst",
+          "x": 66,
+          "y": 52,
+          "atFrame": 6,
+          "count": 34,
+          "spread": 340,
+          "colors": [
+            "#FFD34D",
+            "#FFFFFF"
+          ],
+          "startFrame": 532
+        },
+        {
+          "type": "bigText",
+          "text": "VÀ NÓ CHƯA TAN",
+          "x": 50,
+          "y": 22,
+          "size": 94,
+          "color": "#FFD34D",
+          "entrance": "stamp",
+          "plate": true,
+          "startFrame": 538
+        }
+      ]
+    },
+    {
+      "id": "S06-doi-chieu-nghe-hien-dai",
+      "motion": "static",
+      "archetype": "S06 — Đối chiếu nghề hiện đại",
+      "durationInFrames": 1116,
+      "background": {
+        "type": "image",
+        "src": "images/si-nong/S06.jpg",
+        "kenBurns": "none"
+      },
+      "transitionIn": {
+        "type": "whip",
+        "direction": "from-right",
+        "durationInFrames": 18
+      },
+      "camera": {
+        "driftPercent": 0.28,
+        "driftSeconds": 8,
+        "keyframes": [
+          {
+            "at": 14.34,
+            "zoom": 1.26,
+            "focusX": 22,
+            "focusY": 45
+          },
+          {
+            "at": 16.85,
+            "zoom": 1.26,
+            "focusX": 22,
+            "focusY": 45
+          },
+          {
+            "at": 19.89,
+            "zoom": 1.26,
+            "focusX": 78,
+            "focusY": 45
+          },
+          {
+            "at": 33.87,
+            "zoom": 1.24,
+            "focusX": 78,
+            "focusY": 45
+          },
+          {
+            "at": 36.92,
+            "zoom": 1.26,
+            "focusX": 46,
+            "focusY": 22
+          },
+          {
+            "at": 49.1,
+            "zoom": 1.24,
+            "focusX": 46,
+            "focusY": 22
+          },
+          {
+            "at": 53.05,
+            "zoom": 1.26,
+            "focusX": 46,
+            "focusY": 38
+          },
+          {
+            "at": 64.07,
+            "zoom": 1.24,
+            "focusX": 46,
+            "focusY": 38
+          },
+          {
+            "at": 67.92,
+            "zoom": 1.28,
+            "focusX": 48,
+            "focusY": 52
+          },
+          {
+            "at": 79.03,
+            "zoom": 1.26,
+            "focusX": 48,
+            "focusY": 52
+          },
+          {
+            "at": 83.78,
+            "zoom": 1.02,
+            "focusX": 50,
+            "focusY": 50
+          },
+          {
+            "at": 100.0,
+            "zoom": 1.04,
+            "focusX": 50,
+            "focusY": 52
+          }
+        ],
+        "continueFromPrevious": true
+      },
+      "overlays": [
+        {
+          "type": "spotlight",
+          "x": 22,
+          "y": 45,
+          "radiusX": 22,
+          "radiusY": 30,
+          "darkness": 0.64,
+          "softness": 0.5,
+          "startFrame": 0,
+          "endFrame": 190
+        },
+        {
+          "type": "bigText",
+          "text": "HIỆN ĐẠI",
+          "x": 50,
+          "y": 84,
+          "size": 96,
+          "color": "#5AD7E8",
+          "entrance": "squash-pop",
+          "plate": true,
+          "startFrame": 10,
+          "endFrame": 188
+        },
+        {
+          "type": "flash",
+          "atFrame": 196,
+          "color": "#FFE9C7",
+          "intensity": 0.45,
+          "releaseFrames": 9
+        },
+        {
+          "type": "spotlight",
+          "x": 78,
+          "y": 45,
+          "radiusX": 22,
+          "radiusY": 30,
+          "darkness": 0.64,
+          "softness": 0.5,
+          "startFrame": 200,
+          "endFrame": 390
+        },
+        {
+          "type": "bigText",
+          "text": "CỔ ĐẠI",
+          "x": 50,
+          "y": 84,
+          "size": 96,
+          "color": "#FFD34D",
+          "entrance": "squash-pop",
+          "plate": true,
+          "startFrame": 210,
+          "endFrame": 388
+        },
+        {
+          "type": "calloutRing",
+          "x": 16,
+          "y": 22,
+          "radiusX": 8,
+          "radiusY": 15,
+          "color": "#5AD7E8",
+          "strokeWidth": 5,
+          "drawFrames": 16,
+          "pulse": true,
+          "startFrame": 400,
+          "endFrame": 560
+        },
+        {
+          "type": "glowPulse",
+          "x": 45,
+          "y": 17,
+          "radius": 210,
+          "color": "#5AD7E8",
+          "periodSeconds": 2.2,
+          "minOpacity": 0.12,
+          "maxOpacity": 0.36,
+          "startFrame": 410,
+          "endFrame": 560
+        },
+        {
+          "type": "sparkleBurst",
+          "x": 62,
+          "y": 20,
+          "atFrame": 52,
+          "count": 22,
+          "spread": 230,
+          "colors": [
+            "#5AD7E8",
+            "#FFFFFF"
+          ],
+          "startFrame": 400,
+          "endFrame": 560
+        },
+        {
+          "type": "bigText",
+          "text": "THẦY THUỐC → LANG Y",
+          "x": 50,
+          "y": 86,
+          "size": 66,
+          "color": "#5AD7E8",
+          "entrance": "fade-up",
+          "plate": true,
+          "startFrame": 412,
+          "endFrame": 558
+        },
+        {
+          "type": "calloutRing",
+          "x": 12,
+          "y": 58,
+          "radiusX": 8,
+          "radiusY": 15,
+          "color": "#FFD34D",
+          "strokeWidth": 5,
+          "drawFrames": 16,
+          "pulse": true,
+          "startFrame": 570,
+          "endFrame": 730
+        },
+        {
+          "type": "glowPulse",
+          "x": 45,
+          "y": 34,
+          "radius": 210,
+          "color": "#FFD34D",
+          "periodSeconds": 2.2,
+          "minOpacity": 0.12,
+          "maxOpacity": 0.36,
+          "startFrame": 580,
+          "endFrame": 730
+        },
+        {
+          "type": "sparkleBurst",
+          "x": 62,
+          "y": 36,
+          "atFrame": 52,
+          "count": 22,
+          "spread": 230,
+          "colors": [
+            "#FFD34D",
+            "#FFFFFF"
+          ],
+          "startFrame": 570,
+          "endFrame": 730
+        },
+        {
+          "type": "bigText",
+          "text": "GIÁO VIÊN → THẦY ĐỒ",
+          "x": 50,
+          "y": 86,
+          "size": 66,
+          "color": "#FFD34D",
+          "entrance": "fade-up",
+          "plate": true,
+          "startFrame": 582,
+          "endFrame": 728
+        },
+        {
+          "type": "flash",
+          "atFrame": 740,
+          "color": "#FFD6F2",
+          "intensity": 0.5,
+          "releaseFrames": 10
+        },
+        {
+          "type": "glowPulse",
+          "x": 45,
+          "y": 52,
+          "radius": 220,
+          "color": "#FF5AC8",
+          "periodSeconds": 1.8,
+          "minOpacity": 0.14,
+          "maxOpacity": 0.4,
+          "startFrame": 744,
+          "endFrame": 900
+        },
+        {
+          "type": "sparkleBurst",
+          "x": 63,
+          "y": 50,
+          "atFrame": 30,
+          "count": 26,
+          "spread": 280,
+          "colors": [
+            "#FF5AC8",
+            "#FFFFFF"
+          ],
+          "startFrame": 744,
+          "endFrame": 900
+        },
+        {
+          "type": "bigText",
+          "text": "KỸ SƯ → THỢ CẢ",
+          "x": 50,
+          "y": 86,
+          "size": 66,
+          "color": "#FF5AC8",
+          "entrance": "stamp",
+          "plate": true,
+          "startFrame": 752,
+          "endFrame": 898
+        },
+        {
+          "type": "spotlight",
+          "x": 50,
+          "y": 80,
+          "radiusX": 24,
+          "radiusY": 20,
+          "darkness": 0.66,
+          "softness": 0.5,
+          "startFrame": 910
+        },
+        {
+          "type": "calloutRing",
+          "x": 50,
+          "y": 80,
+          "radiusX": 18,
+          "radiusY": 17,
+          "color": "#FFFFFF",
+          "strokeWidth": 5,
+          "drawFrames": 18,
+          "dashed": true,
+          "startFrame": 918
+        },
+        {
+          "type": "bigText",
+          "text": "CÙNG MỘT NGHỀ",
+          "x": 50,
+          "y": 26,
+          "size": 92,
+          "color": "#FFFFFF",
+          "subtitle": "chỉ khác cái tên và chỗ đứng",
+          "entrance": "squash-pop",
+          "plate": true,
+          "startFrame": 924
+        }
+      ]
+    },
+    {
+      "id": "S07-khong-co-nghe-luat-su",
+      "motion": "static",
+      "archetype": "S07 — Không có nghề luật sư",
+      "durationInFrames": 1104,
+      "background": {
+        "type": "image",
+        "src": "images/si-nong/S07.jpg",
+        "kenBurns": "none"
+      },
+      "transitionIn": {
+        "type": "iris",
+        "durationInFrames": 18
+      },
+      "camera": {
+        "driftPercent": 0.28,
+        "driftSeconds": 9,
+        "keyframes": [
+          {
+            "at": 14.67,
+            "zoom": 1.2,
+            "focusX": 58,
+            "focusY": 38
+          },
+          {
+            "at": 17.75,
+            "zoom": 1.26,
+            "focusX": 22,
+            "focusY": 42
+          },
+          {
+            "at": 31.88,
+            "zoom": 1.24,
+            "focusX": 22,
+            "focusY": 42
+          },
+          {
+            "at": 34.96,
+            "zoom": 1.24,
+            "focusX": 38,
+            "focusY": 72
+          },
+          {
+            "at": 47.28,
+            "zoom": 1.22,
+            "focusX": 38,
+            "focusY": 72
+          },
+          {
+            "at": 50.36,
+            "zoom": 1.26,
+            "focusX": 80,
+            "focusY": 50
+          },
+          {
+            "at": 64.49,
+            "zoom": 1.24,
+            "focusX": 80,
+            "focusY": 50
+          },
+          {
+            "at": 67.57,
+            "zoom": 1.28,
+            "focusX": 72,
+            "focusY": 32
+          },
+          {
+            "at": 79.89,
+            "zoom": 1.26,
+            "focusX": 72,
+            "focusY": 32
+          },
+          {
+            "at": 82.97,
+            "zoom": 1.06,
+            "focusX": 50,
+            "focusY": 52
+          },
+          {
+            "at": 100.0,
+            "zoom": 1.1,
+            "focusX": 50,
+            "focusY": 54
+          }
+        ],
+        "continueFromPrevious": true
+      },
+      "overlays": [
+        {
+          "type": "glowPulse",
+          "x": 58,
+          "y": 36,
+          "radius": 280,
+          "color": "#BFE8FF",
+          "periodSeconds": 2.6,
+          "minOpacity": 0.1,
+          "maxOpacity": 0.34,
+          "startFrame": 0,
+          "endFrame": 180
+        },
+        {
+          "type": "driftParticles",
+          "count": 38,
+          "angleDeg": 90,
+          "speed": 26,
+          "opacity": 0.55,
+          "colors": [
+            "#BFE8FF",
+            "#FFFFFF"
+          ],
+          "seed": "s07-vanish",
+          "startFrame": 0,
+          "endFrame": 180
+        },
+        {
+          "type": "bigText",
+          "text": "KHÔNG CÓ\nLUẬT SƯ",
+          "x": 50,
+          "y": 26,
+          "size": 92,
+          "color": "#FFFFFF",
+          "entrance": "squash-pop",
+          "plate": true,
+          "startFrame": 10,
+          "endFrame": 178
+        },
+        {
+          "type": "flash",
+          "atFrame": 186,
+          "color": "#FFE9C7",
+          "intensity": 0.45,
+          "releaseFrames": 9
+        },
+        {
+          "type": "spotlight",
+          "x": 19,
+          "y": 44,
+          "radiusX": 19,
+          "radiusY": 30,
+          "darkness": 0.62,
+          "softness": 0.5,
+          "startFrame": 190,
+          "endFrame": 370
+        },
+        {
+          "type": "cutout",
+          "src": "images/si-nong/S07.jpg",
+          "x": 10,
+          "y": 20,
+          "width": 19,
+          "height": 42,
+          "feather": 16,
+          "idle": "breathe-still",
+          "startFrame": 190,
+          "endFrame": 370
+        },
+        {
+          "type": "bigText",
+          "text": "QUAN XỬ ÁN",
+          "x": 50,
+          "y": 80,
+          "size": 94,
+          "color": "#FFD34D",
+          "subtitle": "vừa điều tra, vừa kết tội, vừa tuyên án",
+          "entrance": "squash-pop",
+          "plate": true,
+          "startFrame": 200,
+          "endFrame": 368
+        },
+        {
+          "type": "cutout",
+          "src": "images/si-nong/S07.jpg",
+          "x": 13,
+          "y": 33,
+          "width": 13,
+          "height": 16,
+          "feather": 18,
+          "idle": "sway",
+          "startFrame": 380,
+          "endFrame": 540
+        },
+        {
+          "type": "calloutRing",
+          "x": 38,
+          "y": 78,
+          "radiusX": 14,
+          "radiusY": 8.5,
+          "color": "#FFD34D",
+          "strokeWidth": 5,
+          "drawFrames": 16,
+          "pulse": true,
+          "startFrame": 392,
+          "endFrame": 540
+        },
+        {
+          "type": "bigText",
+          "text": "TỰ XỬ, TỰ PHÁN",
+          "x": 50,
+          "y": 22,
+          "size": 90,
+          "color": "#FFFFFF",
+          "entrance": "stamp",
+          "plate": true,
+          "startFrame": 396,
+          "endFrame": 538
+        },
+        {
+          "type": "spotlight",
+          "x": 80,
+          "y": 52,
+          "radiusX": 19,
+          "radiusY": 32,
+          "darkness": 0.6,
+          "softness": 0.5,
+          "startFrame": 550,
+          "endFrame": 730
+        },
+        {
+          "type": "cutout",
+          "src": "images/si-nong/S07.jpg",
+          "x": 70,
+          "y": 32,
+          "width": 22,
+          "height": 56,
+          "feather": 16,
+          "idle": "breathe-still",
+          "startFrame": 550,
+          "endFrame": 730
+        },
+        {
+          "type": "bigText",
+          "text": "CHỈ CÓ NGƯỜI CHÉP",
+          "x": 50,
+          "y": 22,
+          "size": 88,
+          "color": "#5AD7E8",
+          "entrance": "squash-pop",
+          "plate": true,
+          "startFrame": 562,
+          "endFrame": 728
+        },
+        {
+          "type": "cutout",
+          "src": "images/si-nong/S07.jpg",
+          "x": 66,
+          "y": 20,
+          "width": 15,
+          "height": 23,
+          "feather": 18,
+          "idle": "sway",
+          "startFrame": 740,
+          "endFrame": 900
+        },
+        {
+          "type": "sparkleBurst",
+          "x": 72,
+          "y": 26,
+          "atFrame": 24,
+          "count": 20,
+          "spread": 190,
+          "colors": [
+            "#5AD7E8",
+            "#FFFFFF"
+          ],
+          "startFrame": 740,
+          "endFrame": 900
+        },
+        {
+          "type": "bigText",
+          "text": "SƯ GIA",
+          "x": 50,
+          "y": 80,
+          "size": 96,
+          "color": "#5AD7E8",
+          "subtitle": "người giúp việc, không phải người bào chữa",
+          "entrance": "squash-pop",
+          "plate": true,
+          "startFrame": 752,
+          "endFrame": 898
+        },
+        {
+          "type": "flash",
+          "atFrame": 906,
+          "color": "#D6F4FF",
+          "intensity": 0.5,
+          "releaseFrames": 10
+        },
+        {
+          "type": "engineTrail",
+          "x": 70,
+          "y": 30,
+          "angleDeg": 140,
+          "length": 42,
+          "spread": 4,
+          "count": 22,
+          "color": "#5AD7E8",
+          "travelSeconds": 2.4,
+          "seed": "s07-thread",
+          "startFrame": 910
+        },
+        {
+          "type": "calloutRing",
+          "x": 38,
+          "y": 78,
+          "radiusX": 14,
+          "radiusY": 8.5,
+          "color": "#5AD7E8",
+          "strokeWidth": 5,
+          "drawFrames": 18,
+          "dashed": true,
+          "startFrame": 980
+        },
+        {
+          "type": "bigText",
+          "text": "KHÔNG AI BÀO CHỮA",
+          "x": 50,
+          "y": 22,
+          "size": 90,
+          "color": "#FFFFFF",
+          "entrance": "stamp",
+          "plate": true,
+          "startFrame": 930
+        }
+      ]
+    }
+  ]
+}

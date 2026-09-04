@@ -1,14 +1,21 @@
 import { AbsoluteFill, OffthreadVideo, staticFile } from "remotion";
 import { KenBurnsImage } from "./KenBurnsImage";
+import { SpaceBackdrop } from "./space/SpaceBackdrop";
 import type { Background as BackgroundType } from "../scenes/types";
 
-const resolveSrc = (src: string) =>
-  src.startsWith("http") ? src : staticFile(src);
+const resolveSrc = (src: string) => (src.startsWith("http") ? src : staticFile(src));
 
 export const Background: React.FC<{
   background: BackgroundType;
   durationInFrames: number;
-}> = ({ background, durationInFrames }) => {
+  /** fallback crop focus, normally the camera's focus point for this frame */
+  focusX?: number;
+  focusY?: number;
+}> = ({ background, durationInFrames, focusX, focusY }) => {
+  if (background.type === "space") {
+    return <SpaceBackdrop background={background} />;
+  }
+
   if (background.type === "color") {
     return <AbsoluteFill style={{ backgroundColor: background.color }} />;
   }
@@ -20,7 +27,13 @@ export const Background: React.FC<{
       <AbsoluteFill style={{ overflow: "hidden" }}>
         <OffthreadVideo
           src={resolveSrc(background.src)}
-          style={{ width: "100%", height: "100%", objectFit: "cover", transform: "scale(1.03)" }}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            objectPosition: `${background.focusX ?? focusX ?? 50}% ${background.focusY ?? focusY ?? 50}%`,
+            transform: "scale(1.03)",
+          }}
         />
       </AbsoluteFill>
     );
@@ -33,6 +46,8 @@ export const Background: React.FC<{
       durationInFrames={durationInFrames}
       fit={background.fit}
       letterboxColor={background.letterboxColor}
+      focusX={background.focusX ?? focusX}
+      focusY={background.focusY ?? focusY}
     />
   );
 };
