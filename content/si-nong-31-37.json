@@ -256,7 +256,7 @@
       "durationInFrames": 300,
       "background": {
         "type": "image",
-        "src": "images/si-nong/S32.jpg",
+        "src": "images/si-nong/sprites/S32-m1-plate.png",
         "kenBurns": "none"
       },
       "transitionIn": {
@@ -327,7 +327,7 @@
           "feather": 18,
           "originX": 50,
           "originY": 100,
-          "idle": "sway"
+          "idle": "float"
         },
         {
           "type": "cutout",
@@ -339,19 +339,21 @@
           "feather": 18,
           "originX": 50,
           "originY": 100,
-          "idle": "breathe"
+          "idle": "wiggle"
         },
         {
-          "type": "cutout",
-          "src": "images/si-nong/S32.jpg",
+          "type": "sprite",
+          "src": "images/si-nong/sprites/S32-m1.png",
           "x": 44.33,
           "y": 26.04,
           "width": 12.35,
           "height": 47.53,
-          "feather": 20,
-          "originX": 50,
-          "originY": 100,
-          "idle": "breathe"
+          "alive": 0.7,
+          "weight": 0.4,
+          "motionBlur": 0.3,
+          "bobPercent": 3.2,
+          "periodSeconds": 1.6,
+          "breathePercent": 2.0
         },
         {
           "type": "glowPulse",
@@ -618,10 +620,8 @@
           "bobPercent": 3.4,
           "periodSeconds": 3.1,
           "phaseSeconds": 0.0,
-          "travelXPercent": -1.1,
-          "travelYPercent": 0.8,
-          "travelFrames": 300,
-          "idle": "float"
+          "idle": "float",
+          "breathePercent": 1.8
         },
         {
           "type": "sprite",
@@ -636,10 +636,8 @@
           "bobPercent": 4.0,
           "periodSeconds": 3.7,
           "phaseSeconds": 0.9,
-          "travelXPercent": 0.9,
-          "travelYPercent": -0.7,
-          "travelFrames": 300,
-          "idle": "float"
+          "idle": "float",
+          "breathePercent": 1.8
         },
         {
           "type": "sprite",
@@ -654,10 +652,8 @@
           "bobPercent": 3.0,
           "periodSeconds": 2.8,
           "phaseSeconds": 1.8,
-          "travelXPercent": -0.8,
-          "travelYPercent": 1.0,
-          "travelFrames": 300,
-          "idle": "float"
+          "idle": "float",
+          "breathePercent": 1.8
         },
         {
           "type": "sprite",
@@ -672,10 +668,8 @@
           "bobPercent": 3.6,
           "periodSeconds": 4.1,
           "phaseSeconds": 0.6,
-          "travelXPercent": 1.2,
-          "travelYPercent": 0.6,
-          "travelFrames": 300,
-          "idle": "float"
+          "idle": "float",
+          "breathePercent": 1.8
         },
         {
           "type": "sprite",
@@ -690,10 +684,8 @@
           "bobPercent": 3.2,
           "periodSeconds": 3.4,
           "phaseSeconds": 1.4,
-          "travelXPercent": -1.0,
-          "travelYPercent": -0.9,
-          "travelFrames": 300,
-          "idle": "float"
+          "idle": "float",
+          "breathePercent": 1.8
         },
         {
           "type": "starLayer",
@@ -1359,7 +1351,7 @@
       "durationInFrames": 300,
       "background": {
         "type": "image",
-        "src": "images/si-nong/S36.jpg",
+        "src": "images/si-nong/sprites/S36-walker-plate.png",
         "kenBurns": "none"
       },
       "transitionIn": {
@@ -1421,16 +1413,18 @@
       },
       "overlays": [
         {
-          "type": "cutout",
-          "src": "images/si-nong/S36.jpg",
+          "type": "sprite",
+          "src": "images/si-nong/sprites/S36-walker.png",
           "x": 21.8,
           "y": 44.92,
           "width": 10.32,
           "height": 44.27,
-          "feather": 20,
-          "originX": 50,
-          "originY": 100,
-          "idle": "sway"
+          "alive": 0.75,
+          "weight": 0.4,
+          "motionBlur": 0.3,
+          "bobPercent": 3.4,
+          "periodSeconds": 1.5,
+          "breathePercent": 2.0
         },
         {
           "type": "starLayer",

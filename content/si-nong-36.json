@@ -7,7 +7,7 @@
       "durationInFrames": 300,
       "background": {
         "type": "image",
-        "src": "images/si-nong/S36.jpg",
+        "src": "images/si-nong/sprites/S36-walker-plate.png",
         "kenBurns": "none"
       },
       "transitionIn": {
@@ -69,16 +69,18 @@
       },
       "overlays": [
         {
-          "type": "cutout",
-          "src": "images/si-nong/S36.jpg",
+          "type": "sprite",
+          "src": "images/si-nong/sprites/S36-walker.png",
           "x": 21.8,
           "y": 44.92,
           "width": 10.32,
           "height": 44.27,
-          "feather": 20,
-          "originX": 50,
-          "originY": 100,
-          "idle": "sway"
+          "alive": 0.75,
+          "weight": 0.4,
+          "motionBlur": 0.3,
+          "bobPercent": 3.4,
+          "periodSeconds": 1.5,
+          "breathePercent": 2.0
         },
         {
           "type": "starLayer",

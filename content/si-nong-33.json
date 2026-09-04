@@ -81,10 +81,8 @@
           "bobPercent": 3.4,
           "periodSeconds": 3.1,
           "phaseSeconds": 0.0,
-          "travelXPercent": -1.1,
-          "travelYPercent": 0.8,
-          "travelFrames": 300,
-          "idle": "float"
+          "idle": "float",
+          "breathePercent": 1.8
         },
         {
           "type": "sprite",
@@ -99,10 +97,8 @@
           "bobPercent": 4.0,
           "periodSeconds": 3.7,
           "phaseSeconds": 0.9,
-          "travelXPercent": 0.9,
-          "travelYPercent": -0.7,
-          "travelFrames": 300,
-          "idle": "float"
+          "idle": "float",
+          "breathePercent": 1.8
         },
         {
           "type": "sprite",
@@ -117,10 +113,8 @@
           "bobPercent": 3.0,
           "periodSeconds": 2.8,
           "phaseSeconds": 1.8,
-          "travelXPercent": -0.8,
-          "travelYPercent": 1.0,
-          "travelFrames": 300,
-          "idle": "float"
+          "idle": "float",
+          "breathePercent": 1.8
         },
         {
           "type": "sprite",
@@ -135,10 +129,8 @@
           "bobPercent": 3.6,
           "periodSeconds": 4.1,
           "phaseSeconds": 0.6,
-          "travelXPercent": 1.2,
-          "travelYPercent": 0.6,
-          "travelFrames": 300,
-          "idle": "float"
+          "idle": "float",
+          "breathePercent": 1.8
         },
         {
           "type": "sprite",
@@ -153,10 +145,8 @@
           "bobPercent": 3.2,
           "periodSeconds": 3.4,
           "phaseSeconds": 1.4,
-          "travelXPercent": -1.0,
-          "travelYPercent": -0.9,
-          "travelFrames": 300,
-          "idle": "float"
+          "idle": "float",
+          "breathePercent": 1.8
         },
         {
           "type": "starLayer",

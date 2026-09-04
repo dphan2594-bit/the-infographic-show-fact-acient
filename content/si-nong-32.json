@@ -7,7 +7,7 @@
       "durationInFrames": 300,
       "background": {
         "type": "image",
-        "src": "images/si-nong/S32.jpg",
+        "src": "images/si-nong/sprites/S32-m1-plate.png",
         "kenBurns": "none"
       },
       "transitionIn": {
@@ -78,7 +78,7 @@
           "feather": 18,
           "originX": 50,
           "originY": 100,
-          "idle": "sway"
+          "idle": "float"
         },
         {
           "type": "cutout",
@@ -90,19 +90,21 @@
           "feather": 18,
           "originX": 50,
           "originY": 100,
-          "idle": "breathe"
+          "idle": "wiggle"
         },
         {
-          "type": "cutout",
-          "src": "images/si-nong/S32.jpg",
+          "type": "sprite",
+          "src": "images/si-nong/sprites/S32-m1.png",
           "x": 44.33,
           "y": 26.04,
           "width": 12.35,
           "height": 47.53,
-          "feather": 20,
-          "originX": 50,
-          "originY": 100,
-          "idle": "breathe"
+          "alive": 0.7,
+          "weight": 0.4,
+          "motionBlur": 0.3,
+          "bobPercent": 3.2,
+          "periodSeconds": 1.6,
+          "breathePercent": 2.0
         },
         {
           "type": "glowPulse",

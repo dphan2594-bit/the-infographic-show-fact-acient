@@ -151,40 +151,49 @@ def main():
                     grown[y*bw+x] = 0
     bg = grown
 
-    # plate: the artwork with the character gone, patched along each row so the
-    # horizontal colour bands survive
-    # Sample outside the character on every row first. A row where it spans the
-    # whole box has nothing outside it to sample, so borrow from the nearest
-    # row that does rather than crashing on it.
-    samples = [None] * bh
+    # plate: the artwork with the character gone. Fill each hole pixel with the
+    # colour of the nearest pixel that survived, found by one breadth-first
+    # sweep out from the hole's rim.
+    #
+    # The earlier fill worked a row at a time, taking the colour just left or
+    # right of the character and running it across. That holds up over
+    # horizontal bands — a sky, a floor — and falls apart over painted scenery:
+    # a temple in diagonal colour blocks or a glowing path becomes a smear
+    # streaked out sideways, and the moment the sprite moves off it the smear
+    # shows. Nearest-neighbour keeps a flat region flat and a colour boundary
+    # roughly where it was, which is what flat-vector art is made of.
+    INF = 1 << 30
+    dist = [0 if bg[i] else INF for i in range(bw * bh)]
+    src = [0] * (bw * bh)
+    q = deque()
     for y in range(bh):
-        solid = [x for x in range(bw) if not bg[y*bw+x]]
-        if not solid: continue
-        lo, hi = solid[0], solid[-1]
-        # Average a short run so a single JPEG-noisy pixel does not become the
-        # colour of a whole streak.
-        def sample(a, b):
-            run = [at(x0+v, y0+y) for v in range(max(0,a), min(bw,b))]
-            if not run: return None
-            return tuple(sum(px[i+c] for i in run)//len(run) for c in range(3))
-        samples[y] = (lo, hi, sample(lo-6, lo), sample(hi+1, hi+7), solid)
+        for x in range(bw):
+            i = y * bw + x
+            if bg[i]:                           # background survived: it is its own source
+                src[i] = i
+                q.append((x, y))
+    while q:
+        x, y = q.popleft()
+        i = y * bw + x
+        for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            nx, ny = x + dx, y + dy
+            if not (0 <= nx < bw and 0 <= ny < bh):
+                continue
+            j = ny * bw + nx
+            if dist[j] > dist[i] + 1:
+                dist[j] = dist[i] + 1
+                src[j] = src[i]
+                q.append((nx, ny))
 
     for y in range(bh):
-        if samples[y] is None: continue
-        lo, hi, left, right, solid = samples[y]
-        if left is None and right is None:
-            for dy in range(1, bh):
-                for ny in (y-dy, y+dy):
-                    if 0 <= ny < bh and samples[ny] and (samples[ny][2] or samples[ny][3]):
-                        left, right = samples[ny][2], samples[ny][3]
-                        break
-                if left is not None or right is not None: break
-        if left is None and right is None: continue
-        for x in solid:
-            src = left if right is None else right if left is None else (
-                  left if x-lo <= hi-x else right)
-            d = at(x0+x, y0+y)
-            px[d], px[d+1], px[d+2] = src
+        for x in range(bw):
+            i = y * bw + x
+            if bg[i] or dist[i] == INF:         # only the character's pixels are a hole
+                continue
+            sy, sx = divmod(src[i], bw)
+            a = at(x0 + sx, y0 + sy)
+            d = at(x0 + x, y0 + y)
+            px[d], px[d + 1], px[d + 2] = px[a], px[a + 1], px[a + 2]
 
     encode(px, W, H, "rgb24", f"{prefix}-plate.png")
 
