@@ -17,18 +17,65 @@
       },
       "camera": {
         "keyframes": [
-          { "at": 0.0, "zoom": 1.05, "focusX": 50, "focusY": 48 },
-          { "at": 23.33, "zoom": 1.05, "focusX": 50, "focusY": 48 },
-          { "at": 30.0, "zoom": 1.2, "focusX": 35, "focusY": 32 },
-          { "at": 50.0, "zoom": 1.18, "focusX": 35, "focusY": 32 },
-          { "at": 56.67, "zoom": 1.35, "focusX": 80, "focusY": 35 },
-          { "at": 74.67, "zoom": 1.33, "focusX": 80, "focusY": 35 },
-          { "at": 81.33, "zoom": 1.05, "focusX": 50, "focusY": 48 },
-          { "at": 100.0, "zoom": 1.06, "focusX": 50, "focusY": 48 }
+          {
+            "at": 0.0,
+            "zoom": 1.05,
+            "focusX": 50,
+            "focusY": 48
+          },
+          {
+            "at": 23.33,
+            "zoom": 1.05,
+            "focusX": 50,
+            "focusY": 48
+          },
+          {
+            "at": 27.33,
+            "zoom": 1.2,
+            "focusX": 35,
+            "focusY": 32
+          },
+          {
+            "at": 50.0,
+            "zoom": 1.2,
+            "focusX": 35,
+            "focusY": 32
+          },
+          {
+            "at": 54.0,
+            "zoom": 1.35,
+            "focusX": 80,
+            "focusY": 35
+          },
+          {
+            "at": 74.67,
+            "zoom": 1.35,
+            "focusX": 80,
+            "focusY": 35
+          },
+          {
+            "at": 78.67,
+            "zoom": 1.05,
+            "focusX": 50,
+            "focusY": 48
+          },
+          {
+            "at": 100.0,
+            "zoom": 1.05,
+            "focusX": 50,
+            "focusY": 48
+          }
         ],
         "continueFromPrevious": true
       },
       "overlays": [
+        {
+          "type": "starLayer",
+          "density": 0.3,
+          "seed": "s37-stars",
+          "driftSpeed": 0,
+          "opacity": 0.2
+        },
         {
           "type": "glowPulse",
           "x": 19,
@@ -65,7 +112,10 @@
           "angleDeg": 90,
           "speed": 3,
           "opacity": 0.16,
-          "colors": ["#FFFFFF", "#5AD7E8"],
+          "colors": [
+            "#FFFFFF",
+            "#5AD7E8"
+          ],
           "seed": "s37-dust"
         },
         {
@@ -169,7 +219,11 @@
           "atFrame": 6,
           "count": 24,
           "spread": 320,
-          "colors": ["#FFD34D", "#5AD7E8", "#FFFFFF"],
+          "colors": [
+            "#FFD34D",
+            "#5AD7E8",
+            "#FFFFFF"
+          ],
           "startFrame": 238
         },
         {

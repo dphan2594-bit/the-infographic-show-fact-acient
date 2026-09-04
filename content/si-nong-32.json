@@ -17,14 +17,54 @@
       },
       "camera": {
         "keyframes": [
-          { "at": 0.0, "zoom": 1.05, "focusX": 50, "focusY": 50 },
-          { "at": 23.33, "zoom": 1.05, "focusX": 50, "focusY": 50 },
-          { "at": 30.0, "zoom": 1.5, "focusX": 50, "focusY": 46 },
-          { "at": 50.0, "zoom": 1.48, "focusX": 50, "focusY": 46 },
-          { "at": 56.67, "zoom": 1.25, "focusX": 50, "focusY": 60 },
-          { "at": 74.67, "zoom": 1.23, "focusX": 50, "focusY": 60 },
-          { "at": 81.33, "zoom": 1.05, "focusX": 50, "focusY": 48 },
-          { "at": 100.0, "zoom": 1.06, "focusX": 50, "focusY": 48 }
+          {
+            "at": 0.0,
+            "zoom": 1.05,
+            "focusX": 50,
+            "focusY": 50
+          },
+          {
+            "at": 23.33,
+            "zoom": 1.05,
+            "focusX": 50,
+            "focusY": 50
+          },
+          {
+            "at": 27.33,
+            "zoom": 1.5,
+            "focusX": 50,
+            "focusY": 46
+          },
+          {
+            "at": 50.0,
+            "zoom": 1.5,
+            "focusX": 50,
+            "focusY": 46
+          },
+          {
+            "at": 54.0,
+            "zoom": 1.25,
+            "focusX": 50,
+            "focusY": 60
+          },
+          {
+            "at": 74.67,
+            "zoom": 1.25,
+            "focusX": 50,
+            "focusY": 60
+          },
+          {
+            "at": 78.67,
+            "zoom": 1.05,
+            "focusX": 50,
+            "focusY": 48
+          },
+          {
+            "at": 100.0,
+            "zoom": 1.05,
+            "focusX": 50,
+            "focusY": 48
+          }
         ],
         "continueFromPrevious": true
       },
@@ -45,7 +85,10 @@
           "angleDeg": 90,
           "speed": 4,
           "opacity": 0.16,
-          "colors": ["#FFD34D", "#FFFFFF"],
+          "colors": [
+            "#FFD34D",
+            "#FFFFFF"
+          ],
           "seed": "s32-dust"
         },
         {

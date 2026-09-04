@@ -17,18 +17,65 @@
       },
       "camera": {
         "keyframes": [
-          { "at": 0.0, "zoom": 1.05, "focusX": 50, "focusY": 48 },
-          { "at": 23.33, "zoom": 1.05, "focusX": 50, "focusY": 48 },
-          { "at": 30.0, "zoom": 1.35, "focusX": 18, "focusY": 40 },
-          { "at": 50.0, "zoom": 1.33, "focusX": 18, "focusY": 40 },
-          { "at": 56.67, "zoom": 1.25, "focusX": 72, "focusY": 38 },
-          { "at": 74.67, "zoom": 1.23, "focusX": 72, "focusY": 38 },
-          { "at": 81.33, "zoom": 1.05, "focusX": 50, "focusY": 45 },
-          { "at": 100.0, "zoom": 1.06, "focusX": 50, "focusY": 45 }
+          {
+            "at": 0.0,
+            "zoom": 1.05,
+            "focusX": 50,
+            "focusY": 48
+          },
+          {
+            "at": 23.33,
+            "zoom": 1.05,
+            "focusX": 50,
+            "focusY": 48
+          },
+          {
+            "at": 27.33,
+            "zoom": 1.35,
+            "focusX": 18,
+            "focusY": 40
+          },
+          {
+            "at": 50.0,
+            "zoom": 1.35,
+            "focusX": 18,
+            "focusY": 40
+          },
+          {
+            "at": 54.0,
+            "zoom": 1.25,
+            "focusX": 72,
+            "focusY": 38
+          },
+          {
+            "at": 74.67,
+            "zoom": 1.25,
+            "focusX": 72,
+            "focusY": 38
+          },
+          {
+            "at": 78.67,
+            "zoom": 1.05,
+            "focusX": 50,
+            "focusY": 45
+          },
+          {
+            "at": 100.0,
+            "zoom": 1.05,
+            "focusX": 50,
+            "focusY": 45
+          }
         ],
         "continueFromPrevious": true
       },
       "overlays": [
+        {
+          "type": "starLayer",
+          "density": 0.3,
+          "seed": "s36-stars",
+          "driftSpeed": 0,
+          "opacity": 0.2
+        },
         {
           "type": "glowPulse",
           "x": 78,
@@ -45,7 +92,10 @@
           "angleDeg": 90,
           "speed": 3,
           "opacity": 0.16,
-          "colors": ["#5AD7E8", "#E85D5D"],
+          "colors": [
+            "#5AD7E8",
+            "#E85D5D"
+          ],
           "seed": "s36-dust"
         },
         {

@@ -30,38 +30,38 @@
             "focusY": 45
           },
           {
-            "at": 30.0,
+            "at": 27.33,
             "zoom": 1.35,
             "focusX": 24,
             "focusY": 55
           },
           {
             "at": 50.0,
-            "zoom": 1.33,
+            "zoom": 1.35,
             "focusX": 24,
             "focusY": 55
           },
           {
-            "at": 56.67,
+            "at": 54.0,
             "zoom": 1.35,
             "focusX": 76,
             "focusY": 58
           },
           {
             "at": 74.67,
-            "zoom": 1.33,
+            "zoom": 1.35,
             "focusX": 76,
             "focusY": 58
           },
           {
-            "at": 81.33,
+            "at": 78.67,
             "zoom": 1.05,
             "focusX": 50,
             "focusY": 45
           },
           {
             "at": 100.0,
-            "zoom": 1.06,
+            "zoom": 1.05,
             "focusX": 50,
             "focusY": 45
           }
@@ -280,38 +280,38 @@
             "focusY": 50
           },
           {
-            "at": 30.0,
+            "at": 27.33,
             "zoom": 1.5,
             "focusX": 50,
             "focusY": 46
           },
           {
             "at": 50.0,
-            "zoom": 1.48,
+            "zoom": 1.5,
             "focusX": 50,
             "focusY": 46
           },
           {
-            "at": 56.67,
+            "at": 54.0,
             "zoom": 1.25,
             "focusX": 50,
             "focusY": 60
           },
           {
             "at": 74.67,
-            "zoom": 1.23,
+            "zoom": 1.25,
             "focusX": 50,
             "focusY": 60
           },
           {
-            "at": 81.33,
+            "at": 78.67,
             "zoom": 1.05,
             "focusX": 50,
             "focusY": 48
           },
           {
             "at": 100.0,
-            "zoom": 1.06,
+            "zoom": 1.05,
             "focusX": 50,
             "focusY": 48
           }
@@ -533,38 +533,38 @@
             "focusY": 50
           },
           {
-            "at": 30.0,
+            "at": 27.33,
             "zoom": 1.3,
             "focusX": 50,
             "focusY": 26
           },
           {
             "at": 50.0,
-            "zoom": 1.28,
+            "zoom": 1.3,
             "focusX": 50,
             "focusY": 26
           },
           {
-            "at": 56.67,
+            "at": 54.0,
             "zoom": 1.25,
             "focusX": 50,
             "focusY": 68
           },
           {
             "at": 74.67,
-            "zoom": 1.23,
+            "zoom": 1.25,
             "focusX": 50,
             "focusY": 68
           },
           {
-            "at": 81.33,
+            "at": 78.67,
             "zoom": 1.05,
             "focusX": 50,
             "focusY": 50
           },
           {
             "at": 100.0,
-            "zoom": 1.06,
+            "zoom": 1.05,
             "focusX": 50,
             "focusY": 50
           }
@@ -572,6 +572,13 @@
         "continueFromPrevious": true
       },
       "overlays": [
+        {
+          "type": "starLayer",
+          "density": 0.35,
+          "seed": "s33-stars",
+          "driftSpeed": 0,
+          "opacity": 0.22
+        },
         {
           "type": "glowPulse",
           "x": 50,
@@ -773,38 +780,38 @@
             "focusY": 55
           },
           {
-            "at": 30.0,
+            "at": 27.33,
             "zoom": 1.35,
             "focusX": 22,
             "focusY": 58
           },
           {
             "at": 50.0,
-            "zoom": 1.33,
+            "zoom": 1.35,
             "focusX": 22,
             "focusY": 58
           },
           {
-            "at": 56.67,
+            "at": 54.0,
             "zoom": 1.35,
             "focusX": 80,
             "focusY": 56
           },
           {
             "at": 74.67,
-            "zoom": 1.33,
+            "zoom": 1.35,
             "focusX": 80,
             "focusY": 56
           },
           {
-            "at": 81.33,
+            "at": 78.67,
             "zoom": 1.05,
             "focusX": 50,
             "focusY": 55
           },
           {
             "at": 100.0,
-            "zoom": 1.06,
+            "zoom": 1.05,
             "focusX": 50,
             "focusY": 55
           }
@@ -1003,38 +1010,38 @@
             "focusY": 50
           },
           {
-            "at": 30.0,
+            "at": 27.33,
             "zoom": 1.3,
             "focusX": 25,
             "focusY": 50
           },
           {
             "at": 50.0,
-            "zoom": 1.28,
+            "zoom": 1.3,
             "focusX": 25,
             "focusY": 50
           },
           {
-            "at": 56.67,
+            "at": 54.0,
             "zoom": 1.3,
             "focusX": 75,
             "focusY": 50
           },
           {
             "at": 74.67,
-            "zoom": 1.28,
+            "zoom": 1.3,
             "focusX": 75,
             "focusY": 50
           },
           {
-            "at": 81.33,
+            "at": 78.67,
             "zoom": 1.05,
             "focusX": 50,
             "focusY": 50
           },
           {
             "at": 100.0,
-            "zoom": 1.08,
+            "zoom": 1.05,
             "focusX": 50,
             "focusY": 50
           }
@@ -1252,38 +1259,38 @@
             "focusY": 48
           },
           {
-            "at": 30.0,
+            "at": 27.33,
             "zoom": 1.35,
             "focusX": 18,
             "focusY": 40
           },
           {
             "at": 50.0,
-            "zoom": 1.33,
+            "zoom": 1.35,
             "focusX": 18,
             "focusY": 40
           },
           {
-            "at": 56.67,
+            "at": 54.0,
             "zoom": 1.25,
             "focusX": 72,
             "focusY": 38
           },
           {
             "at": 74.67,
-            "zoom": 1.23,
+            "zoom": 1.25,
             "focusX": 72,
             "focusY": 38
           },
           {
-            "at": 81.33,
+            "at": 78.67,
             "zoom": 1.05,
             "focusX": 50,
             "focusY": 45
           },
           {
             "at": 100.0,
-            "zoom": 1.06,
+            "zoom": 1.05,
             "focusX": 50,
             "focusY": 45
           }
@@ -1291,6 +1298,13 @@
         "continueFromPrevious": true
       },
       "overlays": [
+        {
+          "type": "starLayer",
+          "density": 0.3,
+          "seed": "s36-stars",
+          "driftSpeed": 0,
+          "opacity": 0.2
+        },
         {
           "type": "glowPulse",
           "x": 78,
@@ -1492,38 +1506,38 @@
             "focusY": 48
           },
           {
-            "at": 30.0,
+            "at": 27.33,
             "zoom": 1.2,
             "focusX": 35,
             "focusY": 32
           },
           {
             "at": 50.0,
-            "zoom": 1.18,
+            "zoom": 1.2,
             "focusX": 35,
             "focusY": 32
           },
           {
-            "at": 56.67,
+            "at": 54.0,
             "zoom": 1.35,
             "focusX": 80,
             "focusY": 35
           },
           {
             "at": 74.67,
-            "zoom": 1.33,
+            "zoom": 1.35,
             "focusX": 80,
             "focusY": 35
           },
           {
-            "at": 81.33,
+            "at": 78.67,
             "zoom": 1.05,
             "focusX": 50,
             "focusY": 48
           },
           {
             "at": 100.0,
-            "zoom": 1.06,
+            "zoom": 1.05,
             "focusX": 50,
             "focusY": 48
           }
@@ -1531,6 +1545,13 @@
         "continueFromPrevious": true
       },
       "overlays": [
+        {
+          "type": "starLayer",
+          "density": 0.3,
+          "seed": "s37-stars",
+          "driftSpeed": 0,
+          "opacity": 0.2
+        },
         {
           "type": "glowPulse",
           "x": 19,
