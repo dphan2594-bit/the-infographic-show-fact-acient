@@ -11,9 +11,9 @@
         "kenBurns": "none"
       },
       "transitionIn": {
-        "type": "whip",
-        "direction": "from-left",
-        "durationInFrames": 16
+        "type": "slide",
+        "direction": "from-right",
+        "durationInFrames": 18
       },
       "camera": {
         "keyframes": [

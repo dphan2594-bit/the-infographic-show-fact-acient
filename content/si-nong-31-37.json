@@ -11,9 +11,8 @@
         "kenBurns": "none"
       },
       "transitionIn": {
-        "type": "whip",
-        "direction": "from-left",
-        "durationInFrames": 16
+        "type": "zoom-through",
+        "durationInFrames": 18
       },
       "camera": {
         "keyframes": [
@@ -261,9 +260,8 @@
         "kenBurns": "none"
       },
       "transitionIn": {
-        "type": "whip",
-        "direction": "from-left",
-        "durationInFrames": 16
+        "type": "iris",
+        "durationInFrames": 18
       },
       "camera": {
         "keyframes": [
@@ -319,6 +317,42 @@
         "continueFromPrevious": true
       },
       "overlays": [
+        {
+          "type": "cutout",
+          "src": "images/si-nong/S32.jpg",
+          "x": 32.7,
+          "y": 34.11,
+          "width": 11.26,
+          "height": 45.05,
+          "feather": 18,
+          "originX": 50,
+          "originY": 100,
+          "idle": "sway"
+        },
+        {
+          "type": "cutout",
+          "src": "images/si-nong/S32.jpg",
+          "x": 56.54,
+          "y": 38.8,
+          "width": 11.63,
+          "height": 45.18,
+          "feather": 18,
+          "originX": 50,
+          "originY": 100,
+          "idle": "breathe"
+        },
+        {
+          "type": "cutout",
+          "src": "images/si-nong/S32.jpg",
+          "x": 44.33,
+          "y": 26.04,
+          "width": 12.35,
+          "height": 47.53,
+          "feather": 20,
+          "originX": 50,
+          "originY": 100,
+          "idle": "breathe"
+        },
         {
           "type": "glowPulse",
           "x": 50,
@@ -510,12 +544,11 @@
       "durationInFrames": 300,
       "background": {
         "type": "image",
-        "src": "images/si-nong/S33.jpg",
+        "src": "images/si-nong/sprites/S33-f5-plate.png",
         "kenBurns": "none"
       },
       "transitionIn": {
-        "type": "whip",
-        "direction": "from-left",
+        "type": "dissolve",
         "durationInFrames": 16
       },
       "camera": {
@@ -572,6 +605,96 @@
         "continueFromPrevious": true
       },
       "overlays": [
+        {
+          "type": "sprite",
+          "src": "images/si-nong/sprites/S33-f1.png",
+          "x": 24.35,
+          "y": 33.85,
+          "width": 10.54,
+          "height": 20.83,
+          "alive": 0.62,
+          "weight": 0.28,
+          "motionBlur": 0.25,
+          "bobPercent": 3.4,
+          "periodSeconds": 3.1,
+          "phaseSeconds": 0.0,
+          "travelXPercent": -1.1,
+          "travelYPercent": 0.8,
+          "travelFrames": 300,
+          "idle": "float"
+        },
+        {
+          "type": "sprite",
+          "src": "images/si-nong/sprites/S33-f2.png",
+          "x": 33.43,
+          "y": 16.93,
+          "width": 10.54,
+          "height": 22.79,
+          "alive": 0.58,
+          "weight": 0.28,
+          "motionBlur": 0.25,
+          "bobPercent": 4.0,
+          "periodSeconds": 3.7,
+          "phaseSeconds": 0.9,
+          "travelXPercent": 0.9,
+          "travelYPercent": -0.7,
+          "travelFrames": 300,
+          "idle": "float"
+        },
+        {
+          "type": "sprite",
+          "src": "images/si-nong/sprites/S33-f3.png",
+          "x": 44.69,
+          "y": 6.51,
+          "width": 11.26,
+          "height": 23.44,
+          "alive": 0.66,
+          "weight": 0.28,
+          "motionBlur": 0.25,
+          "bobPercent": 3.0,
+          "periodSeconds": 2.8,
+          "phaseSeconds": 1.8,
+          "travelXPercent": -0.8,
+          "travelYPercent": 1.0,
+          "travelFrames": 300,
+          "idle": "float"
+        },
+        {
+          "type": "sprite",
+          "src": "images/si-nong/sprites/S33-f4.png",
+          "x": 56.69,
+          "y": 17.58,
+          "width": 9.81,
+          "height": 23.44,
+          "alive": 0.6,
+          "weight": 0.28,
+          "motionBlur": 0.25,
+          "bobPercent": 3.6,
+          "periodSeconds": 4.1,
+          "phaseSeconds": 0.6,
+          "travelXPercent": 1.2,
+          "travelYPercent": 0.6,
+          "travelFrames": 300,
+          "idle": "float"
+        },
+        {
+          "type": "sprite",
+          "src": "images/si-nong/sprites/S33-f5.png",
+          "x": 64.68,
+          "y": 31.9,
+          "width": 10.9,
+          "height": 23.44,
+          "alive": 0.64,
+          "weight": 0.28,
+          "motionBlur": 0.25,
+          "bobPercent": 3.2,
+          "periodSeconds": 3.4,
+          "phaseSeconds": 1.4,
+          "travelXPercent": -1.0,
+          "travelYPercent": -0.9,
+          "travelFrames": 300,
+          "idle": "float"
+        },
         {
           "type": "starLayer",
           "density": 0.35,
@@ -761,9 +884,9 @@
         "kenBurns": "none"
       },
       "transitionIn": {
-        "type": "whip",
+        "type": "wipe",
         "direction": "from-left",
-        "durationInFrames": 16
+        "durationInFrames": 18
       },
       "camera": {
         "keyframes": [
@@ -991,9 +1114,9 @@
         "kenBurns": "none"
       },
       "transitionIn": {
-        "type": "whip",
-        "direction": "from-left",
-        "durationInFrames": 16
+        "type": "slide",
+        "direction": "from-right",
+        "durationInFrames": 18
       },
       "camera": {
         "keyframes": [
@@ -1240,9 +1363,8 @@
         "kenBurns": "none"
       },
       "transitionIn": {
-        "type": "whip",
-        "direction": "from-left",
-        "durationInFrames": 16
+        "type": "clock-wipe",
+        "durationInFrames": 20
       },
       "camera": {
         "keyframes": [
@@ -1298,6 +1420,18 @@
         "continueFromPrevious": true
       },
       "overlays": [
+        {
+          "type": "cutout",
+          "src": "images/si-nong/S36.jpg",
+          "x": 21.8,
+          "y": 44.92,
+          "width": 10.32,
+          "height": 44.27,
+          "feather": 20,
+          "originX": 50,
+          "originY": 100,
+          "idle": "sway"
+        },
         {
           "type": "starLayer",
           "density": 0.3,
@@ -1487,8 +1621,9 @@
         "kenBurns": "none"
       },
       "transitionIn": {
-        "type": "whip",
-        "direction": "from-left",
+        "type": "flash",
+        "color": "#FFD34D",
+        "intensity": 0.5,
         "durationInFrames": 16
       },
       "camera": {

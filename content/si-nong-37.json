@@ -11,8 +11,9 @@
         "kenBurns": "none"
       },
       "transitionIn": {
-        "type": "whip",
-        "direction": "from-left",
+        "type": "flash",
+        "color": "#FFD34D",
+        "intensity": 0.5,
         "durationInFrames": 16
       },
       "camera": {

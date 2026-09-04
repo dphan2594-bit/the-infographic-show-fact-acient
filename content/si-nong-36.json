@@ -11,9 +11,8 @@
         "kenBurns": "none"
       },
       "transitionIn": {
-        "type": "whip",
-        "direction": "from-left",
-        "durationInFrames": 16
+        "type": "clock-wipe",
+        "durationInFrames": 20
       },
       "camera": {
         "keyframes": [
@@ -69,6 +68,18 @@
         "continueFromPrevious": true
       },
       "overlays": [
+        {
+          "type": "cutout",
+          "src": "images/si-nong/S36.jpg",
+          "x": 21.8,
+          "y": 44.92,
+          "width": 10.32,
+          "height": 44.27,
+          "feather": 20,
+          "originX": 50,
+          "originY": 100,
+          "idle": "sway"
+        },
         {
           "type": "starLayer",
           "density": 0.3,
